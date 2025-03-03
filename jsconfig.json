@@ -37,6 +37,9 @@
             ],
             "@MEAssets/*": [
                 "./src/assets/*"
+            ],
+            "@MEMock/*": [
+                "./src/mock/*"
             ]
         }
     },

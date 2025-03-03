@@ -319,6 +319,7 @@ module.exports = function (webpackEnv) {
         '@MELocalizationEn': path.resolve('src/localization'), 
         '@MEScreens': path.resolve('src/screens'), 
         '@MEAssets': path.resolve('src/assets'), 
+        '@MEMock': path.resolve('src/mock'),
         '@MERedux': path.resolve('src/slice'), 
         '@MEStyles': path.resolve('src/styles'),
         '@MEUtils': path.resolve('src/utils'),

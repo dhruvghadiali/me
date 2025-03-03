@@ -1,5 +1,6 @@
 export const signinFormTranslation = {
     signinButtonLabel: "signin",
-    passwordInputLabel: "Password",
-    usernameInputLabel: "Username",
+    passwordInputLabel: "password",
+    usernameInputLabel: "username",
+    forgottenPasswordLink: "forgotten password?",
 }

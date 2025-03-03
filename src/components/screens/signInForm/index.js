@@ -1,34 +1,34 @@
-// import { useEffect } from "react";
+import { useEffect } from "react";
 import { useFormik } from "formik";
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-// import { routeName } from "@MEUtils/routeName";
-// import { validateUser } from "@MERedux/login/loginAction";
 import { variants } from "@MEUtils/enums";
+import { routeName } from "@MEUtils/routeName";
+import { CircleAlertIcon } from "lucide-react";
+import { validateUser } from "@MERedux/login/loginAction";
 import { validationMessage } from "@MEUtils/validationMessage";
-// import { changeActiveMenu } from  "@MERedux/sidebar/sidebarSlice";
 import { signinFormTranslation } from "@MELocalizationEn/signin/signinTranslationEn";
 
-import * as Yup from "yup";
 import _ from "lodash";
+import * as Yup from "yup";
+
 import MEInput from "@MECommonComponents/input/meInput";
 import MEButton from "@MECommonComponents/button/meButton";
-// import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const SignInForm = () => {
-  // const { loader, error, isValidUser } = useSelector((state) => state.login);
+  const { loader, error, isValidUser } = useSelector((state) => state.login);
   const { t, i18n } = useTranslation();
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (isValidUser) {
-  //     navigate(routeName.dashboard, { replace: true });
-  //     dispatch(changeActiveMenu(sidebarMenuName.DASHBOARD));
-  //   }
-  // }, [isValidUser]);
+  useEffect(() => {
+    if (isValidUser) {
+      navigate(routeName.dashboard, { replace: true });
+    }
+  }, [isValidUser]);
 
   const formik = useFormik({
     initialValues: {
@@ -40,21 +40,31 @@ const SignInForm = () => {
     validateOnBlur: true,
     onSubmit: (values) => {
       console.log("values", values);
-      // dispatch(validateUser(values));
+      dispatch(validateUser(values));
     },
   });
+
+  const onForgottenPasswordClick = () => {
+    navigate(routeName.dashboard, { replace: true });
+  };
 
   return (
     <>
       <div className="py-3" />
+      {error && (
+        <div className="bg-danger mb-2 flex items-center  rounded-md">
+          <CircleAlertIcon className="text-accent ml-2" />
+          <p className="text-accent p-2 text-center">{error}</p>
+        </div>
+      )}
       <form onSubmit={formik.handleSubmit}>
         <MEInput
           id="username"
           type={"text"}
           label={
             i18n.exists("usernameInputLabel")
-              ? t("usernameInputLabel")
-              : SignInForm.usernameInputLabel
+              ? _.upperFirst(t("usernameInputLabel"))
+              : _.upperFirst(SignInForm.usernameInputLabel)
           }
           message={formik.errors.username}
           value={formik.values.username}
@@ -70,8 +80,8 @@ const SignInForm = () => {
           type={"password"}
           label={
             i18n.exists("passwordInputLabel")
-              ? t("passwordInputLabel")
-              : SignInForm.passwordInputLabel
+              ? _.upperFirst(t("passwordInputLabel"))
+              : _.upperFirst(SignInForm.passwordInputLabel)
           }
           message={formik.errors.password}
           value={formik.values.password}
@@ -91,13 +101,20 @@ const SignInForm = () => {
             {i18n.exists("signinButtonLabel")
               ? _.upperCase(t("signinButtonLabel"))
               : _.upperCase(signinFormTranslation.signinButtonLabel)}
-            {/* {loader && <MELoaderIcon />} */}
+            {loader && <MELoaderIcon />}
           </MEButton>
         </div>
       </form>
 
-      <MEButton variant="link" size="sm" className="p-0 text-dark flex">
-        Forgotten Password?
+      <MEButton
+        variant="link"
+        size="sm"
+        className="p-0 text-dark flex"
+        onClick={() => onForgottenPasswordClick()}
+      >
+        {i18n.exists("forgottenPasswordLink")
+          ? _.upperFirst(t("forgottenPasswordLink"))
+          : _.upperFirst(signinFormTranslation.forgottenPasswordLink)}
       </MEButton>
     </>
   );
@@ -111,7 +128,7 @@ const SignInSchema = Yup.object().shape({
   password: Yup.string()
     .min(5, validationMessage.passwordMin)
     .max(10, validationMessage.passwordMax)
-    .required(validationMessage.required),
+    .required(validationMessage.passwordRequired),
 });
 
 SignInForm.propTypes = {};
