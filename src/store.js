@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { thunk } from "redux-thunk";
 
-import loggerMiddleware from "@MERedux/middleware/logger";
-import mockSlice from "@MERedux/mockSetup/mockSlice";
 import loginSlice from "@MERedux/login/loginSlice";
+import mockSlice from "@MERedux/mockSetup/mockSlice";
+import loggerMiddleware from "@MERedux/middleware/logger";
 
 export default configureStore({
   reducer: {
