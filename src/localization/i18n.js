@@ -1,14 +1,16 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import { homeScreenTranslation } from "@MELocalizationEn/home/homeScreenTranslationEn";
 import { headerTranslation } from "@MELocalizationEn/header/headerTranslationEn";
+import { signinFormTranslation } from "@MELocalizationEn/signin/signinTranslationEn";
+import { homeScreenTranslation } from "@MELocalizationEn/home/homeScreenTranslationEn";
 
 const resources = {
   en: {
     translation: {
-      ...homeScreenTranslation,
       ...headerTranslation,
+      ...signinFormTranslation,
+      ...homeScreenTranslation,
     },
   },
 };
