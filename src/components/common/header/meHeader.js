@@ -1,20 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import { motion } from "framer-motion";
 import { variants } from "@MEUtils/enums";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { resetState } from "@MERedux/login/loginSlice";
 import { headerTranslation } from "@MELocalizationEn/header/headerTranslationEn";
+
+import _ from "lodash";
 
 import logoGreen from "@MEAssets/img/logo-green.png";
 import MEButton from "@MECommonComponents/button/meButton";
 import MESignInAlert from "@MECommonComponents/header/meSignInAlert";
 import MESignUpAlert from "@MECommonComponents/header/meSignUpAlert";
-import _ from "lodash";
 
 const MEHeader = () => {
   const { t, i18n } = useTranslation();
+  const { isValidUser } = useSelector((state) => state.login);
+
+  const dispatch = useDispatch();
 
   const [isOpenSignInForm, setIsOpenSignInForm] = useState(false);
   const [isOpenSignUpForm, setIsOpenSignUpForm] = useState(false);
+
+  useEffect(() => {
+    if (isValidUser) {
+      setIsOpenSignInForm(false);
+    }
+  }, [isValidUser]);
+
+  const onSignInClick = () => {
+    setIsOpenSignInForm(true);
+    dispatch(resetState());
+  };
 
   return (
     <div className="flex justify-between items-center ">
@@ -34,7 +52,7 @@ const MEHeader = () => {
         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <MEButton
             buttonVariant={variants.DARK}
-            onClick={() => setIsOpenSignInForm(true)}
+            onClick={() => onSignInClick()}
           >
             {i18n.exists("signInButtonLabel")
               ? _.upperCase(t("signInButtonLabel"))
