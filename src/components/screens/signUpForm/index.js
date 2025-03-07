@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
+import { CircleAlertIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
 import { phoneRegExp } from "@MEUtils/regexp";
-import { CircleAlertIcon } from "lucide-react";
+import { registerUser } from "@MERedux/signUp/signUpAction";
 import { validationMessage } from "@MEUtils/validationMessage";
 import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
 
@@ -19,8 +20,9 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const SignUpForm = () => {
-  const { loader, error, isValidUser } = useSelector((state) => state.signIn);
+  const { loader, error, isValidUser } = useSelector((state) => state.signUp);
   const { t, i18n } = useTranslation();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,13 +47,9 @@ const SignUpForm = () => {
     validateOnBlur: true,
     onSubmit: (values) => {
       console.log("values", values);
-      // dispatch(validateUser(values));
+      dispatch(registerUser(values));
     },
   });
-
-  const onForgottenPasswordClick = () => {
-    navigate(routeName.dashboard, { replace: true });
-  };
 
   return (
     <>

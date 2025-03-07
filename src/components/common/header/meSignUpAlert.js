@@ -14,6 +14,8 @@ import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslatio
 
 import MEButton from "@MECommonComponents/button/meButton";
 import SignUpForm from "@MEScreenComponents/signUpForm";
+import VerificationForm from "@MEScreenComponents/signUpForm/verificationForm";
+import SignUpFormNotification from "@MEScreenComponents/signUpForm/notification";
 
 import _ from "lodash";
 
@@ -44,6 +46,13 @@ const MESignUpAlert = (props) => {
           </AlertDialogTitle>
           <AlertDialogDescription>
             {currentSignUpAlertStatus === signUpAlertState.RE && <SignUpForm />}
+            {currentSignUpAlertStatus === signUpAlertState.VE && (
+              <VerificationForm />
+            )}
+            {(currentSignUpAlertStatus === signUpAlertState.ER ||
+              currentSignUpAlertStatus === signUpAlertState.SU) && (
+              <SignUpFormNotification />
+            )}
           </AlertDialogDescription>
         </AlertDialogHeader>
       </AlertDialogContent>

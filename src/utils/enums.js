@@ -18,6 +18,8 @@ export const variantColor = {
 export const signUpAlertState = {
   RE: "registration",
   VE: "verification",
+  SU: "success",
+  ER: "error",
 }
 
 export const appEnv = {
