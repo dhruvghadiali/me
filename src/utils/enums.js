@@ -15,6 +15,11 @@ export const variantColor = {
   DARK: "#1b1b1d",
 };
 
+export const signUpAlertState = {
+  RE: "registration",
+  VE: "verification",
+}
+
 export const appEnv = {
   SIT: "sit",
   UAT: "uat",

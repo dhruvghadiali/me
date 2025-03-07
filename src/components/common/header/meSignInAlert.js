@@ -9,7 +9,7 @@ import { CircleXIcon } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import { signinFormTranslation } from "@MELocalizationEn/signin/signinTranslationEn";
+import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
 
 import _ from "lodash";
 
@@ -21,7 +21,7 @@ const MESignInAlert = (props) => {
   const { isOpenSignInForm, onCloseAlert } = props;
 
   const { t, i18n } = useTranslation();
-  const { loader } = useSelector((state) => state.login);
+  const { loader } = useSelector((state) => state.signIn);
 
   return (
     <AlertDialog open={isOpenSignInForm}>
@@ -31,7 +31,7 @@ const MESignInAlert = (props) => {
             <div className="flex justify-between items-center text-2xl">
               {i18n.exists("signinFormHeader")
                 ? _.upperCase(t("signinFormHeader"))
-                : _.upperCase(signinFormTranslation.signinFormHeader)}
+                : _.upperCase(signInFormTranslation.signinFormHeader)}
               <MEButton
                 disabled={loader}
                 size="icon"

@@ -7,9 +7,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { variants } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
 import { CircleAlertIcon } from "lucide-react";
-import { validateUser } from "@MERedux/login/loginAction";
+import { validateUser } from "@MERedux/signIn/signInAction";
 import { validationMessage } from "@MEUtils/validationMessage";
-import { signinFormTranslation } from "@MELocalizationEn/signin/signinTranslationEn";
+import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -19,7 +19,7 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const SignInForm = () => {
-  const { loader, error, isValidUser } = useSelector((state) => state.login);
+  const { loader, error, isValidUser } = useSelector((state) => state.signIn);
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ const SignInForm = () => {
           label={
             i18n.exists("usernameInputLabel")
               ? _.upperFirst(t("usernameInputLabel"))
-              : _.upperFirst(SignInForm.usernameInputLabel)
+              : _.upperFirst(signInFormTranslation.usernameInputLabel)
           }
           message={formik.errors.username}
           value={formik.values.username}
@@ -81,7 +81,7 @@ const SignInForm = () => {
           label={
             i18n.exists("passwordInputLabel")
               ? _.upperFirst(t("passwordInputLabel"))
-              : _.upperFirst(SignInForm.passwordInputLabel)
+              : _.upperFirst(signInFormTranslation.passwordInputLabel)
           }
           message={formik.errors.password}
           value={formik.values.password}
@@ -100,7 +100,7 @@ const SignInForm = () => {
           >
             {i18n.exists("signinButtonLabel")
               ? _.upperCase(t("signinButtonLabel"))
-              : _.upperCase(signinFormTranslation.signinButtonLabel)}
+              : _.upperCase(signInFormTranslation.signinButtonLabel)}
             {loader && <MELoaderIcon />}
           </MEButton>
         </div>
@@ -114,7 +114,7 @@ const SignInForm = () => {
       >
         {i18n.exists("forgottenPasswordLink")
           ? _.upperFirst(t("forgottenPasswordLink"))
-          : _.upperFirst(signinFormTranslation.forgottenPasswordLink)}
+          : _.upperFirst(signInFormTranslation.forgottenPasswordLink)}
       </MEButton>
     </>
   );

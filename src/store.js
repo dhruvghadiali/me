@@ -1,14 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { thunk } from "redux-thunk";
 
-import loginSlice from "@MERedux/login/loginSlice";
+import signInSlice from "@MERedux/signIn/signInSlice";
+import signUpSlice from "@MERedux/signUp/signUpSlice";
 import mockSlice from "@MERedux/mockSetup/mockSlice";
 import loggerMiddleware from "@MERedux/middleware/logger";
 
 export default configureStore({
   reducer: {
     mock: mockSlice,
-    login: loginSlice,
+    signIn: signInSlice,
+    signUp: signUpSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk).concat(loggerMiddleware),

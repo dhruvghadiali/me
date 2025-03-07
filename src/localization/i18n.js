@@ -2,14 +2,16 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import { headerTranslation } from "@MELocalizationEn/header/headerTranslationEn";
-import { signinFormTranslation } from "@MELocalizationEn/signin/signinTranslationEn";
+import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
 import { homeScreenTranslation } from "@MELocalizationEn/home/homeScreenTranslationEn";
 
 const resources = {
   en: {
     translation: {
       ...headerTranslation,
-      ...signinFormTranslation,
+      ...signInFormTranslation,
+      ...signUpFormTranslation,
       ...homeScreenTranslation,
     },
   },

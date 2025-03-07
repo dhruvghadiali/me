@@ -1,4 +1,4 @@
-export const signinFormTranslation = {
+export const signInFormTranslation = {
     signinFormHeader: "sign in",
     signinButtonLabel: "sign in",
     passwordInputLabel: "password",
