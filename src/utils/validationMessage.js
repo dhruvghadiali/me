@@ -1,8 +1,21 @@
 export const validationMessage = {
     "usernameMin":"Minimum 5 characters required",
-    "usernameMax":"Maximum 10 characters allowed",
+    "usernameMax":"Maximum 25 characters allowed",
     "usernameRequired": "Username is required",
     "passwordMin":"Minimum 5 characters required",
-    "passwordMax":"Maximum 10 characters allowed",
+    "passwordMax":"Maximum 50 characters allowed",
     "passwordRequired": "Password is required",
+    "firstNameMin":"Minimum 5 characters required",
+    "firstNameMax":"Maximum 25 characters allowed",
+    "firstNameRequired": "First name is required",
+    "lastNameMin":"Minimum 5 characters required",
+    "lastNameMax":"Maximum 25 characters allowed",
+    "lastNameRequired": "Last name is required",
+    "confirmPasswordMatch": "Passwords do not match",
+    "confirmPasswordRequired": "Confirm password is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Email is invalid",
+    "phoneNumberRequired": "Phone number is required",
+    "phoneNumberInvalid": "Phone number is invalid",
+    "phoneNumberLength": "Phone number should be 10 digits long"
 }

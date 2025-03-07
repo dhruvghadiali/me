@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { variants } from "@MEUtils/enums";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { resetState } from "@MERedux/login/loginSlice";
+import { resetSignInFormState } from "@MERedux/signIn/signInSlice";
+import { resetSignUpFormState } from "@MERedux/signUp/signUpSlice";
 import { headerTranslation } from "@MELocalizationEn/header/headerTranslationEn";
 
 import _ from "lodash";
@@ -16,7 +17,7 @@ import MESignUpAlert from "@MECommonComponents/header/meSignUpAlert";
 
 const MEHeader = () => {
   const { t, i18n } = useTranslation();
-  const { isValidUser } = useSelector((state) => state.login);
+  const { isValidUser } = useSelector((state) => state.signIn);
 
   const dispatch = useDispatch();
 
@@ -31,7 +32,12 @@ const MEHeader = () => {
 
   const onSignInClick = () => {
     setIsOpenSignInForm(true);
-    dispatch(resetState());
+    dispatch(resetSignInFormState());
+  };
+
+  const onSignUpClick = () => {
+    setIsOpenSignUpForm(true);
+    dispatch(resetSignUpFormState());
   };
 
   return (
@@ -42,7 +48,7 @@ const MEHeader = () => {
           <MEButton
             variant={"ghost"}
             className={`justify-start text-dark`}
-            onClick={() => setIsOpenSignUpForm(true)}
+            onClick={() => onSignUpClick()}
           >
             {i18n.exists("signUpButtonLabel")
               ? _.upperCase(t("signUpButtonLabel"))

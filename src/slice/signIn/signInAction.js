@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signinAPIRoute } from "@MEUtils/apiRoutes";
 import {
   isMockEnvironment,
   getMockAPIResponse,
@@ -9,14 +8,14 @@ import {
 import axios from "axios";
 
 export const validateUser = createAsyncThunk(
-  "login/validateUser",
+  "signIn/validateUser",
   async (_, { rejectWithValue, getState }) => {
     try {
       let response;
       if (isMockEnvironment) {
         response = await getMockAPIResponse(
           getState().mock.apiResponseStatus,
-          "login"
+          "signIn"
         );
       } else {
         /**
@@ -30,7 +29,7 @@ export const validateUser = createAsyncThunk(
       if(response && response.data && response.data.length > 0) {
         return {
           isValidUser: true,
-          error: "Valid User",
+          error: "",
         };
       }else{
         return {
