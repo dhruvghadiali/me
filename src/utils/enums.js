@@ -22,6 +22,14 @@ export const signUpFormState = {
   ER: "error",
 }
 
+export const forgottenPasswordFormState = {
+  UV: "userVerification",
+  SO: "sendOTP",
+  RP: "resetpassword",
+  SU: "success",
+  ER: "error",
+}
+
 export const appEnv = {
   SIT: "sit",
   UAT: "uat",

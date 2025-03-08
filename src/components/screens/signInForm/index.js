@@ -46,7 +46,7 @@ const SignInForm = () => {
   });
 
   const onForgottenPasswordClick = () => {
-    navigate(routeName.dashboard, { replace: true });
+    navigate(routeName.forgottenPassword, { replace: true });
   };
 
   return (
