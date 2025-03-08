@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { registerUser, verifyOtp } from "@MERedux/signUp/signUpAction";
 import { responseMessage } from "@MEUtils/responseMessage";
-import { signUpAlertState } from "@MEUtils/enums";
+import { signUpFormState } from "@MEUtils/enums";
 
 export const signUpSlice = createSlice({
   name: "signUp",
   initialState: {
     loader: false,
     error: "",
-    currentSignUpAlertStatus: signUpAlertState.RE,
+    currentSignUpFormStatus: signUpFormState.RE,
     emailOtp: "",
     phoneNumberOtp: "",
   },
   reducers: {
     resetSignUpFormState: (state, _) => {
-      state.currentSignUpAlertStatus = signUpAlertState.RE;
+      state.currentSignUpFormStatus = signUpFormState.RE;
       state.loader = false;
       state.error = "";
     },
@@ -22,8 +22,8 @@ export const signUpSlice = createSlice({
       state.emailOtp = "";
       state.phoneNumberOtp = "";
     },
-    changeSignUpAlertState: (state, action) => {
-      state.currentSignUpAlertStatus = action.payload;
+    changesignUpFormState: (state, action) => {
+      state.currentSignUpFormStatus = action.payload;
     },
     setEmailOtp: (state, action) => {
       state.emailOtp = action.payload;
@@ -41,7 +41,7 @@ export const signUpSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loader = false;
         state.error = action.payload.error;
-        state.currentSignUpAlertStatus = signUpAlertState.VE;
+        state.currentSignUpFormStatus = signUpFormState.VE;
         state.emailOtp = "";
         state.phoneNumberOtp = "";
       })
@@ -49,7 +49,7 @@ export const signUpSlice = createSlice({
         state.loader = false;
         state.error =
           action.payload.message || responseMessage.somethingWentWrong;
-        state.currentSignUpAlertStatus = signUpAlertState.RE;
+        state.currentSignUpFormStatus = signUpFormState.RE;
       })
       .addCase(verifyOtp.pending, (state, _) => {
         state.loader = true;
@@ -58,13 +58,13 @@ export const signUpSlice = createSlice({
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.loader = false;
         state.error = action.payload.error;
-        state.currentSignUpAlertStatus = signUpAlertState.SU;
+        state.currentSignUpFormStatus = signUpFormState.SU;
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.loader = false;
         state.error =
           action.payload.message || responseMessage.somethingWentWrong;
-        state.currentSignUpAlertStatus = signUpAlertState.ER;
+        state.currentSignUpFormStatus = signUpFormState.ER;
       });
   },
 });
@@ -73,7 +73,7 @@ export const {
   setEmailOtp,
   setPhoneNumberOtp,
   resetSignUpFormState,
-  changeSignUpAlertState,
+  changesignUpFormState,
   resetSignUpVerificationFormState,
 } = signUpSlice.actions;
 
