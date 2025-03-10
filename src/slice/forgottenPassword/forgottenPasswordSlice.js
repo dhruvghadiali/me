@@ -2,7 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { responseMessage } from "@MEUtils/responseMessage";
 import { forgottenPasswordFormState } from "@MEUtils/enums";
-import { checkUserInformation } from "@MERedux/forgottenPassword/forgottenPasswordAction";
+import {
+  sendOtp,
+  resetPassword,
+  checkUserInformation,
+} from "@MERedux/forgottenPassword/forgottenPasswordAction";
 
 export const forgottenPasswordSlice = createSlice({
   name: "forgottenPassword",
@@ -37,7 +41,7 @@ export const forgottenPasswordSlice = createSlice({
         state.selectedUserForSendOtp = {};
         state.users = action.payload.users;
         state.error = action.payload.error;
-        state.currentForgottenPasswordFormState = forgottenPasswordFormState.SO;
+        state.currentForgottenPasswordFormState = action.payload.currentForgottenPasswordFormState;
       })
       .addCase(checkUserInformation.rejected, (state, action) => {
         state.users = [];

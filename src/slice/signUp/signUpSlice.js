@@ -40,10 +40,10 @@ export const signUpSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loader = false;
-        state.error = action.payload.error;
-        state.currentSignUpFormStatus = signUpFormState.VE;
         state.emailOtp = "";
         state.phoneNumberOtp = "";
+        state.error = action.payload.error;
+        state.currentSignUpFormStatus = action.payload.currentSignUpFormStatus;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loader = false;
@@ -58,7 +58,7 @@ export const signUpSlice = createSlice({
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.loader = false;
         state.error = action.payload.error;
-        state.currentSignUpFormStatus = signUpFormState.SU;
+        state.currentSignUpFormStatus = action.payload.currentSignUpFormStatus;
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.loader = false;

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { forgottenPasswordFormState } from "@MEUtils/enums";
 import {
   isMockEnvironment,
   getMockAPIResponse,
@@ -27,22 +28,25 @@ export const checkUserInformation = createAsyncThunk(
         ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
       }
 
-      if(isAPIServedSuccessfully(response.status)){
+      if(isAPIServedSuccessfully(response)){
         if (response && response.data && response.data.length > 0) {
           return {
             users: response.data,
+            currentForgottenPasswordFormState:  forgottenPasswordFormState.SO,
             error: "",
           };
         } else {
           return {
             users:  [],
             error: response.message || defaultAPIErrorResponse.message,
+            currentForgottenPasswordFormState:  forgottenPasswordFormState.UV,
           };
         }
       }else{
         return {
           users:  [],
           error: response.message || defaultAPIErrorResponse.message,
+          currentForgottenPasswordFormState:  forgottenPasswordFormState.UV,
         };
       }
       

@@ -4,22 +4,27 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
 import { routeName } from "@MEUtils/routeName";
+import { forgottenPasswordFormState } from "@MEUtils/enums";
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
-import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
 
 import _ from "lodash";
 
 import MEHoc from "@MECommonComponents/hoc/meHoc";
 import SignInForm from "@MEScreenComponents/signInForm";
 import MEButton from "@MECommonComponents/button/meButton";
+import ForgottenPasswordFormSchema from "@MEScreenComponents/forgotternPasswordForm";
 
 const ForgottenPasswordScreen = () => {
   const { t, i18n } = useTranslation();
-  const { loader } = useSelector((state) => state.signIn);
+  const { loader, currentForgottenPasswordFormState } = useSelector(
+    (state) => state.forgottenPassword
+  );
 
   const navigate = useNavigate();
 
-  const onCloseSignInForm = () => navigate(routeName.root, { replace: true });
+  const onCloseForgottenPasswordForm = () =>
+    navigate(routeName.root, { replace: true });
 
   return (
     <MEHoc>
@@ -27,22 +32,33 @@ const ForgottenPasswordScreen = () => {
         <Card className="">
           <CardHeader>
             <div className="flex justify-between items-center text-2xl">
-              {i18n.exists("signinFormHeader")
-                ? _.upperCase(t("signinFormHeader"))
-                : _.upperCase(signInFormTranslation.signinFormHeader)}
+              {i18n.exists("forgottenPasswordFormHeader")
+                ? _.upperFirst(t("forgottenPasswordFormHeader"))
+                : _.upperFirst(
+                    forgottenPasswordFormTranslation.forgottenPasswordFormHeader
+                  )}
               <MEButton
                 disabled={loader}
                 size="icon"
                 variant="link"
                 className="text-dark"
-                onClick={() => onCloseSignInForm()}
+                onClick={() => onCloseForgottenPasswordForm()}
               >
                 <CircleXIcon />
               </MEButton>
             </div>
           </CardHeader>
           <CardContent>
-            <SignInForm />
+            {currentForgottenPasswordFormState ===
+              forgottenPasswordFormState.UV && <ForgottenPasswordFormSchema />}
+            {currentForgottenPasswordFormState ===
+              forgottenPasswordFormState.SO && <SignInForm />}
+            {currentForgottenPasswordFormState ===
+              forgottenPasswordFormState.RP && <SignInForm />}
+            {(currentForgottenPasswordFormState ===
+              forgottenPasswordFormState.SU ||
+              currentForgottenPasswordFormState ===
+                forgottenPasswordFormState.ER) && <SignInForm />}
           </CardContent>
         </Card>
       </div>

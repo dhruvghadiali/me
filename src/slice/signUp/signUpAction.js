@@ -1,8 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { signUpFormState } from "@MEUtils/enums";
 import {
   isMockEnvironment,
   getMockAPIResponse,
-  defaultAPIErrorResponse
+  defaultAPIErrorResponse,
+  isAPIServedSuccessfully
 } from "@MEUtils/utilityFunctions";
 
 import axios from "axios";
@@ -26,13 +28,22 @@ export const registerUser = createAsyncThunk(
         ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
       }
 
-      if(response && response.data && response.data.length > 0) {
-        return {
-          error: "",
-        };
+      if(isAPIServedSuccessfully(response)){
+        if(response && response.data && response.data.length > 0) {
+          return {
+            error: "",
+            currentSignUpFormStatus: signUpFormState.VE,
+          };
+        }else{
+          return {
+            error: response.message || defaultAPIErrorResponse.message,
+            currentSignUpFormStatus: signUpFormState.RE,
+          };
+        }
       }else{
         return {
           error: response.message || defaultAPIErrorResponse.message,
+          currentSignUpFormStatus: signUpFormState.RE,
         };
       }
     } catch (error) {
@@ -60,13 +71,22 @@ export const verifyOtp = createAsyncThunk(
         ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
       }
 
-      if(response && response.data && response.data.length > 0) {
-        return {
-          error: "",
-        };
+      if(isAPIServedSuccessfully(response)){
+        if(response && response.data && response.data.length > 0) {
+          return {
+            error: "",
+            currentSignUpFormStatus: signUpFormState.SU,
+          };
+        }else{
+          return {
+            error: response.message || defaultAPIErrorResponse.message,
+            currentSignUpFormStatus: signUpFormState.SU,
+          };
+        }
       }else{
         return {
           error: response.message || defaultAPIErrorResponse.message,
+          currentSignUpFormStatus: signUpFormState.ER,
         };
       }
     } catch (error) {

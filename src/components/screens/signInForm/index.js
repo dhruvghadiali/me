@@ -10,6 +10,7 @@ import { routeName } from "@MEUtils/routeName";
 import { validateUser } from "@MERedux/signIn/signInAction";
 import { validationMessage } from "@MEUtils/validationMessage";
 import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { resetForgottenPasswordFormState } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -46,6 +47,7 @@ const SignInForm = () => {
   });
 
   const onForgottenPasswordClick = () => {
+    dispatch(resetForgottenPasswordFormState());
     navigate(routeName.forgottenPassword, { replace: true });
   };
 
