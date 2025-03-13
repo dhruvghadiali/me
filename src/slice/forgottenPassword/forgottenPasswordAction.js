@@ -4,7 +4,7 @@ import {
   isMockEnvironment,
   getMockAPIResponse,
   defaultAPIErrorResponse,
-  isAPIServedSuccessfully
+  isAPIServedSuccessfully,
 } from "@MEUtils/utilityFunctions";
 
 import axios from "axios";
@@ -28,28 +28,27 @@ export const checkUserInformation = createAsyncThunk(
         ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
       }
 
-      if(isAPIServedSuccessfully(response)){
+      if (isAPIServedSuccessfully(response)) {
         if (response && response.data && response.data.length > 0) {
           return {
             users: response.data,
-            currentForgottenPasswordFormState:  forgottenPasswordFormState.SO,
+            currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
             error: "",
           };
         } else {
           return {
-            users:  [],
+            users: [],
             error: response.message || defaultAPIErrorResponse.message,
-            currentForgottenPasswordFormState:  forgottenPasswordFormState.UV,
+            currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
           };
         }
-      }else{
+      } else {
         return {
-          users:  [],
+          users: [],
           error: response.message || defaultAPIErrorResponse.message,
-          currentForgottenPasswordFormState:  forgottenPasswordFormState.UV,
+          currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
         };
       }
-      
     } catch (error) {
       return rejectWithValue(defaultAPIErrorResponse);
     }
@@ -75,14 +74,51 @@ export const sendOtp = createAsyncThunk(
         ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
       }
 
-      if (response && response.data && response.data.length > 0) {
+      if (isAPIServedSuccessfully(response)) {
         return {
           error: "",
+          currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
         };
       } else {
         return {
-          isValidUser: false,
           error: response.message || defaultAPIErrorResponse.message,
+          currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
+        };
+      }
+    } catch (error) {
+      return rejectWithValue(defaultAPIErrorResponse);
+    }
+  }
+);
+
+export const verifyOtp = createAsyncThunk(
+  "forgottenPassword/verifyOtp",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      let response;
+      if (isMockEnvironment) {
+        response = await getMockAPIResponse(
+          getState().mock.apiResponseStatus,
+          "verifyOtp"
+        );
+      } else {
+        /**
+         * API call part.
+         */
+        response = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+      }
+
+      if (isAPIServedSuccessfully(response)) {
+        return {
+          error: "",
+          currentForgottenPasswordFormState: forgottenPasswordFormState.RP,
+        };
+      } else {
+        return {
+          error: response.message || defaultAPIErrorResponse.message,
+          currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
         };
       }
     } catch (error) {
@@ -110,15 +146,15 @@ export const resetPassword = createAsyncThunk(
         ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
       }
 
-      if (response && response.data && response.data.length > 0) {
+      if (isAPIServedSuccessfully(response)) {
         return {
-          isValidUser: true,
           error: "",
+          currentForgottenPasswordFormState: forgottenPasswordFormState.SU,
         };
       } else {
         return {
-          isValidUser: false,
           error: response.message || defaultAPIErrorResponse.message,
+          currentForgottenPasswordFormState: forgottenPasswordFormState.ER,
         };
       }
     } catch (error) {

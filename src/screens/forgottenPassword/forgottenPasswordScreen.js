@@ -11,9 +11,12 @@ import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPas
 import _ from "lodash";
 
 import MEHoc from "@MECommonComponents/hoc/meHoc";
-import SignInForm from "@MEScreenComponents/signInForm";
 import MEButton from "@MECommonComponents/button/meButton";
-import ForgottenPasswordFormSchema from "@MEScreenComponents/forgotternPasswordForm";
+import ForgottenPasswordForm from "@MEScreenComponents/forgottenPasswordForm";
+import VerifyUser from "@MEScreenComponents/forgottenPasswordForm/verifyUser";
+import ResetPasswordForm from "@MEScreenComponents/forgottenPasswordForm/resetPasswordForm";
+import OtpVerificationForm from "@MEScreenComponents/forgottenPasswordForm/otpVerificationForm";
+import ForgottenPasswordFormNotification from "@MEScreenComponents/forgottenPasswordForm/notification";
 
 const ForgottenPasswordScreen = () => {
   const { t, i18n } = useTranslation();
@@ -28,7 +31,7 @@ const ForgottenPasswordScreen = () => {
 
   return (
     <MEHoc>
-      <div className="lg:w-1/3 md:w-1/2 w-full justify-self-center mt-10">
+      <div className="lg:w-1/3 md:w-1/2 w-full justify-self-center mt-10 mb-10">
         <Card className="">
           <CardHeader>
             <div className="flex justify-between items-center text-2xl">
@@ -50,15 +53,19 @@ const ForgottenPasswordScreen = () => {
           </CardHeader>
           <CardContent>
             {currentForgottenPasswordFormState ===
-              forgottenPasswordFormState.UV && <ForgottenPasswordFormSchema />}
+              forgottenPasswordFormState.FA && <ForgottenPasswordForm />}
             {currentForgottenPasswordFormState ===
-              forgottenPasswordFormState.SO && <SignInForm />}
+              forgottenPasswordFormState.UV && <VerifyUser />}
             {currentForgottenPasswordFormState ===
-              forgottenPasswordFormState.RP && <SignInForm />}
+              forgottenPasswordFormState.SO && <OtpVerificationForm />}
+            {currentForgottenPasswordFormState ===
+              forgottenPasswordFormState.RP && <ResetPasswordForm />}
             {(currentForgottenPasswordFormState ===
               forgottenPasswordFormState.SU ||
               currentForgottenPasswordFormState ===
-                forgottenPasswordFormState.ER) && <SignInForm />}
+                forgottenPasswordFormState.ER) && (
+              <ForgottenPasswordFormNotification />
+            )}
           </CardContent>
         </Card>
       </div>

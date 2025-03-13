@@ -23,6 +23,7 @@ export const signUpFormState = {
 }
 
 export const forgottenPasswordFormState = {
+  FA: "findAccount",
   UV: "userVerification",
   SO: "sendOTP",
   RP: "resetpassword",

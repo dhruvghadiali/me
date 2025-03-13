@@ -43,6 +43,7 @@ const ForgottenPasswordForm = () => {
           <p className="text-accent p-2 text-center">{error}</p>
         </div>
       )}
+      
       <form onSubmit={formik.handleSubmit}>
         <MEInput
           id="findAccount"
