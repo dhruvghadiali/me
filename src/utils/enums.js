@@ -15,9 +15,18 @@ export const variantColor = {
   DARK: "#1b1b1d",
 };
 
-export const signUpAlertState = {
+export const signUpFormState = {
   RE: "registration",
   VE: "verification",
+  SU: "success",
+  ER: "error",
+}
+
+export const forgottenPasswordFormState = {
+  FA: "findAccount",
+  UV: "userVerification",
+  SO: "sendOTP",
+  RP: "resetpassword",
   SU: "success",
   ER: "error",
 }

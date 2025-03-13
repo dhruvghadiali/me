@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import Lottie from "react-lottie";
 
-import { signUpAlertState } from "@MEUtils/enums";
+import { signUpFormState } from "@MEUtils/enums";
 import { Label } from "@MEShadcnComponents/label";
 import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
 
@@ -13,12 +13,12 @@ import error from "@MEAssets/lottieFiles/signUpErrorAnimation.json";
 import success from "@MEAssets/lottieFiles/signUpSuccessAnimation.json";
 
 const SignUpFormNotification = () => {
-  const { currentSignUpAlertStatus } = useSelector((state) => state.signUp);
+  const { currentSignUpFormStatus } = useSelector((state) => state.signUp);
   const { t, i18n } = useTranslation();
 
   return (
     <>
-      {currentSignUpAlertStatus === signUpAlertState.ER && (
+      {currentSignUpFormStatus === signUpFormState.ER && (
         <>
           <div className="w-full h-80 ">
             <Lottie
@@ -45,7 +45,7 @@ const SignUpFormNotification = () => {
         </>
       )}
 
-      {currentSignUpAlertStatus === signUpAlertState.SU && (
+      {currentSignUpFormStatus === signUpFormState.SU && (
         <>
           <div className="w-full h-80 ">
             <Lottie

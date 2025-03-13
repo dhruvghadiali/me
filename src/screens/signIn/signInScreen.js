@@ -1,33 +1,31 @@
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@MEShadcnComponents/alert-dialog";
-import { CircleXIcon } from "lucide-react";
 import { useSelector } from "react-redux";
+import { CircleXIcon } from "lucide-react";
+import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
+import { routeName } from "@MEUtils/routeName";
+import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
 import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
 
 import _ from "lodash";
 
+import MEHoc from "@MECommonComponents/hoc/meHoc";
 import SignInForm from "@MEScreenComponents/signInForm";
 import MEButton from "@MECommonComponents/button/meButton";
 
-
-const MESignInAlert = (props) => {
-  const { isOpenSignInForm, onCloseAlert } = props;
-
+const SignInScreen = () => {
   const { t, i18n } = useTranslation();
   const { loader } = useSelector((state) => state.signIn);
 
+  const navigate = useNavigate();
+
+  const onCloseSignInForm = () => navigate(routeName.root, { replace: true });
+
   return (
-    <AlertDialog open={isOpenSignInForm}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
+    <MEHoc>
+      <div className="lg:w-1/3 md:w-1/2 w-full justify-self-center mt-10">
+        <Card className="">
+          <CardHeader>
             <div className="flex justify-between items-center text-2xl">
               {i18n.exists("signinFormHeader")
                 ? _.upperCase(t("signinFormHeader"))
@@ -37,19 +35,21 @@ const MESignInAlert = (props) => {
                 size="icon"
                 variant="link"
                 className="text-dark"
-                onClick={() => onCloseAlert()}
+                onClick={() => onCloseSignInForm()}
               >
                 <CircleXIcon />
               </MEButton>
             </div>
-          </AlertDialogTitle>
-          <AlertDialogDescription>
+          </CardHeader>
+          <CardContent>
             <SignInForm />
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-      </AlertDialogContent>
-    </AlertDialog>
+          </CardContent>
+        </Card>
+      </div>
+    </MEHoc>
   );
 };
 
-export default MESignInAlert;
+SignInScreen.prototype = {};
+
+export default SignInScreen;

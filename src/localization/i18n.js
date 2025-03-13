@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 import { headerTranslation } from "@MELocalizationEn/header/headerTranslationEn";
 import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
 import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
+import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
 import { homeScreenTranslation } from "@MELocalizationEn/home/homeScreenTranslationEn";
 
 const resources = {
@@ -13,6 +14,7 @@ const resources = {
       ...signInFormTranslation,
       ...signUpFormTranslation,
       ...homeScreenTranslation,
+      ...forgottenPasswordFormTranslation,
     },
   },
 };

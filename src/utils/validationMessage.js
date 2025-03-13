@@ -17,5 +17,8 @@ export const validationMessage = {
     "emailInvalid": "Email is invalid",
     "phoneNumberRequired": "Phone number is required",
     "phoneNumberInvalid": "Phone number is invalid",
-    "phoneNumberLength": "Phone number should be 10 digits long"
+    "phoneNumberLength": "Phone number should be 10 digits long",
+    "findAccountMin":"Minimum 5 characters required",
+    "findAccountMax":"Maximum 25 characters allowed",
+    "findAccountRequired": "Account details is required",
 }

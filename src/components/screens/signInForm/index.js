@@ -10,6 +10,7 @@ import { routeName } from "@MEUtils/routeName";
 import { validateUser } from "@MERedux/signIn/signInAction";
 import { validationMessage } from "@MEUtils/validationMessage";
 import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { resetForgottenPasswordFormState } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -21,6 +22,7 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 const SignInForm = () => {
   const { loader, error, isValidUser } = useSelector((state) => state.signIn);
   const { t, i18n } = useTranslation();
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,7 +47,8 @@ const SignInForm = () => {
   });
 
   const onForgottenPasswordClick = () => {
-    navigate(routeName.dashboard, { replace: true });
+    dispatch(resetForgottenPasswordFormState());
+    navigate(routeName.forgottenPassword, { replace: true });
   };
 
   return (

@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
-
 import { motion } from "framer-motion";
-import { variants } from "@MEUtils/enums";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+
+import { variants } from "@MEUtils/enums";
+import { routeName } from "@MEUtils/routeName";
 import { resetSignInFormState } from "@MERedux/signIn/signInSlice";
 import { resetSignUpFormState } from "@MERedux/signUp/signUpSlice";
 import { headerTranslation } from "@MELocalizationEn/header/headerTranslationEn";
@@ -12,32 +13,21 @@ import _ from "lodash";
 
 import logoGreen from "@MEAssets/img/logo-green.png";
 import MEButton from "@MECommonComponents/button/meButton";
-import MESignInAlert from "@MECommonComponents/header/meSignInAlert";
-import MESignUpAlert from "@MECommonComponents/header/meSignUpAlert";
 
 const MEHeader = () => {
   const { t, i18n } = useTranslation();
-  const { isValidUser } = useSelector((state) => state.signIn);
 
   const dispatch = useDispatch();
-
-  const [isOpenSignInForm, setIsOpenSignInForm] = useState(false);
-  const [isOpenSignUpForm, setIsOpenSignUpForm] = useState(false);
-
-  useEffect(() => {
-    if (isValidUser) {
-      setIsOpenSignInForm(false);
-    }
-  }, [isValidUser]);
+  const navigate = useNavigate();
 
   const onSignInClick = () => {
-    setIsOpenSignInForm(true);
     dispatch(resetSignInFormState());
+    navigate(routeName.signIn);
   };
 
   const onSignUpClick = () => {
-    setIsOpenSignUpForm(true);
     dispatch(resetSignUpFormState());
+    navigate(routeName.signUp);
   };
 
   return (
@@ -65,20 +55,6 @@ const MEHeader = () => {
               : _.upperCase(headerTranslation.signInButtonLabel)}
           </MEButton>
         </motion.div>
-
-        {isOpenSignInForm && (
-          <MESignInAlert
-            isOpenSignInForm={isOpenSignInForm}
-            onCloseAlert={() => setIsOpenSignInForm(false)}
-          />
-        )}
-
-        {isOpenSignUpForm && (
-          <MESignUpAlert
-            isOpenSignUpForm={isOpenSignUpForm}
-            onCloseAlert={() => setIsOpenSignUpForm(false)}
-          />
-        )}
       </div>
     </div>
   );

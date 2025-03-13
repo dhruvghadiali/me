@@ -1,0 +1,164 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { forgottenPasswordFormState } from "@MEUtils/enums";
+import {
+  isMockEnvironment,
+  getMockAPIResponse,
+  defaultAPIErrorResponse,
+  isAPIServedSuccessfully,
+} from "@MEUtils/utilityFunctions";
+
+import axios from "axios";
+
+export const checkUserInformation = createAsyncThunk(
+  "forgottenPassword/checkUserInformation",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      let response;
+      if (isMockEnvironment) {
+        response = await getMockAPIResponse(
+          getState().mock.apiResponseStatus,
+          "checkUserInformation"
+        );
+      } else {
+        /**
+         * API call part.
+         */
+        response = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+      }
+
+      if (isAPIServedSuccessfully(response)) {
+        if (response && response.data && response.data.length > 0) {
+          return {
+            users: response.data,
+            currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
+            error: "",
+          };
+        } else {
+          return {
+            users: [],
+            error: response.message || defaultAPIErrorResponse.message,
+            currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
+          };
+        }
+      } else {
+        return {
+          users: [],
+          error: response.message || defaultAPIErrorResponse.message,
+          currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
+        };
+      }
+    } catch (error) {
+      return rejectWithValue(defaultAPIErrorResponse);
+    }
+  }
+);
+
+export const sendOtp = createAsyncThunk(
+  "forgottenPassword/sendOtp",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      let response;
+      if (isMockEnvironment) {
+        response = await getMockAPIResponse(
+          getState().mock.apiResponseStatus,
+          "sendOtp"
+        );
+      } else {
+        /**
+         * API call part.
+         */
+        response = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+      }
+
+      if (isAPIServedSuccessfully(response)) {
+        return {
+          error: "",
+          currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
+        };
+      } else {
+        return {
+          error: response.message || defaultAPIErrorResponse.message,
+          currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
+        };
+      }
+    } catch (error) {
+      return rejectWithValue(defaultAPIErrorResponse);
+    }
+  }
+);
+
+export const verifyOtp = createAsyncThunk(
+  "forgottenPassword/verifyOtp",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      let response;
+      if (isMockEnvironment) {
+        response = await getMockAPIResponse(
+          getState().mock.apiResponseStatus,
+          "verifyOtp"
+        );
+      } else {
+        /**
+         * API call part.
+         */
+        response = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+      }
+
+      if (isAPIServedSuccessfully(response)) {
+        return {
+          error: "",
+          currentForgottenPasswordFormState: forgottenPasswordFormState.RP,
+        };
+      } else {
+        return {
+          error: response.message || defaultAPIErrorResponse.message,
+          currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
+        };
+      }
+    } catch (error) {
+      return rejectWithValue(defaultAPIErrorResponse);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "forgottenPassword/resetPassword",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      let response;
+      if (isMockEnvironment) {
+        response = await getMockAPIResponse(
+          getState().mock.apiResponseStatus,
+          "resetPassword"
+        );
+      } else {
+        /**
+         * API call part.
+         */
+        response = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+      }
+
+      if (isAPIServedSuccessfully(response)) {
+        return {
+          error: "",
+          currentForgottenPasswordFormState: forgottenPasswordFormState.SU,
+        };
+      } else {
+        return {
+          error: response.message || defaultAPIErrorResponse.message,
+          currentForgottenPasswordFormState: forgottenPasswordFormState.ER,
+        };
+      }
+    } catch (error) {
+      return rejectWithValue(defaultAPIErrorResponse);
+    }
+  }
+);
