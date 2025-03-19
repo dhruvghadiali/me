@@ -1,2 +1,3 @@
 export const signinAPIRoute = "/signin";
-export const signupAPIRoute = "/signup";
+export const signUpAPIRoute = "/signup";
+export const signUpSendOTPAPIRoute = "/signup/send-otp";

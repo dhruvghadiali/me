@@ -15,6 +15,7 @@ export const validationMessage = {
     "confirmPasswordRequired": "Confirm password is required",
     "emailRequired": "Email is required",
     "emailInvalid": "Email is invalid",
+    "emailMax":"Maximum 100 characters allowed",
     "phoneNumberRequired": "Phone number is required",
     "phoneNumberInvalid": "Phone number is invalid",
     "phoneNumberLength": "Phone number should be 10 digits long",
