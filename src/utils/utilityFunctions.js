@@ -12,7 +12,8 @@ export const isUndefinedOrNull = (value) => {
   return value === undefined || value === null;
 };
 
-export const isAPIServedSuccessfully = (response) =>  response.status === 200;
+export const isAPIServedSuccessfully = (response) =>
+  response.status === 200 || response.status === 201;
 
 export const isMockEnvironment = () => {
   return process.env.NODE_ENV === appEnv.MOCK;

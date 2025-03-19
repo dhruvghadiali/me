@@ -14,7 +14,7 @@ export const checkUserInformation = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       let response;
-      if (isMockEnvironment) {
+      if (isMockEnvironment()) {
         response = await getMockAPIResponse(
           getState().mock.apiResponseStatus,
           "checkUserInformation"
@@ -60,7 +60,7 @@ export const sendOtp = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       let response;
-      if (isMockEnvironment) {
+      if (isMockEnvironment()) {
         response = await getMockAPIResponse(
           getState().mock.apiResponseStatus,
           "sendOtp"
@@ -96,7 +96,7 @@ export const verifyOtp = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       let response;
-      if (isMockEnvironment) {
+      if (isMockEnvironment()) {
         response = await getMockAPIResponse(
           getState().mock.apiResponseStatus,
           "verifyOtp"
@@ -132,7 +132,7 @@ export const resetPassword = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       let response;
-      if (isMockEnvironment) {
+      if (isMockEnvironment()) {
         response = await getMockAPIResponse(
           getState().mock.apiResponseStatus,
           "resetPassword"

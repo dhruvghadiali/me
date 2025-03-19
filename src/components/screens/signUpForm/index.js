@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { variants } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
 import { phoneRegExp } from "@MEUtils/regexp";
+import { signUpAPIPayload } from "@MEUtils/apiPayload";
 import { registerUser } from "@MERedux/signUp/signUpAction";
 import { validationMessage } from "@MEUtils/validationMessage";
 import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
@@ -47,7 +48,7 @@ const SignUpForm = () => {
     validateOnBlur: true,
     onSubmit: (values) => {
       console.log("values", values);
-      dispatch(registerUser(values));
+      dispatch(registerUser(signUpAPIPayload(values)));
     },
   });
 
@@ -218,6 +219,7 @@ const SignUpSchema = Yup.object().shape({
     .oneOf([Yup.ref("password")], validationMessage.confirmPasswordMatch)
     .required(validationMessage.confirmPasswordRequired),
   email: Yup.string()
+    .max(100, validationMessage.passwordMax)
     .email(validationMessage.emailInvalid)
     .required(validationMessage.emailRequired),
   phoneNumber: Yup.string()

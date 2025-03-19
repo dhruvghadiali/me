@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, verifyOtp } from "@MERedux/signUp/signUpAction";
+import { registerUser, verifyOtp, sendOtp } from "@MERedux/signUp/signUpAction";
 import { responseMessage } from "@MEUtils/responseMessage";
 import { signUpFormState } from "@MEUtils/enums";
 
@@ -30,7 +30,7 @@ export const signUpSlice = createSlice({
     },
     setPhoneNumberOtp: (state, action) => {
       state.phoneNumberOtp = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -39,13 +39,25 @@ export const signUpSlice = createSlice({
         state.error = "";
       })
       .addCase(registerUser.fulfilled, (state, action) => {
+        state.error = action.payload.error;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loader = false;
+        state.error =
+          action.payload.message || responseMessage.somethingWentWrong;
+        state.currentSignUpFormStatus = signUpFormState.RE;
+      })
+      .addCase(sendOtp.pending, (state, _) => {
+        state.error = "";
+      })
+      .addCase(sendOtp.fulfilled, (state, action) => {
         state.loader = false;
         state.emailOtp = "";
         state.phoneNumberOtp = "";
         state.error = action.payload.error;
         state.currentSignUpFormStatus = action.payload.currentSignUpFormStatus;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(sendOtp.rejected, (state, action) => {
         state.loader = false;
         state.error =
           action.payload.message || responseMessage.somethingWentWrong;

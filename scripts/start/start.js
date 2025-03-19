@@ -4,7 +4,7 @@
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
 process.env.REACT_APP_ENV = 'development';
-process.env.REACT_APP_API_BASE_URL = '';
+process.env.REACT_APP_API_BASE_URL = 'http://192.168.100.2:3000';
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will

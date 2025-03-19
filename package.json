@@ -102,9 +102,9 @@
   },
   "scripts": {
     "start": "node scripts/start/start.js",
-    "start-mock": "node scripts/start/mock.js",
-    "start-sit": "node scripts/start/sit.js",
-    "start-uat": "node scripts/start/uat.js",
+    "start:mock": "node scripts/start/mock.js",
+    "start:sit": "node scripts/start/sit.js",
+    "start:uat": "node scripts/start/uat.js",
     "build": "node scripts/build/build.js",
     "test": "node scripts/test/test.js",
     "storybook": "storybook dev -p 6006",
