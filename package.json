@@ -103,6 +103,7 @@
   "scripts": {
     "start": "node scripts/start/start.js",
     "start:mock": "node scripts/start/mock.js",
+    "start:dev": "node scripts/start/dev.js",
     "start:sit": "node scripts/start/sit.js",
     "start:uat": "node scripts/start/uat.js",
     "build": "node scripts/build/build.js",

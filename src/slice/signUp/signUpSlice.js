@@ -11,12 +11,16 @@ export const signUpSlice = createSlice({
     currentSignUpFormStatus: signUpFormState.RE,
     emailOtp: "",
     phoneNumberOtp: "",
+    userId: "",
+    verificationToken: "",
   },
   reducers: {
     resetSignUpFormState: (state, _) => {
       state.currentSignUpFormStatus = signUpFormState.RE;
       state.loader = false;
       state.error = "";
+      state.userId = "";
+      state.verificationToken = "";
     },
     resetSignUpVerificationFormState: (state, _) => {
       state.emailOtp = "";
@@ -37,9 +41,13 @@ export const signUpSlice = createSlice({
       .addCase(registerUser.pending, (state, _) => {
         state.loader = true;
         state.error = "";
+        state.userId = "";
+        state.verificationToken = "";
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.error = action.payload.error;
+        state.userId = action.payload.userId;
+        state.currentSignUpFormStatus = action.payload.currentSignUpFormStatus;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loader = false;
@@ -49,12 +57,14 @@ export const signUpSlice = createSlice({
       })
       .addCase(sendOtp.pending, (state, _) => {
         state.error = "";
+        state.verificationToken = "";
       })
       .addCase(sendOtp.fulfilled, (state, action) => {
         state.loader = false;
         state.emailOtp = "";
         state.phoneNumberOtp = "";
         state.error = action.payload.error;
+        state.verificationToken = action.payload.verificationToken;
         state.currentSignUpFormStatus = action.payload.currentSignUpFormStatus;
       })
       .addCase(sendOtp.rejected, (state, action) => {

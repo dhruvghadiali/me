@@ -12,3 +12,12 @@ export const signUpAPIPayload = (data) => {
 export const signUpSendOTPAPIPayload = (data) => {
   return { user_id: data && data.id ? data.id : "" };
 };
+
+export const signUpOTPVerificationAPIPaylod = (data) => {
+  return {
+    user_id : data && data.userId ? data.userId : "",
+    verification_token: data && data.verificationToken ? data.verificationToken : "",
+    email_otp: data && data.emailOtp ? Number(data.emailOtp) : "",
+    phone_otp: data && data.phoneNumberOtp ? Number(data.phoneNumberOtp) : "",
+  }
+}

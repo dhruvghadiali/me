@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { variants } from "@MEUtils/enums";
 import { Label } from "@MEShadcnComponents/label";
 import { verifyOtp } from "@MERedux/signUp/signUpAction";
+import { signUpOTPVerificationAPIPaylod } from "@MEUtils/apiPayload";
 import { setEmailOtp, setPhoneNumberOtp } from "@MERedux/signUp/signUpSlice";
 import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
 
@@ -15,14 +16,23 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import MEOtpVerification from "@MECommonComponents/otpVerification/meOtpVerification";
 
 const VerificationForm = () => {
-  const { emailOtp, phoneNumberOtp, loader, error } = useSelector(
-    (state) => state.signUp
-  );
+  const { emailOtp, phoneNumberOtp, loader, error, userId, verificationToken } =
+    useSelector((state) => state.signUp);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
-  const onSubmitClick = () => dispatch(verifyOtp());
+  const onSubmitClick = () =>
+    dispatch(
+      verifyOtp(
+        signUpOTPVerificationAPIPaylod({
+          emailOtp,
+          phoneNumberOtp,
+          userId,
+          verificationToken,
+        })
+      )
+    );
   const setEmailOtpValue = (value) => dispatch(setEmailOtp(value));
   const setPhoneNumberOtpValue = (value) => dispatch(setPhoneNumberOtp(value));
 
