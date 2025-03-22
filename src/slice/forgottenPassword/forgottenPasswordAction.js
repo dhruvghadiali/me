@@ -6,12 +6,14 @@ import {
   defaultAPIErrorResponse,
   isAPIServedSuccessfully,
 } from "@MEUtils/utilityFunctions";
+import { forgottenPasswordAPIRoute } from "@MEUtils/apiRoutes";
+import { forgottenPasswordAPIResponse } from "@MEUtils/apiResponse";
 
 import axios from "axios";
 
 export const checkUserInformation = createAsyncThunk(
   "forgottenPassword/checkUserInformation",
-  async (_, { rejectWithValue, getState }) => {
+  async (payload, { rejectWithValue, getState }) => {
     try {
       let response;
       if (isMockEnvironment()) {
@@ -20,18 +22,18 @@ export const checkUserInformation = createAsyncThunk(
           "checkUserInformation"
         );
       } else {
-        /**
-         * API call part.
-         */
-        response = await axios.get(
-          "https://jsonplaceholder.typicode.com/users"
-        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+        response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}${forgottenPasswordAPIRoute}`,
+          payload
+        );
+
+        if (response) response = response.data;
       }
 
       if (isAPIServedSuccessfully(response)) {
         if (response && response.data && response.data.length > 0) {
           return {
-            users: response.data,
+            users: forgottenPasswordAPIResponse(response.data),
             currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
             error: "",
           };
@@ -50,6 +52,14 @@ export const checkUserInformation = createAsyncThunk(
         };
       }
     } catch (error) {
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue({ message: error.response.data.message });
+      }
       return rejectWithValue(defaultAPIErrorResponse);
     }
   }

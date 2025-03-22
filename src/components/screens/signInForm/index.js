@@ -22,7 +22,7 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 const SignInForm = () => {
   const { loader, error, isValidUser } = useSelector((state) => state.signIn);
   const { t, i18n } = useTranslation();
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const SignInForm = () => {
     if (isValidUser) {
       navigate(routeName.dashboard, { replace: true });
     }
-  }, [isValidUser]);
+  }, [isValidUser, navigate]);
 
   const formik = useFormik({
     initialValues: {
@@ -40,10 +40,7 @@ const SignInForm = () => {
     validationSchema: SignInSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values) => {
-      console.log("values", values);
-      dispatch(validateUser(values));
-    },
+    onSubmit: (values) => dispatch(validateUser(values)),
   });
 
   const onForgottenPasswordClick = () => {
@@ -71,10 +68,10 @@ const SignInForm = () => {
           }
           message={formik.errors.username}
           value={formik.values.username}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
         {formik.errors.username && <div className="py-1" />}
@@ -88,17 +85,17 @@ const SignInForm = () => {
           }
           message={formik.errors.password}
           value={formik.values.password}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
 
         <div className="py-2">
           <MEButton
             type="submit"
-            meClassName="flex"
+            meclassname="flex"
             buttonVariant={variants.SUCCESS}
           >
             {i18n.exists("signinButtonLabel")

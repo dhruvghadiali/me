@@ -31,7 +31,7 @@ const SignUpForm = () => {
     if (isValidUser) {
       navigate(routeName.dashboard, { replace: true });
     }
-  }, [isValidUser]);
+  }, [isValidUser, navigate]);
 
   const formik = useFormik({
     initialValues: {
@@ -46,10 +46,7 @@ const SignUpForm = () => {
     validationSchema: SignUpSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values) => {
-      console.log("values", values);
-      dispatch(registerUser(signUpAPIPayload(values)));
-    },
+    onSubmit: (values) => dispatch(registerUser(signUpAPIPayload(values))),
   });
 
   return (
@@ -72,10 +69,10 @@ const SignUpForm = () => {
           }
           message={formik.errors.firstName}
           value={formik.values.firstName}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
         {formik.errors.firstName && <div className="py-1" />}
@@ -89,10 +86,10 @@ const SignUpForm = () => {
           }
           message={formik.errors.lastName}
           value={formik.values.lastName}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
         {formik.errors.lastName && <div className="py-1" />}
@@ -106,10 +103,10 @@ const SignUpForm = () => {
           }
           message={formik.errors.email}
           value={formik.values.email}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
         {formik.errors.email && <div className="py-1" />}
@@ -123,10 +120,10 @@ const SignUpForm = () => {
           }
           message={formik.errors.phoneNumber}
           value={formik.values.phoneNumber}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
         {formik.errors.phoneNumber && <div className="py-1" />}
@@ -140,10 +137,10 @@ const SignUpForm = () => {
           }
           message={formik.errors.username}
           value={formik.values.username}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
         {formik.errors.username && <div className="py-1" />}
@@ -157,10 +154,10 @@ const SignUpForm = () => {
           }
           message={formik.errors.password}
           value={formik.values.password}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
         {formik.errors.password && <div className="py-1" />}
@@ -174,17 +171,17 @@ const SignUpForm = () => {
           }
           message={formik.errors.confirmPassword}
           value={formik.values.confirmPassword}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
 
         <div className="py-2">
           <MEButton
             type="submit"
-            meClassName="flex"
+            meclassname="flex"
             buttonVariant={variants.SUCCESS}
           >
             {i18n.exists("signupButtonLabel")

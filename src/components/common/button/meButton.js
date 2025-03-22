@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const MEButton = ({ buttonVariant, ...props }) => {
   return (
     <Button
-      className={`${buttonClassNameByVariant(buttonVariant)} ${props.meClassName}`}
+      className={`${buttonClassNameByVariant(buttonVariant)} ${props.meclassname}`}
       {...props}
     />
   );

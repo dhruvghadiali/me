@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { validationMessage } from "@MEUtils/validationMessage";
+import { forgottenPasswordAPIPayload } from "@MEUtils/apiPayload";
 import { checkUserInformation } from "@MERedux/forgottenPassword/forgottenPasswordAction";
 import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
 
@@ -23,15 +24,13 @@ const ForgottenPasswordForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      findAccount: "",
+      accountName: "",
     },
     validationSchema: ForgottenPasswordFormSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values) => {
-      console.log("values", values);
-      dispatch(checkUserInformation(values));
-    },
+    onSubmit: (values) =>
+      dispatch(checkUserInformation(forgottenPasswordAPIPayload(values))),
   });
 
   return (
@@ -43,10 +42,10 @@ const ForgottenPasswordForm = () => {
           <p className="text-accent p-2 text-center">{error}</p>
         </div>
       )}
-      
+
       <form onSubmit={formik.handleSubmit}>
         <MEInput
-          id="findAccount"
+          id="accountName"
           type={"text"}
           label={
             i18n.exists("findAccountTextFieldLabel")
@@ -55,19 +54,19 @@ const ForgottenPasswordForm = () => {
                   forgottenPasswordFormTranslation.findAccountTextFieldLabel
                 )
           }
-          message={formik.errors.findAccount}
-          value={formik.values.findAccount}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          message={formik.errors.accountName}
+          value={formik.values.accountName}
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
 
         <div className="py-2">
           <MEButton
             type="submit"
-            meClassName="flex"
+            meclassname="flex"
             buttonVariant={variants.SUCCESS}
           >
             {i18n.exists("findAccountButtonLabel")
@@ -84,7 +83,7 @@ const ForgottenPasswordForm = () => {
 };
 
 const ForgottenPasswordFormSchema = Yup.object().shape({
-  findAccount: Yup.string()
+  accountName: Yup.string()
     .min(5, validationMessage.findAccountMin)
     .max(50, validationMessage.findAccountMax)
     .required(validationMessage.findAccountRequired),

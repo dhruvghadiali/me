@@ -12,3 +12,31 @@ export const signUpAPIPayload = (data) => {
 export const signUpSendOTPAPIPayload = (data) => {
   return { user_id: data && data.id ? data.id : "" };
 };
+
+export const signUpOTPVerificationAPIPayload = (data) => {
+  return {
+    user_id: data && data.userId ? data.userId : "",
+    verification_token:
+      data && data.verificationToken ? data.verificationToken : "",
+    email_otp: data && data.emailOtp ? Number(data.emailOtp) : "",
+    phone_otp: data && data.phoneNumberOtp ? Number(data.phoneNumberOtp) : "",
+  };
+};
+
+export const signInSendOTPAPIPayload = (data) => {
+  return { user_id: data && data.id ? data.id : "" };
+};
+
+export const signInOTPVerificationAPIPayload = (data) => {
+  return {
+    user_id: data && data.userId ? data.userId : "",
+    verification_token:
+      data && data.verificationToken ? data.verificationToken : "",
+    email_otp: data && data.emailOtp ? Number(data.emailOtp) : "",
+    phone_otp: data && data.phoneNumberOtp ? Number(data.phoneNumberOtp) : "",
+  };
+};
+
+export const forgottenPasswordAPIPayload = (data) => {
+  return { account_name: data && data.accountName ? data.accountName : "" };
+};

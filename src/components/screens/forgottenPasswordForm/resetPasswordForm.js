@@ -29,10 +29,7 @@ const ResetPasswordForm = () => {
     validationSchema: ResetPasswordFormSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values) => {
-      console.log("values", values);
-      dispatch(resetPassword(values));
-    },
+    onSubmit: (values) => dispatch(resetPassword(values)),
   });
 
   return (
@@ -52,40 +49,44 @@ const ResetPasswordForm = () => {
           label={
             i18n.exists("passwordInputLabel")
               ? _.upperFirst(t("passwordInputLabel"))
-              : _.upperFirst(forgottenPasswordFormTranslation.passwordInputLabel)
+              : _.upperFirst(
+                  forgottenPasswordFormTranslation.passwordInputLabel
+                )
           }
           message={formik.errors.password}
           value={formik.values.password}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
 
         {formik.errors.password && <div className="py-1" />}
-        
+
         <MEInput
           id="confirmPassword"
           type={"password"}
           label={
             i18n.exists("confirmPasswordInputLabel")
               ? _.upperFirst(t("confirmPasswordInputLabel"))
-              : _.upperFirst(forgottenPasswordFormTranslation.confirmPasswordInputLabel)
+              : _.upperFirst(
+                  forgottenPasswordFormTranslation.confirmPasswordInputLabel
+                )
           }
           message={formik.errors.confirmPassword}
           value={formik.values.confirmPassword}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
 
         <div className="py-2">
           <MEButton
             type="submit"
-            meClassName="flex"
+            meclassname="flex"
             buttonVariant={variants.SUCCESS}
           >
             {i18n.exists("findAccountButtonLabel")

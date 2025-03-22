@@ -5,7 +5,7 @@ export const signUpFormTranslation = {
     firstNameInputLabel: "first name",
     lastNameInputLabel: "last name",
     emailInputLabel: "email",
-    phoneNumberInputLabel: "phone number",
+    phoneNumberInputLabel: "phone number (Whatsapp)",
     passwordInputLabel: "password",
     confirmPasswordInputLabel: "confirm password",
     usernameInputLabel: "username",

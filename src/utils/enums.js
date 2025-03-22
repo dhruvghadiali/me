@@ -15,12 +15,20 @@ export const variantColor = {
   DARK: "#1b1b1d",
 };
 
+export const signInFormState = {
+  SI: "signIn",
+  ANV: "accountNotVerified",
+  AV: "accountVerification",
+  SU: "success",
+  ER: "error",
+};
+
 export const signUpFormState = {
   RE: "registration",
   VE: "verification",
   SU: "success",
   ER: "error",
-}
+};
 
 export const forgottenPasswordFormState = {
   FA: "findAccount",
@@ -29,7 +37,16 @@ export const forgottenPasswordFormState = {
   RP: "resetpassword",
   SU: "success",
   ER: "error",
-}
+};
+
+export const sidebarMenuName = {
+  HOME: "home",
+  SCHOOLS: "schools",
+  ADMISSIONS: "admissions",
+  PROFILE: "profile",
+  SETTINGS: "settings",
+  SIGNOUT: "signOut",
+};
 
 export const appEnv = {
   SIT: "sit",

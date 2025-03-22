@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Label } from "@MEShadcnComponents/label";
-import { verifyOtp } from "@MERedux/signUp/signUpAction";
-import { signUpOTPVerificationAPIPayload } from "@MEUtils/apiPayload";
-import { setEmailOtp, setPhoneNumberOtp } from "@MERedux/signUp/signUpSlice";
-import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
+import { verifyOtp } from "@MERedux/signIn/signInAction";
+import { signInOTPVerificationAPIPayload } from "@MEUtils/apiPayload";
+import { setEmailOtp, setPhoneNumberOtp } from "@MERedux/signIn/signInSlice";
+import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
 
 import _ from "lodash";
 
@@ -16,8 +16,8 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import MEOtpVerification from "@MECommonComponents/otpVerification/meOtpVerification";
 
 const VerificationForm = () => {
-  const { emailOtp, phoneNumberOtp, loader, error, userId, verificationToken } =
-    useSelector((state) => state.signUp);
+  const { emailOtp, phoneNumberOtp, loader, error, user, verificationToken } =
+    useSelector((state) => state.signIn);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
@@ -25,11 +25,11 @@ const VerificationForm = () => {
   const onSubmitClick = () =>
     dispatch(
       verifyOtp(
-        signUpOTPVerificationAPIPayload({
+        signInOTPVerificationAPIPayload({
           emailOtp,
           phoneNumberOtp,
-          userId,
           verificationToken,
+          userId: user && user.id ? user.id : "",
         })
       )
     );
@@ -48,13 +48,13 @@ const VerificationForm = () => {
       <Label className="text-dark mt-3">
         {i18n.exists("otpVerificationMessage")
           ? _.upperFirst(t("otpVerificationMessage"))
-          : _.upperFirst(signUpFormTranslation.otpVerificationMessage)}
+          : _.upperFirst(signInFormTranslation.otpVerificationMessage)}
       </Label>
 
       <Label className="text-dark flex mb-1 mt-5">
         {i18n.exists("emailOtpVerificationLabel")
           ? _.upperFirst(t("emailOtpVerificationLabel"))
-          : _.upperFirst(signUpFormTranslation.emailOtpVerificationLabel)}
+          : _.upperFirst(signInFormTranslation.emailOtpVerificationLabel)}
       </Label>
       <MEOtpVerification
         onComplete={(value) => setEmailOtpValue(value)}
@@ -64,7 +64,7 @@ const VerificationForm = () => {
       <Label className="text-dark flex mb-1 mt-5">
         {i18n.exists("phoneNumberOtpVerificationLabel")
           ? _.upperFirst(t("phoneNumberOtpVerificationLabel"))
-          : _.upperFirst(signUpFormTranslation.phoneNumberOtpVerificationLabel)}
+          : _.upperFirst(signInFormTranslation.phoneNumberOtpVerificationLabel)}
       </Label>
       <MEOtpVerification
         onComplete={(value) => setPhoneNumberOtpValue(value)}
@@ -75,7 +75,7 @@ const VerificationForm = () => {
         <Label className="text-xs text-danger">
           {i18n.exists("otpVerificationAlert")
             ? _.upperFirst(t("otpVerificationAlert"))
-            : _.upperFirst(signUpFormTranslation.otpVerificationAlert)}
+            : _.upperFirst(signInFormTranslation.otpVerificationAlert)}
         </Label>
       </div>
 
@@ -88,7 +88,7 @@ const VerificationForm = () => {
         >
           {i18n.exists("submitButtonLabel")
             ? _.upperCase(t("submitButtonLabel"))
-            : _.upperCase(signUpFormTranslation.submitButtonLabel)}
+            : _.upperCase(signInFormTranslation.submitButtonLabel)}
           {loader && <MELoaderIcon />}
         </MEButton>
       </div>
