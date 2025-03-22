@@ -25,7 +25,7 @@ const MEAuthHoc = ({ children }) => {
     }else{
       dispatch(setUserDetails(user));
     }
-  }, [navigate]);
+  }, [navigate, dispatch]);
 
   return process.env.REACT_APP_ENV === appEnv.MOCK ? (
     <MEEnvHoc>

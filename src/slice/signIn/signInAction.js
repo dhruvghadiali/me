@@ -9,7 +9,7 @@ import {
 } from "@MEUtils/apiRoutes";
 import {
   signInAPIResponse,
-  SignInSendOTPAPIResponse,
+  signInSendOTPAPIResponse,
 } from "@MEUtils/apiResponse";
 import {
   isMockEnvironment,
@@ -114,7 +114,7 @@ export const sendOtp = createAsyncThunk(
           return {
             error: "",
             currentSignInFormStatus: signInFormState.AV,
-            verificationToken: SignInSendOTPAPIResponse(response.data[0]),
+            verificationToken: signInSendOTPAPIResponse(response.data[0]),
           };
         } else {
           return {

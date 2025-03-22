@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { signUpFormState } from "@MEUtils/enums";
 import { signUpSendOTPAPIPayload } from "@MEUtils/apiPayload";
-import { SignUpSendOTPAPIResponse } from "@MEUtils/apiResponse";
+import { signUpSendOTPAPIResponse } from "@MEUtils/apiResponse";
 
 import {
   signUpAPIRoute,
@@ -135,7 +135,7 @@ export const sendOtp = createAsyncThunk(
           return {
             error: "",
             currentSignUpFormStatus: signUpFormState.VE,
-            verificationToken: SignUpSendOTPAPIResponse(response.data[0]),
+            verificationToken: signUpSendOTPAPIResponse(response.data[0]),
           };
         } else {
           return {

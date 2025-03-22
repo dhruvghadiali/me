@@ -51,8 +51,8 @@ const VerifyUser = () => {
                   <AvatarImage src={user.profile} />
                   <AvatarFallback>{user.profileName}</AvatarFallback>
                 </Avatar>
-                <div className="grid auto-rows-max grid-flow-row mr-2">
-                  <p className="truncate">{user.name}</p>
+                <div className="grid auto-rows-max grid-flow-row mr-2 py-2">
+                  <p className="truncate">{user.username}</p>
                   <div className="grid grid-cols-[20px_auto] items-center mt-2">
                     <MailIcon size={15} className="text-danger" />
                     <p className="truncate text-xs">{user.email}</p>
