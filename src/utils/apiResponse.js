@@ -13,12 +13,9 @@ export const signInAPIResponse = (data) => {
 };
 
 export const SignUpSendOTPAPIResponse = (data) => {
-  return {
-    verificationToken:
-      data && data.verification_token ? data.verification_token : "",
-  };
+  return data && data.verification_token ? data.verification_token : "";
 };
 
 export const SignInSendOTPAPIResponse = (data) => {
-  return data && data.verification_token ? data.verification_token : ""
+  return data && data.verification_token ? data.verification_token : "";
 }

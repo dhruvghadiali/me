@@ -7,15 +7,15 @@ import { routeName } from "@MEUtils/routeName";
 import MEEnvHoc from "@MECommonComponents/hoc/meEnvHoc";
 import PropTypes from "prop-types";
 
-const MEHoc = ({ children }) => {
+const MEAuthHoc = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("MEHoc User:", user);
-
-    if(user){
-       navigate(routeName.dashboard, { replace: true });
+    console.log("MEAuthHoc User:", user);
+    
+    if(!user){
+       navigate(routeName.root, { replace: true });
     }
   }, [navigate]);
 
@@ -28,8 +28,8 @@ const MEHoc = ({ children }) => {
   );
 };
 
-MEHoc.propTypes = {
+MEAuthHoc.propTypes = {
   children: PropTypes.any,
 };
 
-export default MEHoc;
+export default MEAuthHoc;

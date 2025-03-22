@@ -52,6 +52,7 @@ export const validateUser = createAsyncThunk(
               currentSignInFormStatus: signInFormState.ANV,
             };
           } else {
+            localStorage.setItem("user", JSON.stringify(user));
             return {
               error: "",
               user: user,
