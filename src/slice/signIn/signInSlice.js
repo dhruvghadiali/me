@@ -37,6 +37,15 @@ export const signInSlice = createSlice({
     setPhoneNumberOtp: (state, action) => {
       state.phoneNumberOtp = action.payload;
     },
+    setUserDetails: (state, action) => {
+      state.user = action.payload;
+    },
+    signOutUser: (state, _) => {
+      state.user = {};
+      state.isValidUser = false;
+      state.currentSignInFormStatus = signInFormState.SI;
+      localStorage.clear();
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -98,11 +107,13 @@ export const signInSlice = createSlice({
 });
 
 export const {
-  resetSignInFormState,
-  resetSignInVerificationFormState,
-  changeSignInFormState,
+  signOutUser,
   setEmailOtp,
+  setUserDetails,
   setPhoneNumberOtp,
+  resetSignInFormState,
+  changeSignInFormState,
+  resetSignInVerificationFormState,
 } = signInSlice.actions;
 
 export default signInSlice.reducer;

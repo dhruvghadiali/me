@@ -4,12 +4,19 @@ import { initReactI18next } from "react-i18next";
 import { headerTranslation } from "@MELocalizationEn/header/headerTranslationEn";
 import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
 import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
-import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
 import { homeScreenTranslation } from "@MELocalizationEn/home/homeScreenTranslationEn";
+import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
+
+import {
+  sidebarMenuLabel,
+  sidebar,
+} from "@MELocalizationEn//sidebar/sidebarTranslationEn";
 
 const resources = {
   en: {
     translation: {
+      ...sidebar,
+      ...sidebarMenuLabel,
       ...headerTranslation,
       ...signInFormTranslation,
       ...signUpFormTranslation,
