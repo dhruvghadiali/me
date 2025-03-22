@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, verifyOtp, sendOtp } from "@MERedux/signUp/signUpAction";
-import { responseMessage } from "@MEUtils/responseMessage";
+
 import { signUpFormState } from "@MEUtils/enums";
+import { responseMessage } from "@MEUtils/responseMessage";
+import { registerUser, verifyOtp, sendOtp } from "@MERedux/signUp/signUpAction";
 
 export const signUpSlice = createSlice({
   name: "signUp",
@@ -26,7 +27,7 @@ export const signUpSlice = createSlice({
       state.emailOtp = "";
       state.phoneNumberOtp = "";
     },
-    changesignUpFormState: (state, action) => {
+    changeSignUpFormState: (state, action) => {
       state.currentSignUpFormStatus = action.payload;
     },
     setEmailOtp: (state, action) => {

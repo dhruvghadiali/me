@@ -28,10 +28,7 @@ const ForgottenPasswordForm = () => {
     validationSchema: ForgottenPasswordFormSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values) => {
-      console.log("values", values);
-      dispatch(checkUserInformation(values));
-    },
+    onSubmit: (values) => dispatch(checkUserInformation(values)),
   });
 
   return (
@@ -43,7 +40,7 @@ const ForgottenPasswordForm = () => {
           <p className="text-accent p-2 text-center">{error}</p>
         </div>
       )}
-      
+
       <form onSubmit={formik.handleSubmit}>
         <MEInput
           id="findAccount"
@@ -57,17 +54,17 @@ const ForgottenPasswordForm = () => {
           }
           message={formik.errors.findAccount}
           value={formik.values.findAccount}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
-          meClassName="flex"
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
+          meclassname="flex"
           onChange={formik.handleChange}
         />
 
         <div className="py-2">
           <MEButton
             type="submit"
-            meClassName="flex"
+            meclassname="flex"
             buttonVariant={variants.SUCCESS}
           >
             {i18n.exists("findAccountButtonLabel")

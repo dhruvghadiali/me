@@ -15,6 +15,14 @@ export const variantColor = {
   DARK: "#1b1b1d",
 };
 
+export const signInFormState = {
+  SI: "signIn",
+  ANV: "accountNotVerified",
+  AV: "accountVerification",
+  SU: "success",
+  ER: "error",
+}
+
 export const signUpFormState = {
   RE: "registration",
   VE: "verification",

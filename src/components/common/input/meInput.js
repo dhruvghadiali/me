@@ -12,30 +12,30 @@ const MEInput = (props) => {
     required,
     label,
     message,
-    inputVariant,
-    labelVariant,
-    messageVariant,
+    inputvariant,
+    labelvariant,
+    messagevariant,
   } = props;
 
   return (
     <div className="space-y-2">
       <Label
-        className={`${inputMessageClassNameByVariant(labelVariant)} ${
-          props.meClassName
+        className={`${inputMessageClassNameByVariant(labelvariant)} ${
+          props.meclassname
         }`}
       >
         {label} {required && <span className="text-danger">*</span>}
       </Label>
       <div className="relative">
         <Input
-          className={`${inputClassNameByVariant(inputVariant)}`}
+          className={`${inputClassNameByVariant(inputvariant)}`}
           {...props}
         />
       </div>
       <p
         className={`mt-2 text-xs ${inputMessageClassNameByVariant(
-          messageVariant
-        )} ${props.meClassName}`}
+          messagevariant
+        )} ${props.meclassname}`}
         role="alert"
         aria-live="polite"
       >
@@ -49,9 +49,9 @@ MEInput.propTypes = {
   required: PropTypes.bool,
   label: PropTypes.string,
   message: PropTypes.string,
-  inputVariant: PropTypes.string,
-  labelVariant: PropTypes.string,
-  messageVariant: PropTypes.string,
+  inputvariant: PropTypes.string,
+  labelvariant: PropTypes.string,
+  messagevariant: PropTypes.string,
 };
 
 export default MEInput;

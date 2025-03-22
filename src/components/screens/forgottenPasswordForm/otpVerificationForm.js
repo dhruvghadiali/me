@@ -72,7 +72,7 @@ const OtpVerificationForm = () => {
 
       <div className="mt-10">
         <MEButton
-          meClassName="flex"
+          meclassname="flex"
           disabled={!(_.size(otp) === 6) || loader}
           buttonVariant={variants.SUCCESS}
           onClick={() => dispatch(verifyOtp())}

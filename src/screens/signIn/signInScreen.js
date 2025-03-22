@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
 import { routeName } from "@MEUtils/routeName";
+import { signInFormState } from "@MEUtils/enums";
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
 import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
 
@@ -12,10 +13,15 @@ import _ from "lodash";
 import MEHoc from "@MECommonComponents/hoc/meHoc";
 import SignInForm from "@MEScreenComponents/signInForm";
 import MEButton from "@MECommonComponents/button/meButton";
+import VerificationForm from "@MEScreenComponents/signInForm/verificationForm";
+import SignInFormNotification from "@MEScreenComponents/signInForm/notification";
+import SignInAccountNotVerified from "@MEScreenComponents/signInForm/accountNotVerified";
 
 const SignInScreen = () => {
   const { t, i18n } = useTranslation();
-  const { loader } = useSelector((state) => state.signIn);
+  const { loader, currentSignInFormStatus } = useSelector(
+    (state) => state.signIn
+  );
 
   const navigate = useNavigate();
 
@@ -42,7 +48,17 @@ const SignInScreen = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <SignInForm />
+            {currentSignInFormStatus === signInFormState.SI && <SignInForm />}
+            {currentSignInFormStatus === signInFormState.ANV && (
+              <SignInAccountNotVerified />
+            )}
+            {currentSignInFormStatus === signInFormState.AV && (
+              <VerificationForm />
+            )}
+            {(currentSignInFormStatus === signInFormState.ER ||
+              currentSignInFormStatus === signInFormState.SU) && (
+              <SignInFormNotification />
+            )}
           </CardContent>
         </Card>
       </div>

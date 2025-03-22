@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { signUpFormState } from "@MEUtils/enums";
 import { signUpSendOTPAPIPayload } from "@MEUtils/apiPayload";
+import { SignUpSendOTPAPIResponse } from "@MEUtils/apiResponse";
 
 import {
   signUpAPIRoute,
@@ -36,6 +37,7 @@ import axios from "axios";
  *            On Error store error message on redux store
  * Usage:
  *  - This action usage is only for signup new user.
+ *  - This action will call from signup from.
  */
 export const registerUser = createAsyncThunk(
   "signUp/registerUser",
@@ -107,6 +109,7 @@ export const registerUser = createAsyncThunk(
  *            On Error store error message on redux store.
  * Usage:
  *  - This action usage is only for request backend service to send OTP to new register user.
+ *  - This action will call from registerUser action (Success response).
  */
 export const sendOtp = createAsyncThunk(
   "signUp/sendOtp",
@@ -129,14 +132,10 @@ export const sendOtp = createAsyncThunk(
 
       if (isAPIServedSuccessfully(response)) {
         if (response && response.data && response.data.length > 0) {
-          let details = response.data[0] ? response.data[0] : {};
           return {
             error: "",
             currentSignUpFormStatus: signUpFormState.VE,
-            verificationToken:
-              details && details.verification_token
-                ? details.verification_token
-                : "",
+            verificationToken: SignUpSendOTPAPIResponse(response.data[0]),
           };
         } else {
           return {
@@ -183,6 +182,7 @@ export const sendOtp = createAsyncThunk(
  *            On Error store error message on redux store.
  * Usage:
  *  - This action usage is only for request backend service to validate email and phone number OTP for new register user.
+ *  - This action will call from signup from (OTP Verification form).
  */
 export const verifyOtp = createAsyncThunk(
   "signUp/verifyOtp",
@@ -222,6 +222,14 @@ export const verifyOtp = createAsyncThunk(
         };
       }
     } catch (error) {
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue({ message: error.response.data.message });
+      }
       return rejectWithValue(defaultAPIErrorResponse);
     }
   }
