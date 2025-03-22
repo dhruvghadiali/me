@@ -45,7 +45,7 @@ const VerifyUser = () => {
         _.map(users, (user, index) => {
           return (
             <div key={index}>
-              {index == 0 && <Separator />}
+              {index === 0 && <Separator />}
               <div className="grid grid-cols-[60px_auto_100px] items-center mb-2">
                 <Avatar>
                   <AvatarImage src={user.profile} />

@@ -31,7 +31,7 @@ const SignUpForm = () => {
     if (isValidUser) {
       navigate(routeName.dashboard, { replace: true });
     }
-  }, [isValidUser]);
+  }, [isValidUser, navigate]);
 
   const formik = useFormik({
     initialValues: {

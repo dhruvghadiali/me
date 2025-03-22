@@ -1,7 +1,9 @@
 const DashboardScreen = () => {
-  return (
-    <h1> Dashboard </h1>
-  );
+  window.onpopstate = function () {
+    window.history.go(1); // Prevent back navigation
+  };
+
+  return <h1> Dashboard </h1>;
 };
 
 export default DashboardScreen;
