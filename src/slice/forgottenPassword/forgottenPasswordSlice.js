@@ -12,19 +12,21 @@ import {
 export const forgottenPasswordSlice = createSlice({
   name: "forgottenPassword",
   initialState: {
-    loader: false,
-    error: "",
     otp: "",
+    error: "",
     users: [],
+    loader: false,
+    verificationToken: "",
     selectedUserForSendOtp: {},
     currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
   },
   reducers: {
     resetForgottenPasswordFormState: (state, _) => {
-      state.error = "";
       state.otp = "";
+      state.error = "";
       state.users = [];
       state.loader = false;
+      state.verificationToken = "";
       state.selectedUserForSendOtp = {};
       state.currentForgottenPasswordFormState = forgottenPasswordFormState.FA;
     },
@@ -38,14 +40,16 @@ export const forgottenPasswordSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(checkUserInformation.pending, (state, _) => {
-        state.users = [];
         state.otp = "";
-        state.loader = true;
         state.error = "";
+        state.verificationToken = "";
+        state.loader = true;
+        state.users = [];
         state.selectedUserForSendOtp = {};
       })
       .addCase(checkUserInformation.fulfilled, (state, action) => {
         state.otp = "";
+        state.verificationToken = "";
         state.loader = false;
         state.selectedUserForSendOtp = {};
         state.users = action.payload.users;
@@ -63,13 +67,15 @@ export const forgottenPasswordSlice = createSlice({
       })
       .addCase(sendOtp.pending, (state, _) => {
         state.otp = "";
-        state.loader = true;
         state.error = "";
+        state.verificationToken = "";
+        state.loader = true;
       })
       .addCase(sendOtp.fulfilled, (state, action) => {
         state.otp = "";
         state.loader = false;
         state.error = action.payload.error;
+        state.verificationToken = action.payload.verificationToken;
         state.currentForgottenPasswordFormState =
           action.payload.currentForgottenPasswordFormState;
       })

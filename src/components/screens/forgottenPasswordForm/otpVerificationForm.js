@@ -6,6 +6,7 @@ import { variants } from "@MEUtils/enums";
 import { Label } from "@MEShadcnComponents/label";
 import { verifyOtp } from "@MERedux/forgottenPassword/forgottenPasswordAction";
 import { setOtpValue } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
+import { forgottenPasswordOTPVerificationAPIPayload } from "@MEUtils/apiPayload";
 import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
 
 import _ from "lodash";
@@ -15,14 +16,25 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import MEOtpVerification from "@MECommonComponents/otpVerification/meOtpVerification";
 
 const OtpVerificationForm = () => {
-  const { loader, error, otp, selectedUserForSendOtp } = useSelector(
-    (state) => state.forgottenPassword
-  );
+  const { loader, error, otp, selectedUserForSendOtp, verificationToken } =
+    useSelector((state) => state.forgottenPassword);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
   const onSetOtpValue = (value) => dispatch(setOtpValue(value));
+
+  const onSubmitOTP = () => {
+    const data = {
+      otp,
+      verificationToken,
+      userId:
+        selectedUserForSendOtp && selectedUserForSendOtp.id
+          ? selectedUserForSendOtp.id
+          : "",
+    };
+    dispatch(verifyOtp(forgottenPasswordOTPVerificationAPIPayload(data)));
+  };
 
   return (
     <div>
@@ -49,7 +61,7 @@ const OtpVerificationForm = () => {
               forgottenPasswordFormTranslation.forgottenPasswordOtpVerificationStaticMessage
             )}
       </Label>
-      
+
       <Label className="text-dark flex mb-1 mt-5">
         {i18n.exists("otpTextFieldLabel")
           ? _.upperCase(t("otpTextFieldLabel"))
@@ -75,7 +87,7 @@ const OtpVerificationForm = () => {
           meclassname="flex"
           disabled={!(_.size(otp) === 6) || loader}
           buttonVariant={variants.SUCCESS}
-          onClick={() => dispatch(verifyOtp())}
+          onClick={() => onSubmitOTP()}
         >
           {i18n.exists("submitButtonLabel")
             ? _.upperCase(t("submitButtonLabel"))

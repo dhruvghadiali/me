@@ -4,6 +4,7 @@ import { MailIcon, PhoneCallIcon, CircleAlertIcon } from "lucide-react";
 
 import { variants } from "@MEUtils/enums";
 import { Separator } from "@MEShadcnComponents/separator";
+import { forgottenPasswordSendOTPAPIPayload } from "@MEUtils/apiPayload";
 import { sendOtp } from "@MERedux/forgottenPassword/forgottenPasswordAction";
 import { setSelectedUserForSendOtp } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
 import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
@@ -28,7 +29,7 @@ const VerifyUser = () => {
 
   const onSendOtpForSelectedUser = (user) => {
     dispatch(setSelectedUserForSendOtp(user));
-    dispatch(sendOtp());
+    dispatch(sendOtp(forgottenPasswordSendOTPAPIPayload(user)));
   };
 
   return (

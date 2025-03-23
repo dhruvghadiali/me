@@ -40,3 +40,16 @@ export const signInOTPVerificationAPIPayload = (data) => {
 export const forgottenPasswordAPIPayload = (data) => {
   return { account_name: data && data.accountName ? data.accountName : "" };
 };
+
+export const forgottenPasswordSendOTPAPIPayload = (data) => {
+  return { user_id: data && data.id ? data.id : "" };
+};
+
+export const forgottenPasswordOTPVerificationAPIPayload = (data) => {
+  return {
+    user_id: data && data.userId ? data.userId : "",
+    verification_token:
+      data && data.verificationToken ? data.verificationToken : "",
+    otp: data && data.otp ? Number(data.otp) : "",
+  };
+};
