@@ -1,13 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import { forgottenPasswordFormState } from "@MEUtils/enums";
+
+import {
+  forgottenPasswordAPIResponse,
+  forgottenPasswordSendOTPAPIResponse,
+} from "@MEUtils/apiResponse";
 import {
   isMockEnvironment,
   getMockAPIResponse,
   defaultAPIErrorResponse,
   isAPIServedSuccessfully,
 } from "@MEUtils/utilityFunctions";
-import { forgottenPasswordAPIRoute } from "@MEUtils/apiRoutes";
-import { forgottenPasswordAPIResponse } from "@MEUtils/apiResponse";
+import {
+  forgottenPasswordAPIRoute,
+  forgottenPasswordSendOTPAPIRoute,
+  forgottenPasswordOTPVerificationAPIRoute,
+} from "@MEUtils/apiRoutes";
 
 import axios from "axios";
 
@@ -67,7 +76,7 @@ export const checkUserInformation = createAsyncThunk(
 
 export const sendOtp = createAsyncThunk(
   "forgottenPassword/sendOtp",
-  async (_, { rejectWithValue, getState }) => {
+  async (payload, { rejectWithValue, getState }) => {
     try {
       let response;
       if (isMockEnvironment()) {
@@ -76,26 +85,46 @@ export const sendOtp = createAsyncThunk(
           "sendOtp"
         );
       } else {
-        /**
-         * API call part.
-         */
-        response = await axios.get(
-          "https://jsonplaceholder.typicode.com/users"
-        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+        response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}${forgottenPasswordSendOTPAPIRoute}`,
+          payload
+        );
+
+        if (response) response = response.data;
       }
 
       if (isAPIServedSuccessfully(response)) {
-        return {
-          error: "",
-          currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
-        };
+        if (response && response.data && response.data.length > 0) {
+          return {
+            error: "",
+            verificationToken: forgottenPasswordSendOTPAPIResponse(
+              response.data[0]
+            ),
+            currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
+          };
+        } else {
+          return {
+            verificationToken: "",
+            error: response.message || defaultAPIErrorResponse.message,
+            currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
+          };
+        }
       } else {
         return {
+          verificationToken: "",
           error: response.message || defaultAPIErrorResponse.message,
           currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
         };
       }
     } catch (error) {
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue({ message: error.response.data.message });
+      }
       return rejectWithValue(defaultAPIErrorResponse);
     }
   }
@@ -103,7 +132,7 @@ export const sendOtp = createAsyncThunk(
 
 export const verifyOtp = createAsyncThunk(
   "forgottenPassword/verifyOtp",
-  async (_, { rejectWithValue, getState }) => {
+  async (payload, { rejectWithValue, getState }) => {
     try {
       let response;
       if (isMockEnvironment()) {
@@ -112,12 +141,12 @@ export const verifyOtp = createAsyncThunk(
           "verifyOtp"
         );
       } else {
-        /**
-         * API call part.
-         */
-        response = await axios.get(
-          "https://jsonplaceholder.typicode.com/users"
-        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+        response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}${forgottenPasswordOTPVerificationAPIRoute}`,
+          payload
+        );
+
+        if (response) response = response.data;
       }
 
       if (isAPIServedSuccessfully(response)) {
@@ -132,6 +161,14 @@ export const verifyOtp = createAsyncThunk(
         };
       }
     } catch (error) {
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue({ message: error.response.data.message });
+      }
       return rejectWithValue(defaultAPIErrorResponse);
     }
   }

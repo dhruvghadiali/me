@@ -36,3 +36,7 @@ export const forgottenPasswordAPIResponse = (data) => {
     };
   });
 };
+
+export const forgottenPasswordSendOTPAPIResponse = (data) => {
+  return data && data.verification_token ? data.verification_token : "";
+};
