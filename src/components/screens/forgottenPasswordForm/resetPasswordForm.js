@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { validationMessage } from "@MEUtils/validationMessage";
+import { forgottenPasswordResetPasswordAPIPayload } from "@MEUtils/apiPayload";
 import { resetPassword } from "@MERedux/forgottenPassword/forgottenPasswordAction";
 import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
 
@@ -16,7 +17,8 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const ResetPasswordForm = () => {
-  const { loader, error } = useSelector((state) => state.forgottenPassword);
+  const { loader, error, resetPasswordToken, selectedUserForSendOtp } =
+    useSelector((state) => state.forgottenPassword);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
@@ -29,7 +31,19 @@ const ResetPasswordForm = () => {
     validationSchema: ResetPasswordFormSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values) => dispatch(resetPassword(values)),
+    onSubmit: (values) =>
+      dispatch(
+        resetPassword(
+          forgottenPasswordResetPasswordAPIPayload({
+            resetPasswordToken,
+            password: values && values.password ? values.password : "",
+            userId:
+              selectedUserForSendOtp && selectedUserForSendOtp.id
+                ? selectedUserForSendOtp.id
+                : "",
+          })
+        )
+      ),
   });
 
   return (

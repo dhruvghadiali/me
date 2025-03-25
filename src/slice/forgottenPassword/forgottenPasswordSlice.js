@@ -17,6 +17,7 @@ export const forgottenPasswordSlice = createSlice({
     users: [],
     loader: false,
     verificationToken: "",
+    resetPasswordToken: "",
     selectedUserForSendOtp: {},
     currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
   },
@@ -27,6 +28,7 @@ export const forgottenPasswordSlice = createSlice({
       state.users = [];
       state.loader = false;
       state.verificationToken = "";
+      state.resetPasswordToken = "";
       state.selectedUserForSendOtp = {};
       state.currentForgottenPasswordFormState = forgottenPasswordFormState.FA;
     },
@@ -43,6 +45,7 @@ export const forgottenPasswordSlice = createSlice({
         state.otp = "";
         state.error = "";
         state.verificationToken = "";
+        state.resetPasswordToken = "";
         state.loader = true;
         state.users = [];
         state.selectedUserForSendOtp = {};
@@ -50,6 +53,7 @@ export const forgottenPasswordSlice = createSlice({
       .addCase(checkUserInformation.fulfilled, (state, action) => {
         state.otp = "";
         state.verificationToken = "";
+        state.resetPasswordToken = "";
         state.loader = false;
         state.selectedUserForSendOtp = {};
         state.users = action.payload.users;
@@ -59,6 +63,8 @@ export const forgottenPasswordSlice = createSlice({
       })
       .addCase(checkUserInformation.rejected, (state, action) => {
         state.otp = "";
+        state.verificationToken = "";
+        state.resetPasswordToken = "";
         state.users = [];
         state.loader = false;
         state.selectedUserForSendOtp = {};
@@ -69,10 +75,12 @@ export const forgottenPasswordSlice = createSlice({
         state.otp = "";
         state.error = "";
         state.verificationToken = "";
+        state.resetPasswordToken = "";
         state.loader = true;
       })
       .addCase(sendOtp.fulfilled, (state, action) => {
         state.otp = "";
+        state.resetPasswordToken = "";
         state.loader = false;
         state.error = action.payload.error;
         state.verificationToken = action.payload.verificationToken;
@@ -81,6 +89,7 @@ export const forgottenPasswordSlice = createSlice({
       })
       .addCase(sendOtp.rejected, (state, action) => {
         state.otp = "";
+        state.resetPasswordToken = "";
         state.loader = false;
         state.error =
           action.payload.message || responseMessage.somethingWentWrong;
@@ -88,9 +97,11 @@ export const forgottenPasswordSlice = createSlice({
       .addCase(verifyOtp.pending, (state, _) => {
         state.loader = true;
         state.error = "";
+        state.resetPasswordToken = "";
       })
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.loader = false;
+        state.resetPasswordToken = action.payload.resetPasswordToken;
         state.error = action.payload.error;
         state.currentForgottenPasswordFormState =
           action.payload.currentForgottenPasswordFormState;
