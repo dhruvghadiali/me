@@ -5,6 +5,7 @@ import { forgottenPasswordFormState } from "@MEUtils/enums";
 import {
   forgottenPasswordAPIResponse,
   forgottenPasswordSendOTPAPIResponse,
+  forgottenPasswordOTPVerificationAPIResponse,
 } from "@MEUtils/apiResponse";
 import {
   isMockEnvironment,
@@ -15,6 +16,7 @@ import {
 import {
   forgottenPasswordAPIRoute,
   forgottenPasswordSendOTPAPIRoute,
+  forgottenPasswordResetPasswordAPIRoute,
   forgottenPasswordOTPVerificationAPIRoute,
 } from "@MEUtils/apiRoutes";
 
@@ -150,12 +152,24 @@ export const verifyOtp = createAsyncThunk(
       }
 
       if (isAPIServedSuccessfully(response)) {
-        return {
-          error: "",
-          currentForgottenPasswordFormState: forgottenPasswordFormState.RP,
-        };
+        if (response && response.data && response.data.length > 0) {
+          return {
+            resetPasswordToken: forgottenPasswordOTPVerificationAPIResponse(
+              response.data[0]
+            ),
+            error: "",
+            currentForgottenPasswordFormState: forgottenPasswordFormState.RP,
+          };
+        } else {
+          return {
+            resetPasswordToken: "",
+            error: response.message || defaultAPIErrorResponse.message,
+            currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
+          };
+        }
       } else {
         return {
+          resetPasswordToken: "",
           error: response.message || defaultAPIErrorResponse.message,
           currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
         };
@@ -176,7 +190,7 @@ export const verifyOtp = createAsyncThunk(
 
 export const resetPassword = createAsyncThunk(
   "forgottenPassword/resetPassword",
-  async (_, { rejectWithValue, getState }) => {
+  async (payload, { rejectWithValue, getState }) => {
     try {
       let response;
       if (isMockEnvironment()) {
@@ -185,12 +199,12 @@ export const resetPassword = createAsyncThunk(
           "resetPassword"
         );
       } else {
-        /**
-         * API call part.
-         */
-        response = await axios.get(
-          "https://jsonplaceholder.typicode.com/users"
-        ); // process.env.REACT_APP_API_BASE_URL + signinAPIRoute;
+        response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}${forgottenPasswordResetPasswordAPIRoute}`,
+          payload
+        );
+
+        if (response) response = response.data;
       }
 
       if (isAPIServedSuccessfully(response)) {
@@ -205,6 +219,14 @@ export const resetPassword = createAsyncThunk(
         };
       }
     } catch (error) {
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return rejectWithValue({ message: error.response.data.message });
+      }
       return rejectWithValue(defaultAPIErrorResponse);
     }
   }

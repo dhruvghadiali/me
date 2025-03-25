@@ -127,7 +127,7 @@ const SignInSchema = Yup.object().shape({
     .required(validationMessage.usernameRequired),
   password: Yup.string()
     .min(5, validationMessage.passwordMin)
-    .max(10, validationMessage.passwordMax)
+    .max(50, validationMessage.passwordMax)
     .required(validationMessage.passwordRequired),
 });
 

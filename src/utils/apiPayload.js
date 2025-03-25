@@ -53,3 +53,12 @@ export const forgottenPasswordOTPVerificationAPIPayload = (data) => {
     otp: data && data.otp ? Number(data.otp) : "",
   };
 };
+
+export const forgottenPasswordResetPasswordAPIPayload = (data) => {
+  return {
+    user_id: data && data.userId ? data.userId : "",
+    reset_password_token:
+      data && data.resetPasswordToken ? data.resetPasswordToken : "",
+    password: data && data.password ? data.password : "",
+  };
+};

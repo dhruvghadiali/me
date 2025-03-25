@@ -40,3 +40,7 @@ export const forgottenPasswordAPIResponse = (data) => {
 export const forgottenPasswordSendOTPAPIResponse = (data) => {
   return data && data.verification_token ? data.verification_token : "";
 };
+
+export const forgottenPasswordOTPVerificationAPIResponse = (data) => {
+  return data && data.reset_password_token ? data.reset_password_token : "";
+};

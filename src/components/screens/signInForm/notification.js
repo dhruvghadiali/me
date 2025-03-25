@@ -9,8 +9,8 @@ import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslatio
 
 import _ from "lodash";
 
-import error from "@MEAssets/lottieFiles/signUpErrorAnimation.json";
-import success from "@MEAssets/lottieFiles/signUpSuccessAnimation.json";
+import error from "@MEAssets/lottieFiles/signInErrorAnimation.json";
+import success from "@MEAssets/lottieFiles/signInSuccessAnimation.json";
 
 const SignInFormNotification = () => {
   const { currentSignInFormStatus } = useSelector((state) => state.signIn);
