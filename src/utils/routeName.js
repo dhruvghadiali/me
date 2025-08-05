@@ -4,4 +4,5 @@ export const routeName = {
     signUp: "/sign-up",
     forgottenPassword: "/forgotten-password",
     dashboard: "/dashboard",
+    school: '/school'
 }
