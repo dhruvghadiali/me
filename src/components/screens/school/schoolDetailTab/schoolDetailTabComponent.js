@@ -33,7 +33,10 @@ const SchoolDetailTabComponent = ({ tabData }) => {
             value={tab.value}
             className="rounded-lg shadow-sm"
           >
-            {tab.content}
+            <ScrollArea className="h-[calc(100vh-355px)] my-2">
+              <div className="px-5 py-3">{tab.content}</div>
+              <ScrollBar orientation="vertical" className="bg-dark " />
+            </ScrollArea>
           </TabsContent>
         ))}
     </Tabs>
