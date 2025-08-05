@@ -10,7 +10,7 @@ const SchoolDetailTabComponent = ({ tabData }) => {
   return (
     <Tabs defaultValue="tab-1">
       <ScrollArea>
-        <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none border-b bg-transparent px-0 py-1">
+        <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none border-b bg-transparent m-5">
           {tabData &&
             tabData.length > 0 &&
             tabData.map((tab, index) => (
@@ -31,7 +31,7 @@ const SchoolDetailTabComponent = ({ tabData }) => {
           <TabsContent
             key={index}
             value={tab.value}
-            className="p-4 bg-white rounded-lg shadow-sm"
+            className="rounded-lg shadow-sm"
           >
             {tab.content}
           </TabsContent>
