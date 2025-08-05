@@ -1,0 +1,43 @@
+import { ScrollArea, ScrollBar } from "@MEShadcnComponents/scroll-area";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@MEShadcnComponents/tabs";
+
+const SchoolDetailTabComponent = ({ tabData }) => {
+  return (
+    <Tabs defaultValue="tab-1">
+      <ScrollArea>
+        <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none border-b bg-transparent px-0 py-1">
+          {tabData &&
+            tabData.length > 0 &&
+            tabData.map((tab, index) => (
+              <TabsTrigger
+                key={index}
+                value={tab.value}
+                className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-dark data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+        </TabsList>
+        <ScrollBar orientation="horizontal" className="bg-accent" />
+      </ScrollArea>
+      {tabData &&
+        tabData.length > 0 &&
+        tabData.map((tab, index) => (
+          <TabsContent
+            key={index}
+            value={tab.value}
+            className="p-4 bg-white rounded-lg shadow-sm"
+          >
+            {tab.content}
+          </TabsContent>
+        ))}
+    </Tabs>
+  );
+};
+
+export default SchoolDetailTabComponent;

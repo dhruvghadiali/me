@@ -4,8 +4,9 @@ import { BrowserRouter, Routes, Route,  } from "react-router";
 import HomeScreen from "@MEScreens/home/homeScreen";
 import SignInScreen from "@MEScreens/signIn/signInScreen";
 import SignUpScreen from "@MEScreens/signUp/signUpScreen";
-import ForgottenPasswordScreen from "@MEScreens/forgottenPassword/forgottenPasswordScreen";
 import DashboardScreen from "@MEScreens/dashboard/dashboardScreen";
+import SchoolScreen from "@MEScreens/school/schoolScreen";
+import ForgottenPasswordScreen from "@MEScreens/forgottenPassword/forgottenPasswordScreen";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path={routeName.signUp} element={<SignUpScreen />} />
         <Route path={routeName.forgottenPassword} element={<ForgottenPasswordScreen />} />
         <Route path={routeName.dashboard} element={<DashboardScreen />} />
+        <Route path={routeName.school} element={<SchoolScreen />} />
       </Routes>
     </BrowserRouter>
   );
