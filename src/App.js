@@ -1,8 +1,9 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "./contexts/ThemeProvider";
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from './contexts/ThemeProvider';
-import HomePage from './pages/HomePage';
-import ThemePage from './pages/ThemePage';
+import { root, theme } from "@MEUtils/routeName";
+import HomePage from "./pages/HomePage";
+import ThemePage from "./pages/ThemePage";
 
 function App() {
   const isDevelopment = import.meta.env.DEV;
@@ -11,10 +12,8 @@ function App() {
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          {isDevelopment && (
-            <Route path="/theme" element={<ThemePage />} />
-          )}
+          <Route path={root} element={<HomePage />} />
+          {isDevelopment && <Route path={theme} element={<ThemePage />} />}
         </Routes>
       </Router>
     </ThemeProvider>

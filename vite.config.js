@@ -10,11 +10,12 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@MECommonComponents": "/src/components/common",
-      "@MEScreenComponents": "/src/components/screens",
-      "@MEShadcnComponents": "/src/components/shadcn",
-      "@MELocalizationEn": "/src/localization/en",
+      "@MEUtils": "/src/utils",
       "@MEAssets": "/src/assets",
+      "@MELocalizationEn": "/src/localization/en",
+      "@MECommonComponents": "/src/components/common",
+      "@MEShadcnComponents": "/src/components/shadcn",
+      "@MEScreenComponents": "/src/components/screens",
     },
   },
   esbuild: {

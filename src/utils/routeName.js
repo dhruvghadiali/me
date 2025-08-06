@@ -1,8 +1,7 @@
-export const routeName = {
-    root: "/",
-    signIn: "/sign-in",
-    signUp: "/sign-up",
-    forgottenPassword: "/forgotten-password",
-    dashboard: "/dashboard",
-    school: '/school'
-}
+export const root = "/";
+export const theme = "/theme";
+export const school = "/school";
+export const signIn = "/sign-in";
+export const signUp = "/sign-up";
+export const dashboard = "/dashboard";
+export const forgottenPassword = "/forgotten-password";
