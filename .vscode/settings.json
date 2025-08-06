@@ -4,6 +4,7 @@
         "labelvariant",
         "meclassname",
         "messagevariant",
-        "OTPAPI"
+        "OTPAPI",
+        "Shadcn"
     ]
 }

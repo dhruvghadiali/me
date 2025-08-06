@@ -8,6 +8,15 @@ export default defineConfig({
       include: "**/*.{jsx,tsx,js,ts}",
     }),
   ],
+  resolve: {
+    alias: {
+      "@MECommonComponents": "/src/components/common",
+      "@MEScreenComponents": "/src/components/screens",
+      "@MEShadcnComponents": "/src/components/shadcn",
+      "@MELocalizationEn": "/src/localization/en",
+      "@MEAssets": "/src/assets",
+    },
+  },
   esbuild: {
     loader: "jsx",
     include: /src\/.*\.[jt]sx?$/,
