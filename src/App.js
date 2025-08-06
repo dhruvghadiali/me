@@ -1,25 +1,23 @@
-import { routeName } from "@MEUtils/routeName";
-import { BrowserRouter, Routes, Route,  } from "react-router";
 
-import HomeScreen from "@MEScreens/home/homeScreen";
-import SignInScreen from "@MEScreens/signIn/signInScreen";
-import SignUpScreen from "@MEScreens/signUp/signUpScreen";
-import DashboardScreen from "@MEScreens/dashboard/dashboardScreen";
-import SchoolScreen from "@MEScreens/school/schoolScreen";
-import ForgottenPasswordScreen from "@MEScreens/forgottenPassword/forgottenPasswordScreen";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeProvider';
+import HomePage from './pages/HomePage';
+import ThemePage from './pages/ThemePage';
 
 function App() {
+  const isDevelopment = import.meta.env.DEV;
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={routeName.root} element={<HomeScreen />} />
-        <Route path={routeName.signIn} element={<SignInScreen />} />
-        <Route path={routeName.signUp} element={<SignUpScreen />} />
-        <Route path={routeName.forgottenPassword} element={<ForgottenPasswordScreen />} />
-        <Route path={routeName.dashboard} element={<DashboardScreen />} />
-        <Route path={routeName.school} element={<SchoolScreen />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          {isDevelopment && (
+            <Route path="/theme" element={<ThemePage />} />
+          )}
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 
