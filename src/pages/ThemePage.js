@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
-import { useTheme } from "../contexts/ThemeProvider";
+import { useTheme } from "../contexts/themeProvider";
 
 const ThemePage = () => {
   const { theme } = useTheme();

@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { useTheme } from "../contexts/ThemeProvider";
+import { useTheme } from "../contexts/themeProvider";
 
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
