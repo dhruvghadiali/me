@@ -66,7 +66,7 @@ const SchoolOrganizationComponent = () => {
           </div> */}
         </div>
 
-        <div className="border-t border-gray-200 pt-4">
+        <div className="border-t text-primary pt-4">
           <h4 className="font-semibold text-xs sm:text-sm md:text-base mb-3">
             Contact Information
           </h4>
@@ -117,35 +117,35 @@ const SchoolOrganizationComponent = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 pt-4">
+        <div className="border-t text-primary pt-4">
           <h4 className="font-semibold text-xs sm:text-sm md:text-base mb-3">
             Administrative Team
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className="bg-muted p-3 rounded-lg">
               <h5 className="font-medium text-xs sm:text-sm">
                 President
               </h5>
               <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
-              <p className="text-xs mt-1 text-gray-500">
+              <p className="text-xs mt-1 text-primary/60">
                 {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
               </p>
             </div>
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className="bg-muted p-3 rounded-lg">
               <h5 className="font-medium text-xs sm:text-sm">
                 President
               </h5>
               <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
-              <p className="text-xs mt-1 text-gray-500">
+              <p className="text-xs mt-1 text-primary/60">
                 {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
               </p>
             </div>
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className="bg-muted p-3 rounded-lg">
               <h5 className="font-medium text-xs sm:text-sm">
                 President
               </h5>
               <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
-              <p className="text-xs mt-1 text-gray-500">
+              <p className="text-xs mt-1 text-primary/60">
                 {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
               </p>
             </div>
