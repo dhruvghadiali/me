@@ -22,7 +22,6 @@ import { ScrollArea, ScrollBar } from "@MEShadcnComponents/scroll-area";
 
 const SchoolAddressComponent = () => {
   return (
-    <ScrollArea className="h-[calc(100vh-350px)]">
     <div className="space-y-4 sm:space-y-6">
       {/* Main Campus Address */}
       <Card className="border-dark/10">
@@ -353,8 +352,6 @@ const SchoolAddressComponent = () => {
         </CardContent>
       </Card>
     </div>
-    <ScrollBar orientation="vertical" className="bg-dark" />
-    </ScrollArea>
   );
 };
 

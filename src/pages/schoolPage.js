@@ -54,8 +54,8 @@ const SchoolPage = () => {
         </div>
 
         <div
-          className={`w-full lg:w-4/5 mx-2 ${
-            isFullScreen ? "" : isHideMainContent ? "block " : "hidden"
+          className={`w-full lg:w-4/5 ${
+            isFullScreen ? "" : isHideMainContent ? "block" : "hidden"
           }`}
         >
           <SchoolDetailComponent

@@ -13,46 +13,46 @@ import SchoolAcademicClassesComponent from "@MEScreenComponents/school/schoolDet
 const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
   return (
     <>
-      <div className="space-y-3 sm:space-y-4">
+      <div className="mx-5 space-y-4">
         <div className="flex items-center justify-between mr-2">
-          <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-dark">
+          <h1 className="text-xl sm:text-2xl md:text-4xl font-bold">
             Springfield High School
           </h1>
           {showCloseIcon && (
             <Button variant="ghost" onClick={() => handleCardClick()}> <XCircleIcon/> </Button>
           )}
         </div>
-        <div className="bg-gray-50 rounded-lg p-3 sm:p-4 space-y-2">
+        <div className="bg-muted border border-primary rounded-lg p-3 sm:p-4 space-y-2">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
             <div className="flex items-center gap-2">
               <span className="font-medium text-gray-600">
                 Affiliate Number:
               </span>
-              <span className="text-dark">SPH-2024-001</span>
+              <span>SPH-2024-001</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-gray-600">Established:</span>
-              <span className="text-dark">1985</span>
+              <span>1985</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-gray-600">School Type:</span>
-              <span className="text-dark">Public High School</span>
+              <span>Public High School</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-gray-600">
                 Education Board:
               </span>
-              <span className="text-dark">State Board</span>
+              <span>State Board</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
-              <span className="text-dark text-xs sm:text-sm">
+              <span className="text-xs sm:text-sm">
                 info@springfieldhigh.edu
               </span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
-              <span className="text-dark">+1 (555) 123-4567</span>
+              <span>+1 (555) 123-4567</span>
             </div>
           </div>
         </div>
