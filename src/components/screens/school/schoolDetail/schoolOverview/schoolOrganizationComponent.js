@@ -24,13 +24,13 @@ const SchoolOrganizationComponent = () => {
               </h4>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-gray-600">Name:</span>
+                  <span className="text-primary/60">Name:</span>
                   <span className="font-medium">
                     Bright Future Academy (BFA)
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-gray-600">
+                  <span className="text-primary/60">
                     Government Registration Number:
                   </span>
                   <span className="font-medium">1985</span>
@@ -46,19 +46,19 @@ const SchoolOrganizationComponent = () => {
               </h4>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-gray-600">Accredited by:</span>
+                  <span className="text-primary/60">Accredited by:</span>
                   <span className="font-medium">WASC</span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-gray-600">Member of:</span>
+                  <span className="text-primary/60">Member of:</span>
                   <span className="font-medium">NAIS</span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-gray-600">Certification:</span>
+                  <span className="text-primary/60">Certification:</span>
                   <span className="font-medium">ISO 9001:2015</span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-gray-600">Grade Levels:</span>
+                  <span className="text-primary/60">Grade Levels:</span>
                   <span className="font-medium">9-12</span>
                 </div>
               </div>
@@ -78,10 +78,10 @@ const SchoolOrganizationComponent = () => {
                   <p className="font-medium text-xs sm:text-sm">
                     Main Campus
                   </p>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-primary/60">
                     123 Green Street
                   </p>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-primary/60">
                     Springfield, IL 62704
                   </p>
                 </div>
@@ -126,7 +126,7 @@ const SchoolOrganizationComponent = () => {
               <h5 className="font-medium text-xs sm:text-sm">
                 President
               </h5>
-              <p className="text-xs text-gray-600">Dr. Sarah Johnson</p>
+              <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
               <p className="text-xs mt-1 text-gray-500">
                 {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
               </p>
@@ -135,7 +135,7 @@ const SchoolOrganizationComponent = () => {
               <h5 className="font-medium text-xs sm:text-sm">
                 President
               </h5>
-              <p className="text-xs text-gray-600">Dr. Sarah Johnson</p>
+              <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
               <p className="text-xs mt-1 text-gray-500">
                 {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
               </p>
@@ -144,7 +144,7 @@ const SchoolOrganizationComponent = () => {
               <h5 className="font-medium text-xs sm:text-sm">
                 President
               </h5>
-              <p className="text-xs text-gray-600">Dr. Sarah Johnson</p>
+              <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
               <p className="text-xs mt-1 text-gray-500">
                 {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
               </p>

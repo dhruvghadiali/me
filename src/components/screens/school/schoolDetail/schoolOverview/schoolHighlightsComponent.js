@@ -21,7 +21,7 @@ const SchoolHighlightsComponent = () => {
             <h4 className="font-semibold text-xs sm:text-sm md:text-base">
               Academic Excellence
             </h4>
-            <ul className="text-xs sm:text-sm text-gray-700 space-y-1">
+            <ul className="text-xs sm:text-sm text-primary/70 space-y-1">
               <li className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                 <p className="w-fit line-clamp-3">Advanced Placement (AP)</p>
@@ -44,7 +44,7 @@ const SchoolHighlightsComponent = () => {
             <h4 className="font-semibold text-xs sm:text-sm md:text-base">
               Student Support
             </h4>
-            <ul className="text-xs sm:text-sm text-gray-700 space-y-1">
+            <ul className="text-xs sm:text-sm text-primary/70 space-y-1">
               <li className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                 <p className="w-fit line-clamp-3">Academic Counseling Services</p>

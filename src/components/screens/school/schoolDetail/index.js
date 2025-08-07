@@ -25,33 +25,33 @@ const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
         <div className="bg-muted border border-primary rounded-lg p-3 sm:p-4 space-y-2">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-600">
+              <span className="font-medium text-primary/75">
                 Affiliate Number:
               </span>
               <span>SPH-2024-001</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-600">Established:</span>
+              <span className="font-medium text-primary/75">Established:</span>
               <span>1985</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-600">School Type:</span>
+              <span className="font-medium text-primary/75">School Type:</span>
               <span>Public High School</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-600">
+              <span className="font-medium text-primary/75">
                 Education Board:
               </span>
               <span>State Board</span>
             </div>
             <div className="flex items-center gap-2">
-              <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
+              <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-primary/75" />
               <span className="text-xs sm:text-sm">
                 info@springfieldhigh.edu
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
+              <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-primary/75" />
               <span>+1 (555) 123-4567</span>
             </div>
           </div>

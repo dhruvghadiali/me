@@ -17,14 +17,14 @@ const SchoolDescriptionComponent = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 sm:space-y-4">
-        <p className="text-gray-700 leading-relaxed text-xs sm:text-sm md:text-base transition-colors duration-300 hover:text-gray-900">
+        <p className="text-primary/75 leading-relaxed text-xs sm:text-sm md:text-base transition-colors duration-300 hover:text-primary/90">
           Springfield High School is a premier educational institution
           established in 1985, committed to providing excellence in education
           and fostering holistic development of students. With state-of-the-art
           facilities and experienced faculty, we prepare students for success in
           their academic and professional endeavors.
         </p>
-        <p className="text-gray-700 leading-relaxed text-xs sm:text-sm md:text-base transition-colors duration-300 hover:text-gray-900">
+        <p className="text-primary/75 leading-relaxed text-xs sm:text-sm md:text-base transition-colors duration-300 hover:text-primary/90">
           Our mission is to create a nurturing environment where every student
           can discover their potential, develop critical thinking skills, and
           become responsible global citizens. We believe in the power of
