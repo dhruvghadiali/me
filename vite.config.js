@@ -16,6 +16,7 @@ export default defineConfig({
       "@MECommonComponents": "/src/components/common",
       "@MEShadcnComponents": "/src/components/shadcn",
       "@MEScreenComponents": "/src/components/screens",
+      "@MEPageRoutes": "/src/utils/pageRoutes/index.js",
     },
   },
   esbuild: {

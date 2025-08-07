@@ -11,6 +11,9 @@
             "@MECommonComponents/*": [
                 "./src/components/common/*"
             ],
+            "@MEPageRoutes": [
+                "./src/utils/pageRoutes/index.js"
+            ],
             "@MEShadcnComponents/*": [
                 "./src/components/ui/*"
             ],

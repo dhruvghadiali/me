@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/ThemeProvider";
 
-import { root, theme } from "@MEUtils/routeName";
+import { root, theme } from "@MEPageRoutes";
 import HomePage from "./pages/HomePage";
 import ThemePage from "./pages/ThemePage";
 
