@@ -9,10 +9,10 @@ import {
 
 const SchoolDescriptionComponent = () => {
   return (
-    <Card className="border border-dark mb-5 shadow-lg shadow-dark/10 hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.00] cursor-pointer">
+    <Card className="border border-primary mb-5 shadow-lg shadow-primary/10 hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.00] cursor-pointer">
       <CardHeader className="pb-2 sm:pb-3">
-        <CardTitle className="text-base sm:text-lg md:text-xl text-dark flex items-center gap-2 transition-colors duration-300 hover:text-dark/80">
-          <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-dark transition-transform duration-300 hover:scale-110" />
+        <CardTitle className="text-base sm:text-lg md:text-xl flex items-center gap-2 transition-colors duration-300 hover:text-primary/80">
+          <BookOpen className="h-4 w-4 sm:h-5 sm:w-5  transition-transform duration-300 hover:scale-110" />
           About Our School
         </CardTitle>
       </CardHeader>

@@ -1,13 +1,14 @@
 import { Mail, Phone, XCircleIcon } from "lucide-react";
 
-import SchoolDetailTabComponent from "@MEScreenComponents/school/schoolDetailTab/schoolDetailTabComponent";
-import SchoolOverviewComponent from "@MEScreenComponents/school/schoolDetail/schoolOverview/schoolOverviewComponent";
-import SchoolAddressComponent from "@MEScreenComponents/school/schoolDetail/schoolAddress/schoolAddressComponent";
-import SchoolAcademicClassesComponent from "@MEScreenComponents/school/schoolDetail/schoolAcademicClasses/schoolAcademicClassesComponent";
-import SchoolFacilitiesComponent from "@MEScreenComponents/school/schoolDetail/schoolFacilities/schoolFacilitiesComponent";
-import SchoolFeesComponent from "@MEScreenComponents/school/schoolDetail/schoolFees/schoolFeesComponent";
-import SchoolAdmissionComponent from "@MEScreenComponents/school/schoolDetail/schoolAdmission/schoolAdmissionComponent";
 import { Button } from "@MEShadcnComponents/button";
+
+import SchoolFeesComponent from "@MEScreenComponents/school/schoolDetail/schoolFees/schoolFeesComponent";
+import SchoolDetailTabComponent from "@MEScreenComponents/school/schoolDetailTab/schoolDetailTabComponent";
+import SchoolAddressComponent from "@MEScreenComponents/school/schoolDetail/schoolAddress";
+import SchoolOverviewComponent from "@MEScreenComponents/school/schoolDetail/schoolOverview";
+import SchoolAdmissionComponent from "@MEScreenComponents/school/schoolDetail/schoolAdmission/schoolAdmissionComponent";
+import SchoolFacilitiesComponent from "@MEScreenComponents/school/schoolDetail/schoolFacilities/schoolFacilitiesComponent";
+import SchoolAcademicClassesComponent from "@MEScreenComponents/school/schoolDetail/schoolAcademicClasses/schoolAcademicClassesComponent";
 
 const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
   return (

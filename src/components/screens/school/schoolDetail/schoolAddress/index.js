@@ -5,7 +5,6 @@ import {
   Car, 
   Bus, 
   Bike,
-  Walking,
   Phone,
   Mail,
   Building,

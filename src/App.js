@@ -5,6 +5,7 @@ import {
   theme,
   signIn,
   signUp,
+  school,
   dashboard,
   forgottenPassword,
 } from "@MEPageRoutes";
@@ -12,6 +13,7 @@ import { ThemeProvider } from "@MEContexts/themeProvider";
 
 import HomePage from "@MEPages/homePage";
 import ThemePage from "@MEPages/ThemePage";
+import SchoolPage from "@MEPages/schoolPage";
 import NotFoundPage from "@MEPages/NotFoundPage";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";
 import AuthChecker from "@MECommonComponents//hoc/authChecker";
@@ -30,6 +32,14 @@ function App() {
               element={
                 <PublicRoute>
                   <HomePage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path={school}
+              element={
+                <PublicRoute>
+                  <SchoolPage />
                 </PublicRoute>
               }
             />

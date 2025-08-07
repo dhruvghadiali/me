@@ -48,8 +48,7 @@ const SchoolListComponent = ({ handleCardClick }) => {
         ))}
         <ScrollBar
           orientation="vertical"
-          className="bg-dark"
-          thumbClassName="bg-blue-500 hover:bg-blue-600"
+          className="bg-primary"
         />
       </ScrollArea>
     </div>

@@ -35,7 +35,7 @@ const SchoolDetailTabComponent = ({ tabData }) => {
           >
             <ScrollArea className="h-[calc(100vh-355px)] my-2">
               <div className="px-5 py-3">{tab.content}</div>
-              <ScrollBar orientation="vertical" className="bg-dark " />
+              <ScrollBar orientation="vertical" className="bg-primary " />
             </ScrollArea>
           </TabsContent>
         ))}
