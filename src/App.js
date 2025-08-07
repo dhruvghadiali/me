@@ -10,7 +10,7 @@ import {
 } from "@MEPageRoutes";
 import { ThemeProvider } from "@MEContexts/ThemeProvider";
 
-import HomePage from "@MEPages/HomePage";
+import HomePage from "@MEPages/homePage";
 import ThemePage from "@MEPages/ThemePage";
 import NotFoundPage from "@MEPages/NotFoundPage";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";

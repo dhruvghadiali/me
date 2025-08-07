@@ -7,7 +7,7 @@ import { variants } from "@MEUtils/enums";
 import { validationMessage } from "@MEUtils/validationMessage";
 import { forgottenPasswordAPIPayload } from "@MEUtils/apiPayload";
 import { checkUserInformation } from "@MERedux/forgottenPassword/forgottenPasswordAction";
-import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
+import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
 
 import _ from "lodash";
 import * as Yup from "yup";

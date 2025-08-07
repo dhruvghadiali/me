@@ -7,7 +7,7 @@ import { Separator } from "@MEShadcnComponents/separator";
 import { forgottenPasswordSendOTPAPIPayload } from "@MEUtils/apiPayload";
 import { sendOtp } from "@MERedux/forgottenPassword/forgottenPasswordAction";
 import { setSelectedUserForSendOtp } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
-import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
+import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
 import {
   Avatar,
   AvatarFallback,

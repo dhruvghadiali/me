@@ -9,7 +9,7 @@ import { variants } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
 import { validateUser } from "@MERedux/signIn/signInAction";
 import { validationMessage } from "@MEUtils/validationMessage";
-import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { signInFormTranslation } from "@MELocalization/signIn/signInTranslationEn";
 import { resetForgottenPasswordFormState } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
 
 import _ from "lodash";

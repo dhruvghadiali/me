@@ -5,7 +5,7 @@ import Lottie from "react-lottie";
 
 import { signInFormState } from "@MEUtils/enums";
 import { Label } from "@MEShadcnComponents/label";
-import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { signInFormTranslation } from "@MELocalization/signIn/signInTranslationEn";
 
 import _ from "lodash";
 

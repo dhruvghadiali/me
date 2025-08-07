@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { routeName } from "@MEUtils/routeName";
 import { forgottenPasswordFormState } from "@MEUtils/enums";
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
-import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
+import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
 
 import _ from "lodash";
 

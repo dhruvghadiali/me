@@ -7,7 +7,7 @@ import { Label } from "@MEShadcnComponents/label";
 import { verifyOtp } from "@MERedux/forgottenPassword/forgottenPasswordAction";
 import { setOtpValue } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
 import { forgottenPasswordOTPVerificationAPIPayload } from "@MEUtils/apiPayload";
-import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPassword/forgottenPasswordTranslationEn";
+import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
 
 import _ from "lodash";
 

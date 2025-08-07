@@ -5,7 +5,7 @@ import { CircleAlertIcon, AlertCircle } from "lucide-react";
 import { variants } from "@MEUtils/enums";
 import { sendOtp } from "@MERedux/signIn/signInAction";
 import { signInSendOTPAPIPayload } from "@MEUtils/apiPayload";
-import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { signInFormTranslation } from "@MELocalization/signIn/signInTranslationEn";
 
 import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";

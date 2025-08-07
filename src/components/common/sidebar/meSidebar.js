@@ -26,7 +26,7 @@ import {
 import {
   sidebarMenuLabel,
   sidebar,
-} from "@MELocalizationEn/sidebar/sidebarTranslationEn";
+} from "@MELocalization/sidebar/sidebarTranslationEn";
 
 import MEButton from "@MECommonComponents/button/meButton";
 import logoGreen from "@MEAssets/img/logo-green.png";

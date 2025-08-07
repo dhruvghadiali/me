@@ -11,7 +11,7 @@ import { phoneRegExp } from "@MEUtils/regexp";
 import { signUpAPIPayload } from "@MEUtils/apiPayload";
 import { registerUser } from "@MERedux/signUp/signUpAction";
 import { validationMessage } from "@MEUtils/validationMessage";
-import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
+import { signUpFormTranslation } from "@MELocalization/signUp/signUpTranslationEn";
 
 import _ from "lodash";
 import * as Yup from "yup";

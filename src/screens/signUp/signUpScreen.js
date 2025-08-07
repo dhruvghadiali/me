@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { routeName } from "@MEUtils/routeName";
 import { signUpFormState } from "@MEUtils/enums";
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
-import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
+import { signUpFormTranslation } from "@MELocalization/signUp/signUpTranslationEn";
 
 import _ from "lodash";
 

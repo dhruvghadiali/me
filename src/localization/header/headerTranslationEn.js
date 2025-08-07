@@ -1,4 +1,4 @@
-export const headerTranslation = {
-    signInButtonLabel: "sign in",
-    signUpButtonLabel: "sign up",
-  };
+const signInButtonLabel = "sign in";
+const signUpButtonLabel = "sign up";
+
+export { signInButtonLabel, signUpButtonLabel };

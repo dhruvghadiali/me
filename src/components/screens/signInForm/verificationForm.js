@@ -7,7 +7,7 @@ import { Label } from "@MEShadcnComponents/label";
 import { verifyOtp } from "@MERedux/signIn/signInAction";
 import { signInOTPVerificationAPIPayload } from "@MEUtils/apiPayload";
 import { setEmailOtp, setPhoneNumberOtp } from "@MERedux/signIn/signInSlice";
-import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { signInFormTranslation } from "@MELocalization/signIn/signInTranslationEn";
 
 import _ from "lodash";
 

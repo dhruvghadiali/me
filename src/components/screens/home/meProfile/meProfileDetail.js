@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { variants } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
-import { homeScreenTranslation } from "@MELocalizationEn/home/homeScreenTranslationEn";
+import { homeScreenTranslation } from "@MELocalization/home/homeScreenTranslationEn";
 
 import _ from "lodash";
 

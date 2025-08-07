@@ -38,7 +38,7 @@
             "@MEContexts/*": [
                 "./src/contexts/*"
             ],
-            "@MELocalizationEn/*": [
+            "@MELocalization/*": [
                 "./src/localization/*"
             ],
             "@MEShadcnComponents/*": [

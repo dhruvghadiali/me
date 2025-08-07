@@ -5,7 +5,7 @@ import Lottie from "react-lottie";
 
 import { signUpFormState } from "@MEUtils/enums";
 import { Label } from "@MEShadcnComponents/label";
-import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslationEn";
+import { signUpFormTranslation } from "@MELocalization/signUp/signUpTranslationEn";
 
 import _ from "lodash";
 
