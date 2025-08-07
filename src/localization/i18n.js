@@ -3,7 +3,6 @@ import { initReactI18next } from "react-i18next";
 
 import { signInFormTranslation } from "@MELocalization/signIn/signInTranslationEn";
 import { signUpFormTranslation } from "@MELocalization/signUp/signUpTranslationEn";
-import { homeScreenTranslation } from "@MELocalization/home/homeScreenTranslationEn";
 import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
 
 import {
@@ -22,7 +21,6 @@ const resources = {
       ...sidebarMenuLabel,
       ...signInFormTranslation,
       ...signUpFormTranslation,
-      ...homeScreenTranslation,
       ...forgottenPasswordFormTranslation,
     },
   },

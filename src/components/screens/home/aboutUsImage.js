@@ -1,7 +1,8 @@
-import AppInfoImg from "@MEAssets/img/01.png";
 import { motion } from "framer-motion";
 
-const HomeScreenMeProfileImage = () => {
+import AppInfoImg from "@MEAssets/img/01.png";
+
+const AboutUsImageComponent = () => {
   return (
     <motion.div
       className="w-full md:w-1/3 flex justify-center mb-6 md:mb-0 "
@@ -18,4 +19,4 @@ const HomeScreenMeProfileImage = () => {
   );
 };
 
-export default HomeScreenMeProfileImage;
+export default AboutUsImageComponent;

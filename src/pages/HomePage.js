@@ -1,11 +1,11 @@
-import HomeScreenMeProfileImage from "../components/screens/home/meProfile/meProfileImage";
+import HomeScreenComponent from "@MEScreenComponents/home";
 import MEHeader from "@MECommonComponents/header/meHeader";
 
 const HomePage = () => {
   return (
     <>
       <MEHeader />
-      <HomeScreenMeProfileImage />
+      <HomeScreenComponent />
     </>
   );
 };
