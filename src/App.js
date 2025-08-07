@@ -11,7 +11,7 @@ import {
 } from "@MEPageRoutes";
 import { ThemeProvider } from "@MEContexts/themeProvider";
 
-import HomePage from "@MEPages/homePage";
+import HomePage from "@MEPages/homePage1";
 import ThemePage from "@MEPages/ThemePage";
 import SchoolPage from "@MEPages/schoolPage";
 import NotFoundPage from "@MEPages/NotFoundPage";
