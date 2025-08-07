@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { thunk } from "redux-thunk";
 
 import mockSlice from "@MERedux/mockSetup/mockSlice";
 import signInSlice from "@MERedux/signIn/signInSlice";
@@ -15,5 +14,5 @@ export default configureStore({
     forgottenPassword: forgottenPasswordSlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(thunk).concat(loggerMiddleware),
+    getDefaultMiddleware().concat(loggerMiddleware),
 });

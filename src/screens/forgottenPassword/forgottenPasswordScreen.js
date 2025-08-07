@@ -10,7 +10,6 @@ import { forgottenPasswordFormTranslation } from "@MELocalizationEn/forgottenPas
 
 import _ from "lodash";
 
-import MEHoc from "@MECommonComponents/hoc/meHoc";
 import MEButton from "@MECommonComponents/button/meButton";
 import ForgottenPasswordForm from "@MEScreenComponents/forgottenPasswordForm";
 import VerifyUser from "@MEScreenComponents/forgottenPasswordForm/verifyUser";
@@ -30,7 +29,6 @@ const ForgottenPasswordScreen = () => {
     navigate(routeName.root, { replace: true });
 
   return (
-    <MEHoc>
       <div className="lg:w-1/3 md:w-1/2 w-full justify-self-center mt-10 mb-10">
         <Card className="">
           <CardHeader>
@@ -69,7 +67,6 @@ const ForgottenPasswordScreen = () => {
           </CardContent>
         </Card>
       </div>
-    </MEHoc>
   );
 };
 

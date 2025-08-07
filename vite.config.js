@@ -10,8 +10,11 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      "@": "/src",
+      "@MERedux": "/src/slice",
       "@MEUtils": "/src/utils",
       "@MEAssets": "/src/assets",
+      "@MEHelpers": "/src/helpers",
       "@MELocalizationEn": "/src/localization/en",
       "@MECommonComponents": "/src/components/common",
       "@MEShadcnComponents": "/src/components/shadcn",

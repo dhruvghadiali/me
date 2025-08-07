@@ -40,6 +40,15 @@ export const signInSlice = createSlice({
     setUserDetails: (state, action) => {
       state.user = action.payload;
     },
+    setLogin: (state, action) => {
+      state.user = action.payload.userData;
+      state.isValidUser = action.payload.isValidUser;
+      if (action.payload.token) {
+        // Store token if provided
+        localStorage.setItem('authToken', action.payload.token);
+        localStorage.setItem('userData', JSON.stringify(action.payload.userData));
+      }
+    },
     signOutUser: (state, _) => {
       state.user = {};
       state.isValidUser = false;
@@ -107,6 +116,7 @@ export const signInSlice = createSlice({
 });
 
 export const {
+  setLogin,
   signOutUser,
   setEmailOtp,
   setUserDetails,

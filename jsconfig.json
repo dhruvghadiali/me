@@ -5,6 +5,9 @@
             "@/*": [
                 "./src/*"
             ],
+            "@MEHelpers/*": [
+                "./src/helpers/*"
+            ],
             "@MEScreenComponents/*": [
                 "./src/components/screens/*"
             ],

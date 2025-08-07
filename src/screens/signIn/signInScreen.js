@@ -10,7 +10,6 @@ import { signInFormTranslation } from "@MELocalizationEn/signIn/signInTranslatio
 
 import _ from "lodash";
 
-import MEHoc from "@MECommonComponents/hoc/meHoc";
 import SignInForm from "@MEScreenComponents/signInForm";
 import MEButton from "@MECommonComponents/button/meButton";
 import VerificationForm from "@MEScreenComponents/signInForm/verificationForm";
@@ -28,7 +27,6 @@ const SignInScreen = () => {
   const onCloseSignInForm = () => navigate(routeName.root, { replace: true });
 
   return (
-    <MEHoc>
       <div className="lg:w-1/3 md:w-1/2 w-full justify-self-center mt-10">
         <Card className="">
           <CardHeader>
@@ -62,7 +60,6 @@ const SignInScreen = () => {
           </CardContent>
         </Card>
       </div>
-    </MEHoc>
   );
 };
 

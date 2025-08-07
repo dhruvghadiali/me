@@ -10,7 +10,6 @@ import { signUpFormTranslation } from "@MELocalizationEn/signUp/signUpTranslatio
 
 import _ from "lodash";
 
-import MEHoc from "@MECommonComponents/hoc/meHoc";
 import SignUpForm from "@MEScreenComponents/signUpForm";
 import MEButton from "@MECommonComponents/button/meButton";
 import VerificationForm from "@MEScreenComponents/signUpForm/verificationForm";
@@ -25,7 +24,7 @@ const SignUpScreen = () => {
   const onCloseSignUpForm = () => navigate(routeName.root, { replace: true });
 
   return (
-    <MEHoc>
+    <>
       <div className="lg:w-1/3 md:w-1/2 w-full justify-self-center mt-10 mb-10">
         <Card className="">
           <CardHeader>
@@ -56,7 +55,7 @@ const SignUpScreen = () => {
           </CardContent>
         </Card>
       </div>
-    </MEHoc>
+      </>
   );
 };
 

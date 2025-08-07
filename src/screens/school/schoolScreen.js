@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import MEHoc from "@MECommonComponents/hoc/meHoc";
 import MEHeader from "@MECommonComponents/header/meHeader";
 import { ScrollArea, ScrollBar } from "@MEShadcnComponents/scroll-area";
 import {
@@ -60,9 +59,7 @@ const SchoolScreen = () => {
 
   return (
     <>
-      <MEHoc>
         <MEHeader />
-      </MEHoc>
       <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)]">
         <div
           className={`lg:w-1/3 w-full ${
