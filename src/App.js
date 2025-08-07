@@ -9,7 +9,7 @@ import {
   dashboard,
   forgottenPassword,
 } from "@MEPageRoutes";
-import { ThemeProvider } from "@MEContexts/themeProvider1";
+import { ThemeProvider } from "@MEContexts/themeProvider";
 
 import HomePage from "@MEPages/homePage";
 import ThemePage from "@MEPages/ThemePage";
