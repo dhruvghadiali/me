@@ -5,48 +5,54 @@
             "@/*": [
                 "./src/*"
             ],
-            "@MEHelpers/*": [
-                "./src/helpers/*"
+            "@MELib/*": [
+                "./src/lib/*"
             ],
-            "@MEScreenComponents/*": [
-                "./src/components/screens/*"
+            "@MEMock/*": [
+                "./src/mock/*"
             ],
-            "@MECommonComponents/*": [
-                "./src/components/common/*"
-            ],
-            "@MEPageRoutes": [
-                "./src/utils/pageRoutes/index.js"
-            ],
-            "@MEShadcnComponents/*": [
-                "./src/components/ui/*"
-            ],
-            "@MELocalizationEn/*": [
-                "./src/localization/*"
-            ],
-            "@MEScreens/*": [
-                "./src/screens/*"
+            "@MEPages/*": [
+                "./src/pages/*"
             ],
             "@MERedux/*": [
                 "./src/slice/*"
             ],
-            "@MEStyles/*": [
-                "./src/styles/*"
-            ],
             "@MEUtils/*": [
                 "./src/utils/*"
-            ],
-            "@MELib/*": [
-                "./src/lib/*"
             ],
             "@MEHooks/*": [
                 "./src/hooks/*"
             ],
+            "@MEStyles/*": [
+                "./src/styles/*"
+            ],
             "@MEAssets/*": [
                 "./src/assets/*"
             ],
-            "@MEMock/*": [
-                "./src/mock/*"
-            ]
+            "@MEScreens/*": [
+                "./src/screens/*"
+            ],
+            "@MEHelpers/*": [
+                "./src/helpers/*"
+            ],
+            "@MEContexts/*": [
+                "./src/contexts/*"
+            ],
+            "@MELocalizationEn/*": [
+                "./src/localization/*"
+            ],
+            "@MEShadcnComponents/*": [
+                "./src/components/ui/*"
+            ],
+            "@MECommonComponents/*": [
+                "./src/components/common/*"
+            ],
+            "@MEScreenComponents/*": [
+                "./src/components/screens/*"
+            ],
+            "@MEPageRoutes": [
+                "./src/utils/pageRoutes/index.js"
+            ],
         }
     },
     "include": ["./src/**/*"]

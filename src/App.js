@@ -1,14 +1,21 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "./contexts/ThemeProvider";
 
-import ProtectedRoute from "./components/common/hoc/protectedRoute";
-import PublicRoute from "./components/common/hoc/publicRoute";
-import AuthChecker from "./components/common/hoc/authChecker";
+import {
+  root,
+  theme,
+  signIn,
+  signUp,
+  dashboard,
+  forgottenPassword,
+} from "@MEPageRoutes";
+import { ThemeProvider } from "@MEContexts/ThemeProvider";
 
-// Import page components
-import HomePage from "./pages/HomePage";
-import ThemePage from "./pages/ThemePage";
-import NotFoundPage from "./pages/NotFoundPage";
+import HomePage from "@MEPages/HomePage";
+import ThemePage from "@MEPages/ThemePage";
+import NotFoundPage from "@MEPages/NotFoundPage";
+import PublicRoute from "@MECommonComponents/hoc/publicRoute";
+import AuthChecker from "@MECommonComponents//hoc/authChecker";
+import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
 
 function App() {
   const isDevelopment = import.meta.env.DEV;
@@ -19,7 +26,7 @@ function App() {
         <AuthChecker>
           <Routes>
             <Route
-              path="/"
+              path={root}
               element={
                 <PublicRoute>
                   <HomePage />
@@ -27,47 +34,47 @@ function App() {
               }
             />
             <Route
-              path="/sign-in"
+              path={signIn}
               element={
                 <PublicRoute
                   redirectAuthenticated={true}
-                  redirectTo="/dashboard"
+                  redirectTo={dashboard}
                 >
                   <div> sign-in </div>
                 </PublicRoute>
               }
             />
             <Route
-              path="/sign-up"
+              path={signUp}
               element={
                 <PublicRoute
                   redirectAuthenticated={true}
-                  redirectTo="/dashboard"
+                  redirectTo={dashboard}
                 >
                   <div> sign-up </div>
                 </PublicRoute>
               }
             />
             <Route
-              path="/forgot-password"
+              path={forgottenPassword}
               element={
                 <PublicRoute
                   redirectAuthenticated={true}
-                  redirectTo="/dashboard"
+                  redirectTo={dashboard}
                 >
                   <div> forgot-password </div>
                 </PublicRoute>
               }
             />
             <Route
-              path="/dashboard"
+              path={dashboard}
               element={
                 <ProtectedRoute>
                   <div>Dashboard - Protected Area</div>
                 </ProtectedRoute>
               }
             />
-            {isDevelopment && <Route path="/theme" element={<ThemePage />} />}
+            {isDevelopment && <Route path={theme} element={<ThemePage />} />}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </AuthChecker>
