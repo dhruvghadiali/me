@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-export const signInAPIResponse = (data) => {
+const signInAPIResponse = (data) => {
   return {
     id: data && data.id ? data.id : "",
     token: data && data.token ? data.token : "",
@@ -14,15 +14,15 @@ export const signInAPIResponse = (data) => {
   };
 };
 
-export const signUpSendOTPAPIResponse = (data) => {
+const signUpSendOTPAPIResponse = (data) => {
   return data && data.verification_token ? data.verification_token : "";
 };
 
-export const signInSendOTPAPIResponse = (data) => {
+const signInSendOTPAPIResponse = (data) => {
   return data && data.verification_token ? data.verification_token : "";
 };
 
-export const forgottenPasswordAPIResponse = (data) => {
+const forgottenPasswordAPIResponse = (data) => {
   return _.map(data, (item) => {
     return {
       id: item && item.id ? item.id : "",
@@ -37,10 +37,19 @@ export const forgottenPasswordAPIResponse = (data) => {
   });
 };
 
-export const forgottenPasswordSendOTPAPIResponse = (data) => {
+const forgottenPasswordSendOTPAPIResponse = (data) => {
   return data && data.verification_token ? data.verification_token : "";
 };
 
-export const forgottenPasswordOTPVerificationAPIResponse = (data) => {
+const forgottenPasswordOTPVerificationAPIResponse = (data) => {
   return data && data.reset_password_token ? data.reset_password_token : "";
 };
+
+export{
+    signInAPIResponse,
+    signUpSendOTPAPIResponse,
+    signInSendOTPAPIResponse,
+    forgottenPasswordAPIResponse,
+    forgottenPasswordSendOTPAPIResponse,
+    forgottenPasswordOTPVerificationAPIResponse
+}

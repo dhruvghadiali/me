@@ -69,3 +69,7 @@ export const defaultAPIErrorResponse = {
   message: "Something went wrong - Client Side",
   status: 500,
 };
+
+export const setUpAxiosInstanceConfig = (state, dispatch) => {
+  return { state: state, dispatch: dispatch };
+};
