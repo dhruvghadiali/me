@@ -8,11 +8,12 @@ import SchoolListComponent from "@MEScreenComponents/school/schoolList";
 import SchoolDetailComponent from "@MEScreenComponents/school/schoolDetail";
 
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import _ from "lodash";
 
 const SchoolPage = () => {
   const dispatch = useDispatch();
 
-  const { schoolSummaryLoader } = useSelector((state) => state.school);
+  const { schoolSummaryLoader, school } = useSelector((state) => state.school);
 
   const [isFullScreen, setIsFullScreen] = useState(true);
   const [isHideMainContent, setIsHideMainContent] = useState(true);
@@ -42,7 +43,7 @@ const SchoolPage = () => {
   //   window.history.go(1);
   // };
 
-  const handleCardClick = () => {
+  const handleCardClick = (schoolId) => {
     if (isFullScreen) {
       console.log(`Right now you are in full screen mode`);
     } else {
@@ -65,7 +66,7 @@ const SchoolPage = () => {
               isFullScreen ? "" : isHideMainContent ? "hidden" : "block"
             }`}
           >
-            <SchoolListComponent handleCardClick={() => handleCardClick()} />
+            <SchoolListComponent handleCardClick={(schoolId) => handleCardClick(schoolId)} />
           </div>
 
           <div
@@ -73,10 +74,14 @@ const SchoolPage = () => {
               isFullScreen ? "" : isHideMainContent ? "block" : "hidden"
             }`}
           >
-            <SchoolDetailComponent
-              handleCardClick={() => handleCardClick()}
-              showCloseIcon={!isFullScreen}
-            />
+            {_.isEmpty(school) ? (
+              <div>No school selected</div>
+            ) : (
+              <SchoolDetailComponent
+                handleCardClick={() => handleCardClick()}
+                showCloseIcon={!isFullScreen}
+              />
+            )}
           </div>
         </div>
       )}
