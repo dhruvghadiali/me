@@ -1,12 +1,23 @@
-import { MapPin, Phone, Mail, Globe, Building } from "lucide-react";
+import { MapPin, Phone, Mail, Building } from "lucide-react";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@MEShadcnComponents/card";
+import _ from "lodash";
 
-const SchoolOrganizationComponent = () => {
+const SchoolOrganizationComponent = ({ organization }) => {
+  const {
+    name,
+    governmentRegistrationNumber,
+    addressLine1,
+    addressLine2,
+    email,
+    phoneNumber,
+    members,
+  } = organization;
+
   return (
     <Card className="border border-primary mb-5 shadow-lg shadow-primary/10 hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.00] cursor-pointer">
       <CardHeader className="pb-2 sm:pb-3">
@@ -25,15 +36,17 @@ const SchoolOrganizationComponent = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span className="text-primary/60">Name:</span>
-                  <span className="font-medium">
-                    Bright Future Academy (BFA)
-                  </span>
+                  <span className="font-medium">{name ? name : "N/A"}</span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span className="text-primary/60">
                     Government Registration Number:
                   </span>
-                  <span className="font-medium">1985</span>
+                  <span className="font-medium">
+                    {governmentRegistrationNumber
+                      ? governmentRegistrationNumber
+                      : "N/A"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -75,14 +88,12 @@ const SchoolOrganizationComponent = () => {
               <div className="flex items-start gap-2">
                 <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="font-medium text-xs sm:text-sm">
-                    Main Campus
+                  <p className="font-medium text-xs sm:text-sm">Main Campus</p>
+                  <p className="text-xs sm:text-sm text-primary/60">
+                    {addressLine1 ? addressLine1 : "N/A"}
                   </p>
                   <p className="text-xs sm:text-sm text-primary/60">
-                    123 Green Street
-                  </p>
-                  <p className="text-xs sm:text-sm text-primary/60">
-                    Springfield, IL 62704
+                    {addressLine2 ? addressLine2 : ""}
                   </p>
                 </div>
               </div>
@@ -93,16 +104,14 @@ const SchoolOrganizationComponent = () => {
                 <Phone className="h-3 w-3 sm:h-4 sm:w-4" />
                 <div>
                   <p className="text-xs sm:text-sm">
-                    +1 (555) 123-4567
+                    {phoneNumber ? phoneNumber : "N/A"}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-3 w-3 sm:h-4 sm:w-4" />
                 <div>
-                  <p className="text-xs sm:text-sm">
-                    info@springfieldhigh.edu
-                  </p>
+                  <p className="text-xs sm:text-sm">{email ? email : "N/A"}</p>
                 </div>
               </div>
               {/* <div className="flex items-center gap-2">
@@ -122,33 +131,19 @@ const SchoolOrganizationComponent = () => {
             Administrative Team
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            <div className="bg-muted p-3 rounded-lg">
-              <h5 className="font-medium text-xs sm:text-sm">
-                President
-              </h5>
-              <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
-              <p className="text-xs mt-1 text-primary/60">
-                {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
-              </p>
-            </div>
-            <div className="bg-muted p-3 rounded-lg">
-              <h5 className="font-medium text-xs sm:text-sm">
-                President
-              </h5>
-              <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
-              <p className="text-xs mt-1 text-primary/60">
-                {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
-              </p>
-            </div>
-            <div className="bg-muted p-3 rounded-lg">
-              <h5 className="font-medium text-xs sm:text-sm">
-                President
-              </h5>
-              <p className="text-xs text-primary/60">Dr. Sarah Johnson</p>
-              <p className="text-xs mt-1 text-primary/60">
-                {"sarah.johnson@shs.edu | +1 (555) 987-6543"}
-              </p>
-            </div>
+            {members &&
+              _.size(members) > 0 &&
+              members.map((member, index) => (
+                <div key={index} className="bg-muted p-3 rounded-lg">
+                  <h5 className="font-medium text-xs sm:text-sm">
+                    {member.position}
+                  </h5>
+                  <p className="text-xs text-primary/60">{member.name}</p>
+                  <p className="text-xs mt-1 text-primary/60">
+                    {`${member.email} | ${member.phoneNumber}`}
+                  </p>
+                </div>
+              ))}
           </div>
         </div>
       </CardContent>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getSchools } from "@MERedux/school/schoolAction";
+import { getSchools, getSchool } from "@MERedux/school/schoolAction";
 
 import MEHeader from "@MECommonComponents/header/meHeader";
 import SchoolListComponent from "@MEScreenComponents/school/schoolList";
@@ -13,7 +13,9 @@ import _ from "lodash";
 const SchoolPage = () => {
   const dispatch = useDispatch();
 
-  const { schoolSummaryLoader, school } = useSelector((state) => state.school);
+  const { schoolSummaryLoader, schoolDetailLoader, school } = useSelector(
+    (state) => state.school
+  );
 
   const [isFullScreen, setIsFullScreen] = useState(true);
   const [isHideMainContent, setIsHideMainContent] = useState(true);
@@ -44,6 +46,7 @@ const SchoolPage = () => {
   // };
 
   const handleCardClick = (schoolId) => {
+    dispatch(getSchool({ schoolId }));
     if (isFullScreen) {
       console.log(`Right now you are in full screen mode`);
     } else {
@@ -66,7 +69,9 @@ const SchoolPage = () => {
               isFullScreen ? "" : isHideMainContent ? "hidden" : "block"
             }`}
           >
-            <SchoolListComponent handleCardClick={(schoolId) => handleCardClick(schoolId)} />
+            <SchoolListComponent
+              handleCardClick={(schoolId) => handleCardClick(schoolId)}
+            />
           </div>
 
           <div
@@ -74,8 +79,12 @@ const SchoolPage = () => {
               isFullScreen ? "" : isHideMainContent ? "block" : "hidden"
             }`}
           >
-            {_.isEmpty(school) ? (
-              <div>No school selected</div>
+            {schoolDetailLoader ? (
+              <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
+                <MELoaderIcon />
+              </div>
+            ) : _.isEmpty(school) ? (
+              <div />
             ) : (
               <SchoolDetailComponent
                 handleCardClick={() => handleCardClick()}

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSchools } from "@MERedux/school/schoolAction";
+import { getSchools, getSchool } from "@MERedux/school/schoolAction";
 
 export const schoolSlice = createSlice({
   name: "school",
@@ -31,6 +31,21 @@ export const schoolSlice = createSlice({
         state.schoolSummaryError = action.payload.error;
         state.schoolSummaryLoader = false;
         state.schools = [];
+      })
+      .addCase(getSchool.pending, (state, _) => {
+        state.schoolDetailLoader = true;
+        state.schoolDetailError = "";
+        state.school = {};
+      })
+      .addCase(getSchool.fulfilled, (state, action) => {
+        state.schoolDetailError = action.payload.error;
+        state.schoolDetailLoader = false;
+        state.school = action.payload.school;
+      })
+      .addCase(getSchool.rejected, (state, action) => {
+        state.schoolDetailError = action.payload.error;
+        state.schoolDetailLoader = false;
+        state.school = {};
       });
   },
 });

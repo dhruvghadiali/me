@@ -36,7 +36,7 @@ const SchoolListComponent = ({ handleCardClick }) => {
               <div className="flex items-center gap-2">
                 <Phone className="h-3 w-3 text-dark" />
                 <span className="flex-1 line-clamp-1">
-                  {school.phoneNumber || "No phone number provided"}
+                  {`+91 ${school.phoneNumber}` || "No phone number provided"}
                 </span>
               </div>
               <div className="flex items-center gap-2">

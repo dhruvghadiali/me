@@ -1,6 +1,9 @@
+import { useSelector } from "react-redux";
 import { Mail, Phone, XCircleIcon } from "lucide-react";
 
 import { Button } from "@MEShadcnComponents/button";
+
+import _ from "lodash";
 
 import SchoolFeesComponent from "@MEScreenComponents/school/schoolDetail/schoolFees/schoolFeesComponent";
 import SchoolDetailTabComponent from "@MEScreenComponents/school/schoolDetailTab/schoolDetailTabComponent";
@@ -11,15 +14,20 @@ import SchoolFacilitiesComponent from "@MEScreenComponents/school/schoolDetail/s
 import SchoolAcademicClassesComponent from "@MEScreenComponents/school/schoolDetail/schoolAcademicClasses/schoolAcademicClassesComponent";
 
 const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
+  const { school } = useSelector((state) => state.school);
+
   return (
     <>
       <div className="mx-5 space-y-4">
         <div className="flex items-center justify-between mr-2">
           <h1 className="text-xl sm:text-2xl md:text-4xl font-bold">
-            Springfield High School
+            {_.startCase(school.name)}
           </h1>
           {showCloseIcon && (
-            <Button variant="ghost" onClick={() => handleCardClick()}> <XCircleIcon/> </Button>
+            <Button variant="ghost" onClick={() => handleCardClick()}>
+              {" "}
+              <XCircleIcon />{" "}
+            </Button>
           )}
         </div>
         <div className="bg-muted border border-primary rounded-lg p-3 sm:p-4 space-y-2">
@@ -28,31 +36,29 @@ const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
               <span className="font-medium text-primary/75">
                 Affiliate Number:
               </span>
-              <span>SPH-2024-001</span>
+              <span>{school.affiliateNumber}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-primary/75">Established:</span>
-              <span>1985</span>
+              <span>{school.establishedYear}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-primary/75">School Type:</span>
-              <span>Public High School</span>
+              <span>{school.schoolType}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-primary/75">
                 Education Board:
               </span>
-              <span>State Board</span>
+              <span>{school.educationBoards}</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-primary/75" />
-              <span className="text-xs sm:text-sm">
-                info@springfieldhigh.edu
-              </span>
+              <span className="text-xs sm:text-sm">{school.email}</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-primary/75" />
-              <span>+1 (555) 123-4567</span>
+              <span>{`+91 ${school.phoneNumber}`}</span>
             </div>
           </div>
         </div>
@@ -63,7 +69,7 @@ const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
           {
             value: "tab-1",
             label: "Overview",
-            content: <SchoolOverviewComponent />,
+            content: <SchoolOverviewComponent school={school} />,
           },
           {
             value: "tab-2",

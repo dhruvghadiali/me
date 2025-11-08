@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@MEShadcnComponents/card";
 
-const SchoolDescriptionComponent = () => {
+const SchoolDescriptionComponent = ({ aboutSection1, aboutSection2 }) => {
   return (
     <Card className="border border-primary mb-5 shadow-lg shadow-primary/10 hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-[1.00] cursor-pointer">
       <CardHeader className="pb-2 sm:pb-3">
@@ -18,17 +18,11 @@ const SchoolDescriptionComponent = () => {
       </CardHeader>
       <CardContent className="space-y-3 sm:space-y-4">
         <p className="text-primary/75 leading-relaxed text-xs sm:text-sm md:text-base transition-colors duration-300 hover:text-primary/90">
-          Springfield High School is a premier educational institution
-          established in 1985, committed to providing excellence in education
-          and fostering holistic development of students. With state-of-the-art
-          facilities and experienced faculty, we prepare students for success in
-          their academic and professional endeavors.
+          {aboutSection1 ||
+            "Once the management updates their profile, you’ll be able to learn more about their vision and facilities."}
         </p>
         <p className="text-primary/75 leading-relaxed text-xs sm:text-sm md:text-base transition-colors duration-300 hover:text-primary/90">
-          Our mission is to create a nurturing environment where every student
-          can discover their potential, develop critical thinking skills, and
-          become responsible global citizens. We believe in the power of
-          education to transform lives and communities.
+          {aboutSection2 || ""}
         </p>
       </CardContent>
     </Card>

@@ -4,7 +4,8 @@ import {
   defaultAPIErrorResponse,
   setUpAxiosInstanceConfig,
 } from "@MEUtils/utilityFunctions";
-import { schoolSummaryAPIResponse } from "@MEUtils/apiResponse";
+import { schoolSummaryAPIResponse, schoolDetailsAPIResponse } from "@MEUtils/apiResponse";
+import { schoolsAPIRoute, schoolAPIRoute } from "@MEUtils/apiRoutes";
 import axiosInstance from "@MEUtils/axiosInstance";
 
 const getSchools = createAsyncThunk(
@@ -15,9 +16,10 @@ const getSchools = createAsyncThunk(
 
       const axiosInstanceConfig = setUpAxiosInstanceConfig(state, dispatch);
 
-      console.log("Authentication State in getSchools: 1");
-      const response = await axiosInstance.get(`/schools`, axiosInstanceConfig);
-      console.log("Authentication State in getSchools: 2", response);
+      const response = await axiosInstance.get(
+        schoolsAPIRoute,
+        axiosInstanceConfig
+      );
 
       return {
         error: "",
@@ -33,4 +35,32 @@ const getSchools = createAsyncThunk(
   }
 );
 
-export { getSchools };
+const getSchool = createAsyncThunk(
+  "school/getSchool",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { schoolId } = payload;
+      const state = getState();
+
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(state, dispatch);
+
+      const response = await axiosInstance.get(
+        `${schoolAPIRoute}/${schoolId}`,
+        axiosInstanceConfig
+      );
+
+      return {
+        error: "",
+        school: schoolDetailsAPIResponse(response),
+      };
+    } catch (error) {
+      console.log("Authentication State in getSchools: 2", error);
+      return rejectWithValue({
+        error: defaultAPIErrorResponse.message,
+        school: {},
+      });
+    }
+  }
+);
+
+export { getSchools, getSchool };
