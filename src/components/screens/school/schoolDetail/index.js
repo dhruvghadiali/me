@@ -74,7 +74,7 @@ const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
           {
             value: "tab-2",
             label: "Address",
-            content: <SchoolAddressComponent />,
+            content: <SchoolAddressComponent school={school} />,
           },
           {
             value: "tab-3",

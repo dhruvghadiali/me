@@ -119,6 +119,40 @@ const schoolDetailsAPIResponse = (response) => {
           addressLine2,
         };
       })(),
+      addresses: school && school.school_address && _.size(school.school_address) > 0 ? _.map(school.school_address, (schoolAddress) => {
+        const addressLine1 = (() => {
+          const address = _.get(schoolAddress, "address");
+          const areaName = _.get(schoolAddress, "area_name.name");
+          const value = _.join(
+            _.compact([_.upperFirst(address), areaName]),
+            ", "
+          );
+          return value || null;
+        })();
+
+        const addressLine2 = (() => {
+          const city = _.get(schoolAddress, "city.name");
+          const district = _.get(schoolAddress, "district.name");
+          const state = _.get(schoolAddress, "state.name");
+          const zipcode = _.get(schoolAddress, "zipcode.zipcode");
+          let value = _.join(
+            _.compact([
+              _.upperFirst(city),
+              _.upperFirst(district),
+              _.upperFirst(state),
+            ]),
+            ", "
+          );
+          if (zipcode) value += (value ? " - " : "") + zipcode;
+          return value || null;
+        })();
+
+        return {
+          addressLine1,
+          addressLine2,
+        }
+      }) : []
+
     };
   } else {
     return {};
