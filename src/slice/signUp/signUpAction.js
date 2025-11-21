@@ -9,6 +9,7 @@ import {
   signUpSendOTPAPIRoute,
   signUpOTPVerificationAPIRoute,
 } from "@MEUtils/apiRoutes";
+import { axiosInstance } from "@MEUtils/axiosInstance";
 import {
   isMockEnvironment,
   getMockAPIResponse,
@@ -17,6 +18,7 @@ import {
 } from "@MEUtils/utilityFunctions";
 
 import axios from "axios";
+import _ from "lodash";
 
 /**
  * Action Name: registerUser
@@ -44,53 +46,34 @@ export const registerUser = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "signUp"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${signUpAPIRoute}`,
-          payload
-        );
 
-        if (response) response = response.data;
-      }
+      response = await axiosInstance.post(signUpAPIRoute, payload, {
+        autoLogoutOnUnauthorized: false,
+      });
 
-      if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          let userDetail = response.data[0] ? response.data[0] : {};
-          dispatch(sendOtp(signUpSendOTPAPIPayload(userDetail)));
-          return {
-            error: "",
-            currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
-            userId: userDetail && userDetail.id ? userDetail.id : "",
-          };
-        } else {
-          return {
-            userId: "",
-            currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
-            error: response.message || defaultAPIErrorResponse.message,
-          };
-        }
+      if (
+        response &&
+        response.data &&
+        Array.isArray(response.data) &&
+        _.size(response.data) > 0
+      ) {
+        return {
+          error: "",
+          userId: response.data[0].id || "",
+          currentSignUpFormStatus: SIGN_UP_FORM_STATUS.VE,
+        };
       } else {
         return {
-          userId: "",
           error: response.message || defaultAPIErrorResponse.message,
+          userId: "",
           currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      console.error("Error in registerUser:", error);
+      const errMsg =
+        (error && (error.message || error.error)) || "Sign-up request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );

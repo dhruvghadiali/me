@@ -5,6 +5,7 @@
         "meclassname",
         "messagevariant",
         "OTPAPI",
-        "Shadcn"
+        "Shadcn",
+        "VITE"
     ]
 }

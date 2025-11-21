@@ -4,9 +4,12 @@ import {
   defaultAPIErrorResponse,
   setUpAxiosInstanceConfig,
 } from "@MEUtils/utilityFunctions";
-import { schoolSummaryAPIResponse, schoolDetailsAPIResponse } from "@MEUtils/apiResponse";
+import {
+  schoolSummaryAPIResponse,
+  schoolDetailsAPIResponse,
+} from "@MEUtils/apiResponse";
 import { schoolsAPIRoute, schoolAPIRoute } from "@MEUtils/apiRoutes";
-import axiosInstance from "@MEUtils/axiosInstance";
+import { axiosInstance } from "@MEUtils/axiosInstance";
 
 const getSchools = createAsyncThunk(
   "school/getSchools",

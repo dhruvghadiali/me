@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { signUpFormState } from "@MEUtils/enums";
+import { SIGN_UP_FORM_STATUS } from "@MEHelpers/enums";
 import { responseMessage } from "@MEUtils/responseMessage";
 import { registerUser, verifyOtp, sendOtp } from "@MERedux/signUp/signUpAction";
 
@@ -9,7 +9,7 @@ export const signUpSlice = createSlice({
   initialState: {
     loader: false,
     error: "",
-    currentSignUpFormStatus: signUpFormState.RE,
+    currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
     emailOtp: "",
     phoneNumberOtp: "",
     userId: "",
@@ -17,7 +17,7 @@ export const signUpSlice = createSlice({
   },
   reducers: {
     resetSignUpFormState: (state, _) => {
-      state.currentSignUpFormStatus = signUpFormState.RE;
+      state.currentSignUpFormStatus = SIGN_UP_FORM_STATUS.RE;
       state.loader = false;
       state.error = "";
       state.userId = "";
@@ -27,7 +27,7 @@ export const signUpSlice = createSlice({
       state.emailOtp = "";
       state.phoneNumberOtp = "";
     },
-    changeSignUpFormState: (state, action) => {
+    changeSIGN_UP_FORM_STATUS: (state, action) => {
       state.currentSignUpFormStatus = action.payload;
     },
     setEmailOtp: (state, action) => {
@@ -53,8 +53,8 @@ export const signUpSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loader = false;
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
-        state.currentSignUpFormStatus = signUpFormState.RE;
+          action.payload.error || responseMessage.somethingWentWrong;
+        state.currentSignUpFormStatus = SIGN_UP_FORM_STATUS.RE;
       })
       .addCase(sendOtp.pending, (state, _) => {
         state.error = "";
@@ -72,7 +72,7 @@ export const signUpSlice = createSlice({
         state.loader = false;
         state.error =
           action.payload.message || responseMessage.somethingWentWrong;
-        state.currentSignUpFormStatus = signUpFormState.RE;
+        state.currentSignUpFormStatus = SIGN_UP_FORM_STATUS.RE;
       })
       .addCase(verifyOtp.pending, (state, _) => {
         state.loader = true;
@@ -87,7 +87,7 @@ export const signUpSlice = createSlice({
         state.loader = false;
         state.error =
           action.payload.message || responseMessage.somethingWentWrong;
-        state.currentSignUpFormStatus = signUpFormState.ER;
+        state.currentSignUpFormStatus = SIGN_UP_FORM_STATUS.ER;
       });
   },
 });
@@ -96,7 +96,7 @@ export const {
   setEmailOtp,
   setPhoneNumberOtp,
   resetSignUpFormState,
-  changesignUpFormState,
+  changeSignUpFormState,
   resetSignUpVerificationFormState,
 } = signUpSlice.actions;
 

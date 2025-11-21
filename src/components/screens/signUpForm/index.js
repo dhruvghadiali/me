@@ -180,6 +180,7 @@ const SignUpForm = () => {
 
         <div className="py-2">
           <MEButton
+            disabled={loader}
             type="submit"
             meclassname="flex"
             buttonVariant={variants.SUCCESS}
