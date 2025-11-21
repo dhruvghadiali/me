@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
-import { routeName } from "@MEUtils/routeName";
+// import { routeName } from "@MEUtils/routeName";
 import { phoneRegExp } from "@MEUtils/regexp";
 import { signUpAPIPayload } from "@MEUtils/apiPayload";
 import { registerUser } from "@MERedux/signUp/signUpAction";
@@ -29,7 +29,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (isValidUser) {
-      navigate(routeName.dashboard, { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   }, [isValidUser, navigate]);
 

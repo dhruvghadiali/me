@@ -14,6 +14,7 @@ import { ThemeProvider } from "@MEContexts/themeProvider";
 import HomePage from "@MEPages/homePage";
 import ThemePage from "@MEPages/ThemePage";
 import SchoolPage from "@MEPages/schoolPage";
+import SignUpPage from "@MEPages/signUpPage";
 import NotFoundPage from "@MEPages/NotFoundPage";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";
 import AuthChecker from "@MECommonComponents//hoc/authChecker";
@@ -50,7 +51,7 @@ function App() {
                   redirectAuthenticated={true}
                   redirectTo={dashboard}
                 >
-                  <div> sign-in </div>
+                  <SignUpPage />
                 </PublicRoute>
               }
             />
@@ -61,7 +62,7 @@ function App() {
                   redirectAuthenticated={true}
                   redirectTo={dashboard}
                 >
-                  <div> sign-up </div>
+                  <SignUpPage />
                 </PublicRoute>
               }
             />

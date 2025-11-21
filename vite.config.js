@@ -22,6 +22,7 @@ export default defineConfig({
       "@MEShadcnComponents": "/src/components/ui",
       "@MEScreenComponents": "/src/components/screens",
       "@MEPageRoutes": "/src/utils/pageRoutes/index.js",
+      "@MEScreens": "/src/screens",
     },
   },
   esbuild: {
