@@ -54,10 +54,10 @@ const SignUpScreen = () => {
           </CardHeader>
           <CardContent className="pt-6">
             {currentSignUpFormStatus === signUpFormState.RE && <SignUpForm />}
-            {/*{currentSignUpFormStatus === signUpFormState.VE && (
+            {currentSignUpFormStatus === signUpFormState.VE && (
               <VerificationForm />
             )}
-            {(currentSignUpFormStatus === signUpFormState.ER ||
+            {/* {(currentSignUpFormStatus === signUpFormState.ER ||
               currentSignUpFormStatus === signUpFormState.SU) && (
               // <SignUpFormNotification />
             )} */}

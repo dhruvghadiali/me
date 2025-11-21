@@ -45,9 +45,7 @@ export const registerUser = createAsyncThunk(
   "signUp/registerUser",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      let response;
-
-      response = await axiosInstance.post(signUpAPIRoute, payload, {
+      let response = await axiosInstance.post(signUpAPIRoute, payload, {
         autoLogoutOnUnauthorized: false,
       });
 
@@ -57,6 +55,7 @@ export const registerUser = createAsyncThunk(
         Array.isArray(response.data) &&
         _.size(response.data) > 0
       ) {
+        dispatch(sendOtp(signUpSendOTPAPIPayload({ id: response.data[0].id })));
         return {
           error: "",
           userId: response.data[0].id || "",
@@ -70,7 +69,6 @@ export const registerUser = createAsyncThunk(
         };
       }
     } catch (error) {
-      console.error("Error in registerUser:", error);
       const errMsg =
         (error && (error.message || error.error)) || "Sign-up request failed";
       return rejectWithValue({ error: errMsg });
@@ -98,52 +96,27 @@ export const sendOtp = createAsyncThunk(
   "signUp/sendOtp",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "sendOtp"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${signUpSendOTPAPIRoute}`,
-          payload
-        );
+      let response = await axiosInstance.post(signUpSendOTPAPIRoute, payload, {
+        autoLogoutOnUnauthorized: false,
+      });
 
-        if (response) response = response.data;
-      }
-
-      if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          return {
-            error: "",
-            currentSignUpFormStatus: signUpFormState.VE,
-            verificationToken: signUpSendOTPAPIResponse(response.data[0]),
-          };
-        } else {
-          return {
-            verificationToken: "",
-            currentSignUpFormStatus: signUpFormState.RE,
-            error: response.message || defaultAPIErrorResponse.message,
-          };
-        }
-      } else {
+      if(response && response.data && Array.isArray(response.data) && _.size(response.data) > 0) {
         return {
-          verificationToken: "",
-          currentSignUpFormStatus: signUpFormState.RE,
+          error: "",
+          verificationToken:
+            response.data[0].verification_token || "",
+        };
+      }else{
+        return {
           error: response.message || defaultAPIErrorResponse.message,
+          verificationToken: "",
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Sign-up OTP request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import Lottie from "react-lottie";
 
-import { signUpFormState } from "@MEUtils/enums";
+import { SIGN_UP_FORM_STATUS } from "@MEHelpers/enums";
 import { Label } from "@MEShadcnComponents/label";
 import { signUpFormTranslation } from "@MELocalization/signUp/signUpTranslationEn";
 
@@ -18,7 +18,7 @@ const SignUpFormNotification = () => {
 
   return (
     <>
-      {currentSignUpFormStatus === signUpFormState.ER && (
+      {currentSignUpFormStatus === SIGN_UP_FORM_STATUS.ER && (
         <>
           <div className="w-full h-80 ">
             <Lottie
@@ -45,7 +45,7 @@ const SignUpFormNotification = () => {
         </>
       )}
 
-      {currentSignUpFormStatus === signUpFormState.SU && (
+      {currentSignUpFormStatus === SIGN_UP_FORM_STATUS.SU && (
         <>
           <div className="w-full h-80 ">
             <Lottie

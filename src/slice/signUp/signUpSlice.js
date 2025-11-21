@@ -46,6 +46,7 @@ export const signUpSlice = createSlice({
         state.verificationToken = "";
       })
       .addCase(registerUser.fulfilled, (state, action) => {
+        state.loader = false;
         state.error = action.payload.error;
         state.userId = action.payload.userId;
         state.currentSignUpFormStatus = action.payload.currentSignUpFormStatus;
@@ -61,18 +62,14 @@ export const signUpSlice = createSlice({
         state.verificationToken = "";
       })
       .addCase(sendOtp.fulfilled, (state, action) => {
-        state.loader = false;
         state.emailOtp = "";
         state.phoneNumberOtp = "";
         state.error = action.payload.error;
         state.verificationToken = action.payload.verificationToken;
-        state.currentSignUpFormStatus = action.payload.currentSignUpFormStatus;
       })
       .addCase(sendOtp.rejected, (state, action) => {
-        state.loader = false;
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
-        state.currentSignUpFormStatus = SIGN_UP_FORM_STATUS.RE;
+          action.payload.error || responseMessage.somethingWentWrong;
       })
       .addCase(verifyOtp.pending, (state, _) => {
         state.loader = true;
