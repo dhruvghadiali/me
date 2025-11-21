@@ -30,12 +30,17 @@ const SignUpScreen = () => {
       <div className="flex items-center justify-center min-h-screen px-4 py-8 sm:px-6 lg:px-8">
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-2 pb-4">
-            <div className="flex justify-between items-center gap-4">
-              <p className="text-2xl sm:text-3xl font-bold  bg-clip-text ">
-                {i18n.exists("signUpFormHeader")
-                  ? _.upperCase(t("signUpFormHeader"))
-                  : _.upperCase(signUpFormTranslation.signUpFormHeader)}
-              </p>
+            <div className="flex justify-between items-start gap-4">
+              <div className="space-y-1">
+                <p className="text-2xl sm:text-3xl font-bold  bg-clip-text ">
+                  {i18n.exists("signUpFormHeader")
+                    ? _.upperCase(t("signUpFormHeader"))
+                    : _.upperCase(signUpFormTranslation.signUpFormHeader)}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Create your account to join ME community
+                </p>
+              </div>
               <MEButton
                 disabled={loader}
                 size="icon"

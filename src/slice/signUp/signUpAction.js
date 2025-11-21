@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { signUpFormState } from "@MEUtils/enums";
+import { SIGN_UP_FORM_STATUS } from "@MEHelpers/enums";
 import { signUpSendOTPAPIPayload } from "@MEUtils/apiPayload";
 import { signUpSendOTPAPIResponse } from "@MEUtils/apiResponse";
 
@@ -64,13 +64,13 @@ export const registerUser = createAsyncThunk(
           dispatch(sendOtp(signUpSendOTPAPIPayload(userDetail)));
           return {
             error: "",
-            currentSignUpFormStatus: signUpFormState.RE,
+            currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
             userId: userDetail && userDetail.id ? userDetail.id : "",
           };
         } else {
           return {
             userId: "",
-            currentSignUpFormStatus: signUpFormState.RE,
+            currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
             error: response.message || defaultAPIErrorResponse.message,
           };
         }
@@ -78,7 +78,7 @@ export const registerUser = createAsyncThunk(
         return {
           userId: "",
           error: response.message || defaultAPIErrorResponse.message,
-          currentSignUpFormStatus: signUpFormState.RE,
+          currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
         };
       }
     } catch (error) {
