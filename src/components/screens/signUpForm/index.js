@@ -198,11 +198,11 @@ const SignUpForm = () => {
 
 const SignUpSchema = Yup.object().shape({
   firstName: Yup.string()
-    .min(5, validationMessage.firstNameMin)
+    .min(2, validationMessage.firstNameMin)
     .max(25, validationMessage.firstNameMax)
     .required(validationMessage.firstNameRequired),
   lastName: Yup.string()
-    .min(5, validationMessage.lastNameMin)
+    .min(2, validationMessage.lastNameMin)
     .max(25, validationMessage.lastNameMax)
     .required(validationMessage.lastNameRequired),
   username: Yup.string()

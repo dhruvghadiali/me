@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SIGN_UP_FORM_STATUS } from "@MEHelpers/enums";
 import { signUpSendOTPAPIPayload } from "@MEUtils/apiPayload";
 import { signUpSendOTPAPIResponse } from "@MEUtils/apiResponse";
+import { HTTP_STATUS_CODES } from "@MEHelpers/enums";
 
 import {
   signUpAPIRoute,
@@ -10,14 +11,8 @@ import {
   signUpOTPVerificationAPIRoute,
 } from "@MEUtils/apiRoutes";
 import { axiosInstance } from "@MEUtils/axiosInstance";
-import {
-  isMockEnvironment,
-  getMockAPIResponse,
-  defaultAPIErrorResponse,
-  isAPIServedSuccessfully,
-} from "@MEUtils/utilityFunctions";
+import { defaultAPIErrorResponse } from "@MEUtils/utilityFunctions";
 
-import axios from "axios";
 import _ from "lodash";
 
 /**
@@ -33,10 +28,9 @@ import _ from "lodash";
  * Returns:
  *  - @returns {<object>} API will return user details
  * Logic:
- *  - Step 1: Check application environment. (Mock environment will give mock response)
- *  - Step 2: Call API for storing user details in DB.
- *  - Step 3: On Success call sendOtp action for sending OTP to register email and phone number and store (userId, currentSignUpFormStatus, error) in redux store.
- *            On Error store error message on redux store
+ *  - Step 1: Call API for storing user details in DB.
+ *  - Step 2: On Success call sendOtp action for sending OTP to register email and phone number and store (userId, currentSignUpFormStatus, error) in redux store.
+ *            On Error store error message on redux store.
  * Usage:
  *  - This action usage is only for signup new user.
  *  - This action will call from signup from.
@@ -52,6 +46,8 @@ export const registerUser = createAsyncThunk(
       if (
         response &&
         response.data &&
+        response.status &&
+        response.status === HTTP_STATUS_CODES.CREATED &&
         Array.isArray(response.data) &&
         _.size(response.data) > 0
       ) {
@@ -59,7 +55,7 @@ export const registerUser = createAsyncThunk(
         return {
           error: "",
           userId: response.data[0].id || "",
-          currentSignUpFormStatus: SIGN_UP_FORM_STATUS.VE,
+          currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
         };
       } else {
         return {
@@ -84,13 +80,12 @@ export const registerUser = createAsyncThunk(
  * Returns:
  *  - @returns {<object>} API will return verification token
  * Logic:
- *  - Step 1: Check application environment. (Mock environment will give mock response)
- *  - Step 2: Call API for send OTP to email and phone number.
- *  - Step 3: On Success call store (verificationToken, currentSignUpFormStatus, error) in redux store.
+ *  - Step 1: Call API for send OTP to email and phone number.
+ *  - Step 2: On Success call store (verificationToken, currentSignUpFormStatus, error) in redux store.
  *            On Error store error message on redux store.
  * Usage:
  *  - This action usage is only for request backend service to send OTP to new register user.
- *  - This action will call from registerUser action (Success response).
+ *  - This action will call from registerUser redux action (Only in success response and if user details are present).
  */
 export const sendOtp = createAsyncThunk(
   "signUp/sendOtp",
@@ -100,16 +95,24 @@ export const sendOtp = createAsyncThunk(
         autoLogoutOnUnauthorized: false,
       });
 
-      if(response && response.data && Array.isArray(response.data) && _.size(response.data) > 0) {
+      if (
+        response &&
+        response.data &&
+        response.status &&
+        response.status === HTTP_STATUS_CODES.OK &&
+        Array.isArray(response.data) &&
+        _.size(response.data) > 0
+      ) {
         return {
           error: "",
-          verificationToken:
-            response.data[0].verification_token || "",
+          verificationToken: response.data[0].verification_token || "",
+          currentSignUpFormStatus: SIGN_UP_FORM_STATUS.VE,
         };
-      }else{
+      } else {
         return {
           error: response.message || defaultAPIErrorResponse.message,
           verificationToken: "",
+          currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
         };
       }
     } catch (error) {
@@ -132,9 +135,8 @@ export const sendOtp = createAsyncThunk(
  * Returns:
  *  - @returns {<object>} API will return empty data
  * Logic:
- *  - Step 1: Check application environment. (Mock environment will give mock response)
- *  - Step 2: Call API to verify OTP for email and phone number.
- *  - Step 3: On Success call store (currentSignUpFormStatus, error) in redux store.
+ *  - Step 1: Call API to verify OTP for email and phone number.
+ *  - Step 2: On Success call store (currentSignUpFormStatus, error) in redux store.
  *            On Error store error message on redux store.
  * Usage:
  *  - This action usage is only for request backend service to validate email and phone number OTP for new register user.
@@ -144,49 +146,33 @@ export const verifyOtp = createAsyncThunk(
   "signUp/verifyOtp",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "verifyOtp"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${signUpOTPVerificationAPIRoute}`,
-          payload
-        );
+      let response = await axiosInstance.post(
+        signUpOTPVerificationAPIRoute,
+        payload,
+        { autoLogoutOnUnauthorized: false }
+      );
 
-        if (response) response = response.data;
-      }
-
-      if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          return {
-            error: "",
-            currentSignUpFormStatus: signUpFormState.SU,
-          };
-        } else {
-          return {
-            error: response.message || defaultAPIErrorResponse.message,
-            currentSignUpFormStatus: signUpFormState.SU,
-          };
-        }
+      console.log("OTP Verification Response:", response);
+      if (
+        response &&
+        response.status &&
+        response.status === HTTP_STATUS_CODES.OK
+      ) {
+        return {
+          error: "",
+          currentSignUpFormStatus: SIGN_UP_FORM_STATUS.SU,
+        };
       } else {
         return {
           error: response.message || defaultAPIErrorResponse.message,
-          currentSignUpFormStatus: signUpFormState.ER,
+          currentSignUpFormStatus: SIGN_UP_FORM_STATUS.ER,
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Sign-up OTP verification request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );

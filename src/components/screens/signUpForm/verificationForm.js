@@ -82,7 +82,7 @@ const VerificationForm = () => {
       <div className="mt-10">
         <MEButton
           meclassname="flex"
-          disabled={!(_.size(emailOtp) === 6 && _.size(phoneNumberOtp) === 6)}
+          disabled={!(_.size(emailOtp) === 6 && _.size(phoneNumberOtp) === 6) || loader}
           buttonVariant={variants.SUCCESS}
           onClick={() => onSubmitClick()}
         >

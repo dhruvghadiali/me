@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
 // import { routeName } from "@MEUtils/apiRoutes";
-import { signUpFormState } from "@MEUtils/enums";
+import { SIGN_UP_FORM_STATUS } from "@MEHelpers/enums";
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
 import { signUpFormTranslation } from "@MELocalization/signUp/signUpTranslationEn";
 
@@ -13,7 +13,7 @@ import _ from "lodash";
 import SignUpForm from "@MEScreenComponents/signUpForm";
 import MEButton from "@MECommonComponents/button/meButton";
 import VerificationForm from "@MEScreenComponents/signUpForm/verificationForm";
-// import SignUpFormNotification from "@MEScreenComponents/signUpForm/notification";
+import SignUpFormNotification from "@MEScreenComponents/signUpForm/notification";
 
 const SignUpScreen = () => {
   const { t, i18n } = useTranslation();
@@ -53,14 +53,16 @@ const SignUpScreen = () => {
             </div>
           </CardHeader>
           <CardContent className="pt-6">
-            {currentSignUpFormStatus === signUpFormState.RE && <SignUpForm />}
-            {currentSignUpFormStatus === signUpFormState.VE && (
+            {currentSignUpFormStatus === SIGN_UP_FORM_STATUS.RE && (
+              <SignUpForm />
+            )}
+            {currentSignUpFormStatus === SIGN_UP_FORM_STATUS.VE && (
               <VerificationForm />
             )}
-            {/* {(currentSignUpFormStatus === signUpFormState.ER ||
-              currentSignUpFormStatus === signUpFormState.SU) && (
-              // <SignUpFormNotification />
-            )} */}
+            {(currentSignUpFormStatus === SIGN_UP_FORM_STATUS.ER ||
+              currentSignUpFormStatus === SIGN_UP_FORM_STATUS.SU) && (
+              <SignUpFormNotification />
+            )}
           </CardContent>
         </Card>
       </div>
