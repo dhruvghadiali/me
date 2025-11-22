@@ -1,4 +1,4 @@
-export const signUpAPIPayload = (data) => {
+const signUpAPIPayload = (data) => {
   return {
     email: data && data.email ? data.email : "",
     username: data && data.username ? data.username : "",
@@ -9,11 +9,11 @@ export const signUpAPIPayload = (data) => {
   };
 };
 
-export const signUpSendOTPAPIPayload = (data) => {
+const signUpSendOTPAPIPayload = (data) => {
   return { user_id: data && data.id ? data.id : "" };
 };
 
-export const signUpOTPVerificationAPIPayload = (data) => {
+const signUpOTPVerificationAPIPayload = (data) => {
   return {
     user_id: data && data.userId ? data.userId : "",
     verification_token:
@@ -23,11 +23,11 @@ export const signUpOTPVerificationAPIPayload = (data) => {
   };
 };
 
-export const signInSendOTPAPIPayload = (data) => {
+const signInSendOTPAPIPayload = (data) => {
   return { user_id: data && data.id ? data.id : "" };
 };
 
-export const signInOTPVerificationAPIPayload = (data) => {
+const signInOTPVerificationAPIPayload = (data) => {
   return {
     user_id: data && data.userId ? data.userId : "",
     verification_token:
@@ -37,15 +37,15 @@ export const signInOTPVerificationAPIPayload = (data) => {
   };
 };
 
-export const forgottenPasswordAPIPayload = (data) => {
+const forgottenPasswordAPIPayload = (data) => {
   return { account_name: data && data.accountName ? data.accountName : "" };
 };
 
-export const forgottenPasswordSendOTPAPIPayload = (data) => {
+const forgottenPasswordSendOTPAPIPayload = (data) => {
   return { user_id: data && data.id ? data.id : "" };
 };
 
-export const forgottenPasswordOTPVerificationAPIPayload = (data) => {
+const forgottenPasswordOTPVerificationAPIPayload = (data) => {
   return {
     user_id: data && data.userId ? data.userId : "",
     verification_token:
@@ -54,11 +54,23 @@ export const forgottenPasswordOTPVerificationAPIPayload = (data) => {
   };
 };
 
-export const forgottenPasswordResetPasswordAPIPayload = (data) => {
+const forgottenPasswordResetPasswordAPIPayload = (data) => {
   return {
     user_id: data && data.userId ? data.userId : "",
     reset_password_token:
       data && data.resetPasswordToken ? data.resetPasswordToken : "",
     password: data && data.password ? data.password : "",
   };
+};
+
+export {
+  signUpAPIPayload,
+  signUpSendOTPAPIPayload,
+  signUpOTPVerificationAPIPayload,
+  signInSendOTPAPIPayload,
+  signInOTPVerificationAPIPayload,
+  forgottenPasswordAPIPayload,
+  forgottenPasswordSendOTPAPIPayload,
+  forgottenPasswordOTPVerificationAPIPayload,
+  forgottenPasswordResetPasswordAPIPayload,
 };

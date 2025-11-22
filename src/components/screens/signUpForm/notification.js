@@ -1,13 +1,12 @@
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import Lottie from "react-lottie";
-
 import { SIGN_UP_FORM_STATUS } from "@MEHelpers/enums";
 import { Label } from "@MEShadcnComponents/label";
 import { signUpFormTranslation } from "@MELocalization/signUp/signUpTranslationEn";
 
 import _ from "lodash";
+import Lottie from "react-lottie";
 
 import error from "@MEAssets/lottieFiles/signUpErrorAnimation.json";
 import success from "@MEAssets/lottieFiles/signUpSuccessAnimation.json";

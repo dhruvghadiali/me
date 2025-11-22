@@ -1,12 +1,9 @@
-import { useEffect } from "react";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router";
 import { CircleAlertIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
-// import { routeName } from "@MEUtils/routeName";
 import { phoneRegExp } from "@MEUtils/regexp";
 import { signUpAPIPayload } from "@MEUtils/apiPayload";
 import { registerUser } from "@MERedux/signUp/signUpAction";
@@ -25,13 +22,6 @@ const SignUpForm = () => {
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isValidUser) {
-      navigate("/dashboard", { replace: true });
-    }
-  }, [isValidUser, navigate]);
 
   const formik = useFormik({
     initialValues: {
@@ -46,7 +36,13 @@ const SignUpForm = () => {
     validationSchema: SignUpSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: (values) => dispatch(registerUser(signUpAPIPayload(values))),
+    onSubmit: (values) => {
+      // Hide keyboard on mobile
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+      dispatch(registerUser(signUpAPIPayload(values)));
+    },
   });
 
   return (

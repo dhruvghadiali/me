@@ -3,7 +3,6 @@ import { CircleXIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
-// import { routeName } from "@MEUtils/apiRoutes";
 import { SIGN_UP_FORM_STATUS } from "@MEHelpers/enums";
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
 import { signUpFormTranslation } from "@MELocalization/signUp/signUpTranslationEn";

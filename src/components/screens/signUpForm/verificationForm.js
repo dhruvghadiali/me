@@ -22,7 +22,12 @@ const VerificationForm = () => {
 
   const dispatch = useDispatch();
 
-  const onSubmitClick = () =>
+  const onSubmitClick = () => {
+    // Hide keyboard on mobile
+    if (document.activeElement) {
+      document.activeElement.blur();
+    }
+    
     dispatch(
       verifyOtp(
         signUpOTPVerificationAPIPayload({
@@ -33,6 +38,8 @@ const VerificationForm = () => {
         })
       )
     );
+  };
+
   const setEmailOtpValue = (value) => dispatch(setEmailOtp(value));
   const setPhoneNumberOtpValue = (value) => dispatch(setPhoneNumberOtp(value));
 
@@ -82,7 +89,9 @@ const VerificationForm = () => {
       <div className="mt-10">
         <MEButton
           meclassname="flex"
-          disabled={!(_.size(emailOtp) === 6 && _.size(phoneNumberOtp) === 6) || loader}
+          disabled={
+            !(_.size(emailOtp) === 6 && _.size(phoneNumberOtp) === 6) || loader
+          }
           buttonVariant={variants.SUCCESS}
           onClick={() => onSubmitClick()}
         >
