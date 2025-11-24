@@ -10,11 +10,11 @@ import { signInFormTranslation } from "@MELocalization/signIn/signInTranslationE
 
 import _ from "lodash";
 
-import SignInForm from "@MEScreenComponents/signInForm";
 import MEButton from "@MECommonComponents/button/meButton";
-import VerificationForm from "@MEScreenComponents/signInForm/verificationForm";
-import SignInFormNotification from "@MEScreenComponents/signInForm/notification";
-import SignInAccountNotVerified from "@MEScreenComponents/signInForm/accountNotVerified";
+import SignInForm from "@/components/screens/signIn/signInForm";
+import VerificationForm from "@/components/screens/signIn/verificationForm";
+import SignInFormNotification from "@/components/screens/signIn/notification";
+import SignInAccountNotVerified from "@/components/screens/signIn/accountNotVerified";
 
 const SignInScreen = () => {
   const { t, i18n } = useTranslation();

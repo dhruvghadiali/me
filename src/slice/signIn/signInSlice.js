@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { SIGN_IN_SCREEN_STATUS } from "@MEHelpers/enums";
-import { responseMessage } from "@MEUtils/responseMessage";
+import { SIGN_IN_SCREEN_STATUS, API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
 import { validateUser, sendOtp, verifyOtp } from "@MERedux/signIn/signInAction";
 
 export const signInSlice = createSlice({
@@ -66,12 +65,12 @@ export const signInSlice = createSlice({
       .addCase(validateUser.rejected, (state, action) => {
         state.loader = false;
         state.error =
-          action.payload.error || responseMessage.somethingWentWrong;
+          action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
       })
       .addCase(sendOtp.pending, (state, _) => {
+        state.loader = true;
         state.error = "";
         state.emailOtp = "";
-        state.loader = true;
         state.phoneNumberOtp = "";
         state.verificationToken = "";
       })
@@ -85,7 +84,7 @@ export const signInSlice = createSlice({
       .addCase(sendOtp.rejected, (state, action) => {
         state.loader = false;
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
+          action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
       })
       .addCase(verifyOtp.pending, (state, _) => {
         state.loader = true;
@@ -100,7 +99,7 @@ export const signInSlice = createSlice({
       .addCase(verifyOtp.rejected, (state, action) => {
         state.loader = false;
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
+          action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
         state.currentSignInScreenStatus = SIGN_IN_SCREEN_STATUS.ER;
       });
   },

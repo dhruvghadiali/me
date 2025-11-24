@@ -1,7 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { signInAPIResponse } from "@MEUtils/apiResponse";
 import { setAuthData } from "@MEHelpers/authHelpers";
+import {
+  signInAPIResponse,
+  signInSendOTPAPIResponse,
+} from "@MEUtils/apiResponse";
 import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
 import {
   SIGN_IN_SCREEN_STATUS,
@@ -13,7 +16,6 @@ import {
   signUpSendOTPAPIRoute,
   signUpOTPVerificationAPIRoute,
 } from "@MEUtils/apiRoutes";
-import { signInSendOTPAPIResponse } from "@MEUtils/apiResponse";
 import {
   isMockEnvironment,
   getMockAPIResponse,
@@ -33,7 +35,7 @@ import _ from "lodash";
  *  - @returns {<object>} API will return user details
  * Logic:
  *  - Step 1: Call API to validate user credentials.
- *  - Step 2: On Success call store user details redux store and local storage.
+ *  - Step 2: On Success call store (user, token, error, currentSignInScreenStatus) in redux store and store (user & token) in local storage.
  *            On Error store error message on redux store.
  * Usage:
  *  - This action usage is only for request backend service to validate existing user credentials.
@@ -84,56 +86,46 @@ export const validateUser = createAsyncThunk(
   }
 );
 
+/**
+ * Action Name: sendOtp
+ * Description: This action will used for request backend for send OTP to new register user who tries to sign in.
+ * Parameters: (Variable Name : Payload)
+ *  - @param {<String>} user_id - User id
+ * Returns:
+ *  - @returns {<object>} API will return verification token
+ * Logic:
+ *  - Step 1: Call API for send OTP to email and phone number.
+ *  - Step 2: On Success call store (verificationToken, currentSignInScreenStatus, error) in redux store.
+ *            On Error store error message on redux store.
+ * Usage:
+ *  - This action usage is only for request backend service to send OTP to new register user who tries to sign in.
+ *  - This action will call from sendOtp redux action (Only in success response and if user details are present).
+ */
 export const sendOtp = createAsyncThunk(
   "signIn/sendOtp",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "sendOtp"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${signUpSendOTPAPIRoute}`,
-          payload
-        );
+      let response = await axiosInstance.post(signUpSendOTPAPIRoute, payload, {
+        autoLogoutOnUnauthorized: false,
+      });
 
-        if (response) response = response.data;
-      }
-
-      if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          return {
-            error: "",
-            currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.AV,
-            verificationToken: signInSendOTPAPIResponse(response.data[0]),
-          };
-        } else {
-          return {
-            verificationToken: "",
-            currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.ANV,
-            error: response.message || defaultAPIErrorResponse.message,
-          };
-        }
+      if (apiResponseHaveData(response)) {
+        return {
+          error: "",
+          verificationToken: signInSendOTPAPIResponse(response.data[0]),
+          currentSignInScreenStatus: SIGN_IN_SCREEN_STATUS.AV,
+        };
       } else {
         return {
           verificationToken: "",
-          currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.ANV,
-          error: response.message || defaultAPIErrorResponse.message,
+          error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
+          currentSignInScreenStatus: SIGN_IN_SCREEN_STATUS.ANV,
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) || "Send OTP request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );
