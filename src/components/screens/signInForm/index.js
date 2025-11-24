@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
-import { routeName } from "@MEUtils/routeName";
 import { validateUser } from "@MERedux/signIn/signInAction";
 import { validationMessage } from "@MEUtils/validationMessage";
+import { forgottenPassword } from "@MEUtils/pageRoutes";
 import { signInFormTranslation } from "@MELocalization/signIn/signInTranslationEn";
 import { resetForgottenPasswordFormState } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
 
@@ -20,17 +20,11 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const SignInForm = () => {
-  const { loader, error, isValidUser } = useSelector((state) => state.signIn);
+  const { loader, error } = useSelector((state) => state.signIn);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isValidUser) {
-      navigate(routeName.dashboard, { replace: true });
-    }
-  }, [isValidUser, navigate]);
 
   const formik = useFormik({
     initialValues: {
@@ -45,7 +39,7 @@ const SignInForm = () => {
 
   const onForgottenPasswordClick = () => {
     dispatch(resetForgottenPasswordFormState());
-    navigate(routeName.forgottenPassword, { replace: true });
+    navigate(forgottenPassword, { replace: true });
   };
 
   return (
@@ -96,6 +90,7 @@ const SignInForm = () => {
           <MEButton
             type="submit"
             meclassname="flex"
+            disabled={loader}
             buttonVariant={variants.SUCCESS}
           >
             {i18n.exists("signinButtonLabel")
@@ -123,7 +118,7 @@ const SignInForm = () => {
 const SignInSchema = Yup.object().shape({
   username: Yup.string()
     .min(5, validationMessage.usernameMin)
-    .max(10, validationMessage.usernameMax)
+    .max(100, validationMessage.usernameMax)
     .required(validationMessage.usernameRequired),
   password: Yup.string()
     .min(5, validationMessage.passwordMin)

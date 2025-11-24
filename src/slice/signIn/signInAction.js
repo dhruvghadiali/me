@@ -1,16 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { signInFormState } from "@MEUtils/enums";
-
+import { signInAPIResponse } from "@MEUtils/apiResponse";
+import { setAuthData } from "@MEHelpers/authHelpers";
+import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
+import {
+  SIGN_IN_SCREEN_STATUS,
+  HTTP_STATUS_CODES,
+  API_RESPONSE_MESSAGES,
+} from "@MEHelpers/enums";
 import {
   signInAPIRoute,
   signUpSendOTPAPIRoute,
   signUpOTPVerificationAPIRoute,
 } from "@MEUtils/apiRoutes";
-import {
-  signInAPIResponse,
-  signInSendOTPAPIResponse,
-} from "@MEUtils/apiResponse";
+import { signInSendOTPAPIResponse } from "@MEUtils/apiResponse";
 import {
   isMockEnvironment,
   getMockAPIResponse,
@@ -18,74 +21,65 @@ import {
   isAPIServedSuccessfully,
 } from "@MEUtils/utilityFunctions";
 
-import axios from "axios";
+import _ from "lodash";
 
+/**
+ * Action Name: validateUser
+ * Description: This action will used for request backend to validate existing user credentials.
+ * Parameters: (Variable Name : Payload)
+ *  - @param {<String>} username  - User unique username
+ *  - @param {<String>} password  - User unique password
+ * Returns:
+ *  - @returns {<object>} API will return user details
+ * Logic:
+ *  - Step 1: Call API to validate user credentials.
+ *  - Step 2: On Success call store user details redux store and local storage.
+ *            On Error store error message on redux store.
+ * Usage:
+ *  - This action usage is only for request backend service to validate existing user credentials.
+ *  - This action will call from sign in form.
+ */
 export const validateUser = createAsyncThunk(
   "signIn/validateUser",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      let user = {};
+      let response = await axiosInstance.post(signInAPIRoute, payload, {
+        autoLogoutOnUnauthorized: false,
+      });
 
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "signIn"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${signInAPIRoute}`,
-          payload
-        );
+      if (apiResponseHaveData(response)) {
+        response = signInAPIResponse(response.data[0]);
 
-        if (response) response = response.data;
-      }
-
-      if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          user = signInAPIResponse(response.data[0]);
-          if (!user.isAccountVerified) {
-            return {
-              error: "",
-              user: user,
-              isValidUser: false,
-              currentSignInFormStatus: signInFormState.ANV,
-            };
-          } else {
-            localStorage.setItem("user", JSON.stringify(user));
-            return {
-              error: "",
-              user: user,
-              isValidUser: true,
-              currentSignInFormStatus: signInFormState.SI,
-            };
-          }
+        if (response && response.isAccountVerified) {
+          setAuthData(response, response.token);
+          return {
+            user: response,
+            token: response.token,
+            error: "",
+            currentSignInScreenStatus: SIGN_IN_SCREEN_STATUS.SI,
+          };
         } else {
           return {
-            user: user,
-            isValidUser: false,
-            error: response.message || defaultAPIErrorResponse.message,
-            currentSignInFormStatus: signInFormState.SI,
+            user: response,
+            token: "",
+            error: "",
+            currentSignInScreenStatus: SIGN_IN_SCREEN_STATUS.ANV,
           };
         }
       } else {
         return {
-          user: user,
-          isValidUser: false,
-          error: response.message || defaultAPIErrorResponse.message,
-          currentSignInFormStatus: signInFormState.SI,
+          user: {},
+          token: "",
+          error:
+            (response && response.message) ||
+            API_RESPONSE_MESSAGES.SIGNIN_FAILED,
+          currentSignInScreenStatus: SIGN_IN_SCREEN_STATUS.ER,
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) || "Sign-in request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );
@@ -113,20 +107,20 @@ export const sendOtp = createAsyncThunk(
         if (response && response.data && response.data.length > 0) {
           return {
             error: "",
-            currentSignInFormStatus: signInFormState.AV,
+            currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.AV,
             verificationToken: signInSendOTPAPIResponse(response.data[0]),
           };
         } else {
           return {
             verificationToken: "",
-            currentSignInFormStatus: signInFormState.ANV,
+            currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.ANV,
             error: response.message || defaultAPIErrorResponse.message,
           };
         }
       } else {
         return {
           verificationToken: "",
-          currentSignInFormStatus: signInFormState.ANV,
+          currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.ANV,
           error: response.message || defaultAPIErrorResponse.message,
         };
       }
@@ -186,18 +180,18 @@ export const verifyOtp = createAsyncThunk(
         if (response && response.data && response.data.length > 0) {
           return {
             error: "",
-            currentSignInFormStatus: signInFormState.SU,
+            currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.SU,
           };
         } else {
           return {
             error: response.message || defaultAPIErrorResponse.message,
-            currentSignInFormStatus: signInFormState.SU,
+            currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.SU,
           };
         }
       } else {
         return {
           error: response.message || defaultAPIErrorResponse.message,
-          currentSignInFormStatus: signInFormState.ER,
+          currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.ER,
         };
       }
     } catch (error) {

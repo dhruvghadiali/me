@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import Lottie from "react-lottie";
 
-import { signInFormState } from "@MEUtils/enums";
+import { SIGN_IN_SCREEN_STATUS } from "@MEHelpers/enums";
 import { Label } from "@MEShadcnComponents/label";
 import { signInFormTranslation } from "@MELocalization/signIn/signInTranslationEn";
 
@@ -18,7 +18,7 @@ const SignInFormNotification = () => {
 
   return (
     <>
-      {currentSignInFormStatus === signInFormState.ER && (
+      {currentSignInFormStatus === SIGN_IN_SCREEN_STATUS.ER && (
         <>
           <div className="w-full h-80 ">
             <Lottie
@@ -45,7 +45,7 @@ const SignInFormNotification = () => {
         </>
       )}
 
-      {currentSignInFormStatus === signInFormState.SU && (
+      {currentSignInFormStatus === SIGN_IN_SCREEN_STATUS.SU && (
         <>
           <div className="w-full h-80 ">
             <Lottie

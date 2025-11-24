@@ -14,7 +14,6 @@ const AuthChecker = ({ children }) => {
       dispatch(setLogin({ 
         userData: authData.user, 
         token: authData.token,
-        isValidUser: true 
       }));
     }
   }, [dispatch]);

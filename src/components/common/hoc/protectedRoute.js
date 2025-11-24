@@ -1,12 +1,12 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import { signIn } from '@MEPageRoutes';
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { signIn } from "@MEPageRoutes";
 
 const ProtectedRoute = ({ children }) => {
-  const { isValidUser } = useSelector((state) => state.signIn);
+  const { token } = useSelector((state) => state.signIn);
 
-  if (!isValidUser) {
+  if (!token) {
     return <Navigate to={signIn} replace />;
   }
 

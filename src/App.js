@@ -15,6 +15,7 @@ import HomePage from "@MEPages/homePage";
 import ThemePage from "@MEPages/ThemePage";
 import SchoolPage from "@MEPages/schoolPage";
 import SignUpPage from "@MEPages/signUpPage";
+import SignInPage from "@MEPages/signInPage";
 import NotFoundPage from "@MEPages/NotFoundPage";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";
 import AuthChecker from "@MECommonComponents//hoc/authChecker";
@@ -31,7 +32,9 @@ function App() {
             <Route
               path={root}
               element={
-                <PublicRoute>
+                <PublicRoute
+                  redirectAuthenticated={true}
+                  redirectTo={dashboard}>
                   <HomePage />
                 </PublicRoute>
               }
@@ -39,7 +42,9 @@ function App() {
             <Route
               path={school}
               element={
-                <PublicRoute>
+                <PublicRoute
+                  redirectAuthenticated={true}
+                  redirectTo={dashboard}>
                   <SchoolPage />
                 </PublicRoute>
               }
@@ -51,7 +56,7 @@ function App() {
                   redirectAuthenticated={true}
                   redirectTo={dashboard}
                 >
-                  <SignUpPage />
+                  <SignInPage />
                 </PublicRoute>
               }
             />

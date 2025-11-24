@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { signInFormState } from "@MEUtils/enums";
+import { SIGN_IN_SCREEN_STATUS } from "@MEHelpers/enums";
 import { responseMessage } from "@MEUtils/responseMessage";
 import { validateUser, sendOtp, verifyOtp } from "@MERedux/signIn/signInAction";
 
@@ -8,28 +8,28 @@ export const signInSlice = createSlice({
   name: "signIn",
   initialState: {
     user: {},
+    token: "",
     error: "",
     emailOtp: "",
     loader: false,
     phoneNumberOtp: "",
-    isValidUser: false,
     verificationToken: "",
-    currentSignInFormStatus: signInFormState.SI,
+    currentSignInScreenStatus: SIGN_IN_SCREEN_STATUS.SI,
   },
   reducers: {
     resetSignInFormState: (state, _) => {
       state.user = {};
+      state.token = "";
       state.error = "";
       state.loader = false;
-      state.isValidUser = false;
-      state.currentSignInFormStatus = signInFormState.SI;
+      state.currentSignInScreenStatus = SIGN_IN_SCREEN_STATUS.SI;
     },
     resetSignInVerificationFormState: (state, _) => {
       state.emailOtp = "";
       state.phoneNumberOtp = "";
     },
     changeSignInFormState: (state, action) => {
-      state.currentSignInFormStatus = action.payload;
+      state.currentSignInScreenStatus = action.payload;
     },
     setEmailOtp: (state, action) => {
       state.emailOtp = action.payload;
@@ -37,62 +37,52 @@ export const signInSlice = createSlice({
     setPhoneNumberOtp: (state, action) => {
       state.phoneNumberOtp = action.payload;
     },
-    setUserDetails: (state, action) => {
-      state.user = action.payload;
-    },
     setLogin: (state, action) => {
       state.user = action.payload.userData;
-      state.isValidUser = action.payload.isValidUser;
-      if (action.payload.token) {
-        // Store token if provided
-        localStorage.setItem('authToken', action.payload.token);
-        localStorage.setItem('userData', JSON.stringify(action.payload.userData));
-      }
+      state.token = action.payload.token;
     },
     signOutUser: (state, _) => {
       state.user = {};
-      state.isValidUser = false;
-      state.currentSignInFormStatus = signInFormState.SI;
+      state.currentSignInScreenStatus = SIGN_IN_SCREEN_STATUS.SI;
       localStorage.clear();
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(validateUser.pending, (state, _) => {
         state.user = {};
+        state.token = "";
         state.error = "";
         state.loader = true;
-        state.isValidUser = false;
       })
       .addCase(validateUser.fulfilled, (state, action) => {
         state.loader = false;
         state.user = action.payload.user;
+        state.token = action.payload.token;
         state.error = action.payload.error;
-        state.isValidUser = action.payload.isValidUser;
-        state.currentSignInFormStatus = action.payload.currentSignInFormStatus;
+        state.currentSignInScreenStatus =
+          action.payload.currentSignInScreenStatus;
       })
       .addCase(validateUser.rejected, (state, action) => {
         state.loader = false;
-        state.isValidUser = false;
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
+          action.payload.error || responseMessage.somethingWentWrong;
       })
       .addCase(sendOtp.pending, (state, _) => {
         state.error = "";
         state.emailOtp = "";
         state.loader = true;
         state.phoneNumberOtp = "";
-        state.isValidUser = false;
         state.verificationToken = "";
       })
       .addCase(sendOtp.fulfilled, (state, action) => {
         state.loader = false;
         state.error = action.payload.error;
         state.verificationToken = action.payload.verificationToken;
-        state.currentSignInFormStatus = action.payload.currentSignInFormStatus;
+        state.currentSignInScreenStatus =
+          action.payload.currentSignInScreenStatus;
       })
       .addCase(sendOtp.rejected, (state, action) => {
-        state.isValidUser = false;
         state.loader = false;
         state.error =
           action.payload.message || responseMessage.somethingWentWrong;
@@ -104,13 +94,14 @@ export const signInSlice = createSlice({
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.loader = false;
         state.error = action.payload.error;
-        state.currentSignInFormStatus = action.payload.currentSignInFormStatus;
+        state.currentSignInScreenStatus =
+          action.payload.currentSignInScreenStatus;
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.loader = false;
         state.error =
           action.payload.message || responseMessage.somethingWentWrong;
-        state.currentSignInFormStatus = signInFormState.ER;
+        state.currentSignInScreenStatus = SIGN_IN_SCREEN_STATUS.ER;
       });
   },
 });
@@ -119,7 +110,6 @@ export const {
   setLogin,
   signOutUser,
   setEmailOtp,
-  setUserDetails,
   setPhoneNumberOtp,
   resetSignInFormState,
   changeSignInFormState,

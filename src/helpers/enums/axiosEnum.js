@@ -39,6 +39,7 @@ const API_RESPONSE_MESSAGES = Object.freeze({
   UNKNOWN_ERROR: "An unexpected error occurred",
   TIMEOUT_ERROR: "Request timeout - please try again",
   RATE_LIMIT_EXCEEDED: "Too many requests - please wait before trying again",
+  SOMETHING_WENT_WRONG: "Something went wrong. Please try again later.", 
 });
 
 export { HTTP_STATUS_CODES, API_RESPONSE_MESSAGES };

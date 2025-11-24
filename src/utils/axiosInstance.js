@@ -2,6 +2,8 @@ import axios from "axios";
 import { clearAuthData } from "@MEHelpers/authHelpers";
 import { HTTP_STATUS_CODES, API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
 
+import _ from "lodash";
+
 // API Configuration
 const API_CONFIG = {
   BASE_URL: import.meta.env.VITE_API_BASE_URL,
@@ -15,7 +17,17 @@ const API_CONFIG = {
 
 // Authorization utility functions
 const isAPIServedSuccessfully = (response) =>
-  response.status === HTTP_STATUS_CODES.OK || response.status === HTTP_STATUS_CODES.CREATED;
+  response &&  response.status && (response.status === HTTP_STATUS_CODES.OK ||
+  response.status === HTTP_STATUS_CODES.CREATED);
+
+const apiResponseHaveData = (response) =>
+  response &&
+  response.data &&
+  Array.isArray(response.data) &&
+  _.size(response.data) > 0 &&
+  response.status &&
+  (response.status === HTTP_STATUS_CODES.OK ||
+    response.status === HTTP_STATUS_CODES.CREATED);
 
 /**
  * Check if user is authorized based on response
@@ -270,4 +282,4 @@ axiosInstance.interceptors.response.use(
 );
 
 // Export enums and utilities for use in other components
-export { API_CONFIG, axiosInstance, isAuthorizedUser, handleUnauthorizedUser };
+export { API_CONFIG, axiosInstance, isAPIServedSuccessfully, handleUnauthorizedUser, apiResponseHaveData };

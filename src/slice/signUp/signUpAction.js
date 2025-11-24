@@ -1,17 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { SIGN_UP_FORM_STATUS } from "@MEHelpers/enums";
 import { signUpSendOTPAPIPayload } from "@MEUtils/apiPayload";
+import {
+  SIGN_UP_FORM_STATUS,
+  HTTP_STATUS_CODES,
+  API_RESPONSE_MESSAGES,
+} from "@MEHelpers/enums";
 import { signUpSendOTPAPIResponse } from "@MEUtils/apiResponse";
-import { HTTP_STATUS_CODES } from "@MEHelpers/enums";
 
 import {
   signUpAPIRoute,
   signUpSendOTPAPIRoute,
   signUpOTPVerificationAPIRoute,
 } from "@MEUtils/apiRoutes";
-import { axiosInstance } from "@MEUtils/axiosInstance";
-import { defaultAPIErrorResponse } from "@MEUtils/utilityFunctions";
+import {
+  axiosInstance,
+  apiResponseHaveData,
+  isAPIServedSuccessfully,
+} from "@MEUtils/axiosInstance";
 
 import _ from "lodash";
 
@@ -43,14 +49,7 @@ export const registerUser = createAsyncThunk(
         autoLogoutOnUnauthorized: false,
       });
 
-      if (
-        response &&
-        response.data &&
-        response.status &&
-        response.status === HTTP_STATUS_CODES.CREATED &&
-        Array.isArray(response.data) &&
-        _.size(response.data) > 0
-      ) {
+      if (apiResponseHaveData(response)) {
         dispatch(sendOtp(signUpSendOTPAPIPayload({ id: response.data[0].id })));
         return {
           error: "",
@@ -59,7 +58,7 @@ export const registerUser = createAsyncThunk(
         };
       } else {
         return {
-          error: response.message || defaultAPIErrorResponse.message,
+          error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
           userId: "",
           currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
         };
@@ -95,14 +94,7 @@ export const sendOtp = createAsyncThunk(
         autoLogoutOnUnauthorized: false,
       });
 
-      if (
-        response &&
-        response.data &&
-        response.status &&
-        response.status === HTTP_STATUS_CODES.OK &&
-        Array.isArray(response.data) &&
-        _.size(response.data) > 0
-      ) {
+      if (apiResponseHaveData(response)) {
         return {
           error: "",
           verificationToken: response.data[0].verification_token || "",
@@ -110,7 +102,7 @@ export const sendOtp = createAsyncThunk(
         };
       } else {
         return {
-          error: response.message || defaultAPIErrorResponse.message,
+          error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
           verificationToken: "",
           currentSignUpFormStatus: SIGN_UP_FORM_STATUS.RE,
         };
@@ -152,19 +144,14 @@ export const verifyOtp = createAsyncThunk(
         { autoLogoutOnUnauthorized: false }
       );
 
-      console.log("OTP Verification Response:", response);
-      if (
-        response &&
-        response.status &&
-        response.status === HTTP_STATUS_CODES.OK
-      ) {
+      if (isAPIServedSuccessfully(response)) {
         return {
           error: "",
           currentSignUpFormStatus: SIGN_UP_FORM_STATUS.SU,
         };
       } else {
         return {
-          error: response.message || defaultAPIErrorResponse.message,
+          error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
           currentSignUpFormStatus: SIGN_UP_FORM_STATUS.ER,
         };
       }

@@ -1,12 +1,13 @@
 export const setAuthData = (user, token) => {
-  localStorage.setItem("meUserData", JSON.stringify(user));
-  localStorage.setItem("meAuthToken", token);
+  localStorage.setItem("meStudentAuthData", JSON.stringify(user));
+  localStorage.setItem("meStudentAuthToken", token);
 };
 
 export const getAuthData = () => {
-  const userData = localStorage.getItem("meUserData");
-  const authToken = localStorage.getItem("meAuthToken");
+  const userData = localStorage.getItem("meStudentAuthData");
+  const authToken = localStorage.getItem("meStudentAuthToken");
   
+  console.log("Auth Token:", authToken, userData);
   if (userData && authToken) {
     try {
       return {
@@ -23,8 +24,8 @@ export const getAuthData = () => {
 };
 
 export const clearAuthData = () => {
-  localStorage.removeItem("meUserData");
-  localStorage.removeItem("meAuthToken");
+  localStorage.removeItem("meStudentAuthData");
+  localStorage.removeItem("meStudentAuthToken");
 };
 
 export const isAuthenticated = () => {
