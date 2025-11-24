@@ -6,22 +6,13 @@ import {
   signInSendOTPAPIResponse,
 } from "@MEUtils/apiResponse";
 import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
-import {
-  SIGN_IN_SCREEN_STATUS,
-  HTTP_STATUS_CODES,
-  API_RESPONSE_MESSAGES,
-} from "@MEHelpers/enums";
+import { SIGN_IN_SCREEN_STATUS, API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
 import {
   signInAPIRoute,
   signUpSendOTPAPIRoute,
   signUpOTPVerificationAPIRoute,
 } from "@MEUtils/apiRoutes";
-import {
-  isMockEnvironment,
-  getMockAPIResponse,
-  defaultAPIErrorResponse,
-  isAPIServedSuccessfully,
-} from "@MEUtils/utilityFunctions";
+import { isAPIServedSuccessfully } from "@MEUtils/utilityFunctions";
 
 import _ from "lodash";
 
@@ -141,61 +132,39 @@ export const sendOtp = createAsyncThunk(
  * Returns:
  *  - @returns {<object>} API will return empty data
  * Logic:
- *  - Step 1: Check application environment. (Mock environment will give mock response)
- *  - Step 2: Call API to verify OTP for email and phone number.
- *  - Step 3: On Success call store (currentSignUpFormStatus, error) in redux store.
+ *  - Step 1: Call API to verify OTP for email and phone number.
+ *  - Step 2: On Success call store (currentSignUpFormStatus, error) in redux store.
  *            On Error store error message on redux store.
  * Usage:
  *  - This action usage is only for request backend service to validate email and phone number OTP for new register user.
- *  - This action will call from signup from (OTP Verification form).
+ *  - This action will call from signIn form (OTP Verification form).
  */
 export const verifyOtp = createAsyncThunk(
-  "signUp/verifyOtp",
+  "signIn/verifyOtp",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "verifyOtp"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${signUpOTPVerificationAPIRoute}`,
-          payload
-        );
-
-        if (response) response = response.data;
-      }
+      let response = await axiosInstance.post(
+        signUpOTPVerificationAPIRoute,
+        payload,
+        { autoLogoutOnUnauthorized: false }
+      );
 
       if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          return {
-            error: "",
-            currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.SU,
-          };
-        } else {
-          return {
-            error: response.message || defaultAPIErrorResponse.message,
-            currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.SU,
-          };
-        }
+        return {
+          error: "",
+          currentSignInScreenStatus: SIGN_IN_SCREEN_STATUS.SU,
+        };
       } else {
         return {
-          error: response.message || defaultAPIErrorResponse.message,
-          currentSignInFormStatus: SIGN_IN_SCREEN_STATUS.ER,
+          error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
+          currentSignInScreenStatus: SIGN_IN_SCREEN_STATUS.ER,
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Sign-in OTP verification request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );

@@ -21,42 +21,55 @@ const SignInAccountNotVerified = () => {
   return (
     <>
       {error && (
-        <div className="bg-danger mb-2 flex items-center  rounded-md">
-          <CircleAlertIcon className="text-accent ml-2" />
-          <p className="text-accent p-2 text-center">{error}</p>
+        <div className="bg-destructive/10 border border-destructive/20 mb-4 flex items-center gap-2 rounded-lg p-3">
+          <CircleAlertIcon className="text-destructive h-5 w-5 shrink-0" />
+          <p className="text-destructive text-sm font-medium">{error}</p>
         </div>
       )}
 
-      <div className="flex items-center justify-center ">
-        <div className="p-6 max-w-md text-center">
-          <div className="flex justify-center items-center bg-danger rounded-full w-16 h-16 mx-auto">
-            <AlertCircle className="w-8 h-8 text-dark" />
+      <div className="flex items-center justify-center py-6">
+        <div className="max-w-md w-full text-center space-y-6">
+          <div className="flex justify-center">
+            <div className="flex items-center justify-center bg-destructive/10 rounded-full w-20 h-20 ring-8 ring-destructive/5">
+              <AlertCircle className="w-10 h-10 text-destructive" />
+            </div>
           </div>
-          <h2 className="text-xl font-bold text-dark mt-4">
-            {i18n.exists("accountNotVerifiedTitle")
-              ? _.upperFirst(t("accountNotVerifiedTitle"))
-              : _.upperFirst(signInFormTranslation.accountNotVerifiedTitle)}
-          </h2>
-          <p className="text-dark mt-2 mb-3">
-            {i18n.exists("accountNotVerifiedSubtitle")
-              ? _.upperFirst(t("accountNotVerifiedSubtitle"))
-              : _.upperFirst(signInFormTranslation.accountNotVerifiedSubtitle)}
-          </p>
-          <MEButton
-            type="submit"
-            buttonVariant={variants.DARK}
-            onClick={() => dispatch(sendOtp(signInSendOTPAPIPayload(user)))}
-          >
-            {i18n.exists("sendOTPButtonLabel")
-              ? _.upperCase(t("sendOTPButtonLabel"))
-              : _.upperCase(signInFormTranslation.sendOTPButtonLabel)}
-            {loader && <MELoaderIcon />}
-          </MEButton>
-          <p className="text-xs text-danger mt-3">
-            {i18n.exists("accountNotVerifiedMessage")
-              ? _.upperFirst(t("accountNotVerifiedMessage"))
-              : _.upperFirst(signInFormTranslation.accountNotVerifiedMessage)}
-          </p>
+          
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold tracking-tight">
+              {i18n.exists("accountNotVerifiedTitle")
+                ? _.upperFirst(t("accountNotVerifiedTitle"))
+                : _.upperFirst(signInFormTranslation.accountNotVerifiedTitle)}
+            </h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              {i18n.exists("accountNotVerifiedSubtitle")
+                ? _.upperFirst(t("accountNotVerifiedSubtitle"))
+                : _.upperFirst(signInFormTranslation.accountNotVerifiedSubtitle)}
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <MEButton
+              type="submit"
+              buttonVariant={variants.DARK}
+              className="w-full"
+              disabled={loader}
+              onClick={() => dispatch(sendOtp(signInSendOTPAPIPayload(user)))}
+            >
+              {i18n.exists("sendOTPButtonLabel")
+                ? _.upperCase(t("sendOTPButtonLabel"))
+                : _.upperCase(signInFormTranslation.sendOTPButtonLabel)}
+              {loader && <MELoaderIcon />}
+            </MEButton>
+          </div>
+
+          <div className="pt-2">
+            <p className="text-xs text-muted-foreground bg-muted/50 rounded-md p-3 border border-border/50">
+              {i18n.exists("accountNotVerifiedMessage")
+                ? _.upperFirst(t("accountNotVerifiedMessage"))
+                : _.upperFirst(signInFormTranslation.accountNotVerifiedMessage)}
+            </p>
+          </div>
         </div>
       </div>
     </>

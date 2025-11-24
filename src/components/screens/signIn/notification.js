@@ -13,12 +13,12 @@ import error from "@MEAssets/lottieFiles/signInErrorAnimation.json";
 import success from "@MEAssets/lottieFiles/signInSuccessAnimation.json";
 
 const SignInFormNotification = () => {
-  const { currentSignInFormStatus } = useSelector((state) => state.signIn);
+  const { currentSignInScreenStatus } = useSelector((state) => state.signIn);
   const { t, i18n } = useTranslation();
 
   return (
     <>
-      {currentSignInFormStatus === SIGN_IN_SCREEN_STATUS.ER && (
+      {currentSignInScreenStatus === SIGN_IN_SCREEN_STATUS.ER && (
         <>
           <div className="w-full h-80 ">
             <Lottie
@@ -45,7 +45,7 @@ const SignInFormNotification = () => {
         </>
       )}
 
-      {currentSignInFormStatus === SIGN_IN_SCREEN_STATUS.SU && (
+      {currentSignInScreenStatus === SIGN_IN_SCREEN_STATUS.SU && (
         <>
           <div className="w-full h-80 ">
             <Lottie
