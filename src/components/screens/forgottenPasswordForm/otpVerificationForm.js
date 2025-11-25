@@ -5,7 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { variants } from "@MEUtils/enums";
 import { Label } from "@MEShadcnComponents/label";
 import { verifyOtp } from "@MERedux/forgottenPassword/forgottenPasswordAction";
-import { setOtpValue } from "@MERedux/forgottenPassword/forgottenPasswordSlice";
+import {
+  setEmailOtp,
+  setPhoneNumberOtp,
+} from "@MERedux/forgottenPassword/forgottenPasswordSlice";
 import { forgottenPasswordOTPVerificationAPIPayload } from "@MEUtils/apiPayload";
 import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
 
@@ -16,17 +19,19 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import MEOtpVerification from "@MECommonComponents/otpVerification/meOtpVerification";
 
 const OtpVerificationForm = () => {
-  const { loader, error, otp, selectedUserForSendOtp, verificationToken } =
+  const { loader, error, emailOtp, phoneNumberOtp, selectedUserForSendOtp, verificationToken } =
     useSelector((state) => state.forgottenPassword);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
-  const onSetOtpValue = (value) => dispatch(setOtpValue(value));
+  const setEmailOtpValue = (value) => dispatch(setEmailOtp(value));
+  const setPhoneNumberOtpValue = (value) => dispatch(setPhoneNumberOtp(value));
 
   const onSubmitOTP = () => {
     const data = {
-      otp,
+      emailOtp,
+      phoneNumberOtp,
       verificationToken,
       userId:
         selectedUserForSendOtp && selectedUserForSendOtp.id
@@ -37,55 +42,81 @@ const OtpVerificationForm = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       {error && (
-        <div className="bg-danger mb-2 flex items-center  rounded-md">
-          <CircleAlertIcon className="text-accent ml-2" />
-          <p className="text-accent p-2 text-center">{error}</p>
+        <div className="bg-destructive/10 border border-destructive/20 flex items-center gap-2 rounded-lg p-3">
+          <CircleAlertIcon className="text-destructive h-5 w-5 shrink-0" />
+          <p className="text-destructive text-sm font-medium">{error}</p>
         </div>
       )}
 
-      <Label className="text-dark mt-3 ">
-        {i18n.exists("forgottenPasswordOtpVerificationMessage")
-          ? _.upperFirst(
-              t("forgottenPasswordOtpVerificationMessage", {
+      <div className="bg-muted/30 border border-border rounded-lg p-4">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {i18n.exists("forgottenPasswordOtpVerificationMessage")
+            ? t("forgottenPasswordOtpVerificationMessage", {
                 email: selectedUserForSendOtp
-                  ? _.truncate(selectedUserForSendOtp.email)
+                  ? _.truncate(selectedUserForSendOtp.email, { length: 30 })
                   : "",
                 phoneNumber: selectedUserForSendOtp
                   ? selectedUserForSendOtp.phoneNumber
                   : "",
               })
-            )
-          : _.upperFirst(
-              forgottenPasswordFormTranslation.forgottenPasswordOtpVerificationStaticMessage
-            )}
-      </Label>
-
-      <Label className="text-dark flex mb-1 mt-5">
-        {i18n.exists("otpTextFieldLabel")
-          ? _.upperCase(t("otpTextFieldLabel"))
-          : _.upperCase(forgottenPasswordFormTranslation.otpTextFieldLabel)}
-      </Label>
-      <MEOtpVerification
-        onComplete={(value) => onSetOtpValue(value)}
-        onChange={(value) => onSetOtpValue(value)}
-      />
-
-      <div className="mt-5">
-        <Label className="text-xs text-danger">
-          {i18n.exists("otpVerificationAlert")
-            ? _.upperFirst(t("otpVerificationAlert"))
-            : _.upperFirst(
-                forgottenPasswordFormTranslation.otpVerificationAlert
-              )}
-        </Label>
+            : forgottenPasswordFormTranslation.forgottenPasswordOtpVerificationStaticMessage}
+        </p>
       </div>
 
-      <div className="mt-10">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label className="text-sm font-medium flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+              1
+            </span>
+            {i18n.exists("emailOtpVerificationLabel")
+              ? t("emailOtpVerificationLabel")
+              : forgottenPasswordFormTranslation.emailOtpVerificationLabel}
+          </Label>
+          <div className="flex justify-center py-2">
+            <MEOtpVerification
+              value={emailOtp}
+              onComplete={(value) => setEmailOtpValue(value)}
+              onChange={(value) => setEmailOtpValue(value)}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-sm font-medium flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+              2
+            </span>
+            {i18n.exists("phoneNumberOtpVerificationLabel")
+              ? t("phoneNumberOtpVerificationLabel")
+              : forgottenPasswordFormTranslation.phoneNumberOtpVerificationLabel}
+          </Label>
+          <div className="flex justify-center py-2">
+            <MEOtpVerification
+              value={phoneNumberOtp}
+              onComplete={(value) => setPhoneNumberOtpValue(value)}
+              onChange={(value) => setPhoneNumberOtpValue(value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/30 rounded-lg p-3">
+        <p className="text-xs text-amber-800 dark:text-amber-200">
+          {i18n.exists("otpVerificationAlert")
+            ? t("otpVerificationAlert")
+            : forgottenPasswordFormTranslation.otpVerificationAlert}
+        </p>
+      </div>
+
+      <div className="pt-2">
         <MEButton
-          meclassname="flex"
-          disabled={!(_.size(otp) === 6) || loader}
+          meclassname="flex w-full"
+          disabled={
+            !(_.size(emailOtp) === 6 && _.size(phoneNumberOtp) === 6) || loader
+          }
           buttonVariant={variants.SUCCESS}
           onClick={() => onSubmitOTP()}
         >

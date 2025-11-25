@@ -12,5 +12,7 @@ export const forgottenPasswordFormTranslation = {
     passwordInputLabel: "password",
     confirmPasswordInputLabel: "confirm password",
     passwordVerificationSuccess: "Password changed successfully please try to sign in",
-    passwordVerificationError: "Password is not changed please try after sometime"
+    passwordVerificationError: "Password is not changed please try after sometime",
+    emailOtpVerificationLabel: "email verification",
+    phoneNumberOtpVerificationLabel: "phone number verification",
 }

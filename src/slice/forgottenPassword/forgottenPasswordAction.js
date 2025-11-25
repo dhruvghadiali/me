@@ -1,6 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { FORGOTTEN_PASSWORD_FORM_STATUS, API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
+import {
+  FORGOTTEN_PASSWORD_FORM_STATUS,
+  API_RESPONSE_MESSAGES,
+} from "@MEHelpers/enums";
 import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
 import {
   forgottenPasswordAPIResponse,
@@ -32,16 +35,13 @@ export const checkUserInformation = createAsyncThunk(
         { autoLogoutOnUnauthorized: false }
       );
 
-      console.log("checkUserInformation response", response);
-
-      if(apiResponseHaveData(response)) {
+      if (apiResponseHaveData(response)) {
         return {
           users: forgottenPasswordAPIResponse(response.data),
           error: "",
-          currentForgottenPasswordFormState:
-            FORGOTTEN_PASSWORD_FORM_STATUS.UV,
+          currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.UV,
         };
-      }else{
+      } else {
         return {
           users: [],
           error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
@@ -61,56 +61,31 @@ export const sendOtp = createAsyncThunk(
   "forgottenPassword/sendOtp",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "sendOtp"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${forgottenPasswordSendOTPAPIRoute}`,
-          payload
-        );
+      let response = await axiosInstance.post(
+        forgottenPasswordSendOTPAPIRoute,
+        payload,
+        { autoLogoutOnUnauthorized: false }
+      );
 
-        if (response) response = response.data;
-      }
-
-      if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          return {
-            error: "",
-            verificationToken: forgottenPasswordSendOTPAPIResponse(
-              response.data[0]
-            ),
-            currentForgottenPasswordFormState:
-              FORGOTTEN_PASSWORD_FORM_STATUS.SO,
-          };
-        } else {
-          return {
-            verificationToken: "",
-            error: response.message || defaultAPIErrorResponse.message,
-            currentForgottenPasswordFormState:
-              FORGOTTEN_PASSWORD_FORM_STATUS.UV,
-          };
-        }
+      if (apiResponseHaveData(response)) {
+        return {
+          verificationToken: forgottenPasswordSendOTPAPIResponse(
+            response.data[0]
+          ),
+          error: "",
+          currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.SO,
+        };
       } else {
         return {
           verificationToken: "",
-          error: response.message || defaultAPIErrorResponse.message,
+          error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
           currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.UV,
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) || "Send OTP request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );
@@ -119,56 +94,31 @@ export const verifyOtp = createAsyncThunk(
   "forgottenPassword/verifyOtp",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "verifyOtp"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${forgottenPasswordOTPVerificationAPIRoute}`,
-          payload
-        );
+      let response = await axiosInstance.post(
+        forgottenPasswordOTPVerificationAPIRoute,
+        payload,
+        { autoLogoutOnUnauthorized: false }
+      );
 
-        if (response) response = response.data;
-      }
-
-      if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          return {
-            resetPasswordToken: forgottenPasswordOTPVerificationAPIResponse(
-              response.data[0]
-            ),
-            error: "",
-            currentForgottenPasswordFormState:
-              FORGOTTEN_PASSWORD_FORM_STATUS.RP,
-          };
-        } else {
-          return {
-            resetPasswordToken: "",
-            error: response.message || defaultAPIErrorResponse.message,
-            currentForgottenPasswordFormState:
-              FORGOTTEN_PASSWORD_FORM_STATUS.SO,
-          };
-        }
+      if (apiResponseHaveData(response)) {
+        return {
+          resetPasswordToken: forgottenPasswordOTPVerificationAPIResponse(
+            response.data[0]
+          ),
+          error: "",
+          currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.RP,
+        };
       } else {
         return {
           resetPasswordToken: "",
-          error: response.message || defaultAPIErrorResponse.message,
+          error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
           currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.SO,
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) || "Send OTP request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );

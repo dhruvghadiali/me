@@ -12,7 +12,8 @@ import {
 export const forgottenPasswordSlice = createSlice({
   name: "forgottenPassword",
   initialState: {
-    otp: "",
+    emailOtp: "",
+    phoneNumberOtp: "",
     error: "",
     users: [],
     loader: false,
@@ -23,7 +24,8 @@ export const forgottenPasswordSlice = createSlice({
   },
   reducers: {
     resetForgottenPasswordFormState: (state, _) => {
-      state.otp = "";
+      state.emailOtp = "";
+      state.phoneNumberOtp = "";
       state.error = "";
       state.users = [];
       state.loader = false;
@@ -35,14 +37,18 @@ export const forgottenPasswordSlice = createSlice({
     setSelectedUserForSendOtp: (state, action) => {
       state.selectedUserForSendOtp = action.payload;
     },
-    setOtpValue: (state, action) => {
-      state.otp = action.payload;
+    setEmailOtp: (state, action) => {
+      state.emailOtp = action.payload;
+    },
+    setPhoneNumberOtp: (state, action) => {
+      state.phoneNumberOtp = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(checkUserInformation.pending, (state, _) => {
-        state.otp = "";
+        state.emailOtp = "";
+        state.phoneNumberOtp = "";
         state.error = "";
         state.verificationToken = "";
         state.resetPasswordToken = "";
@@ -51,7 +57,8 @@ export const forgottenPasswordSlice = createSlice({
         state.selectedUserForSendOtp = {};
       })
       .addCase(checkUserInformation.fulfilled, (state, action) => {
-        state.otp = "";
+        state.emailOtp = "";
+        state.phoneNumberOtp = "";
         state.verificationToken = "";
         state.resetPasswordToken = "";
         state.loader = false;
@@ -62,7 +69,8 @@ export const forgottenPasswordSlice = createSlice({
           action.payload.currentForgottenPasswordFormState;
       })
       .addCase(checkUserInformation.rejected, (state, action) => {
-        state.otp = "";
+        state.emailOtp = "";
+        state.phoneNumberOtp = "";
         state.verificationToken = "";
         state.resetPasswordToken = "";
         state.users = [];
@@ -72,14 +80,16 @@ export const forgottenPasswordSlice = createSlice({
           action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
       })
       .addCase(sendOtp.pending, (state, _) => {
-        state.otp = "";
+        state.emailOtp = "";
+        state.phoneNumberOtp = "";
         state.error = "";
         state.verificationToken = "";
         state.resetPasswordToken = "";
         state.loader = true;
       })
       .addCase(sendOtp.fulfilled, (state, action) => {
-        state.otp = "";
+        state.emailOtp = "";
+        state.phoneNumberOtp = "";
         state.resetPasswordToken = "";
         state.loader = false;
         state.error = action.payload.error;
@@ -88,8 +98,10 @@ export const forgottenPasswordSlice = createSlice({
           action.payload.currentForgottenPasswordFormState;
       })
       .addCase(sendOtp.rejected, (state, action) => {
-        state.otp = "";
+        state.emailOtp = "";
+        state.phoneNumberOtp = "";
         state.resetPasswordToken = "";
+        state.verificationToken = "";
         state.loader = false;
         state.error =
           action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
@@ -133,7 +145,8 @@ export const forgottenPasswordSlice = createSlice({
 export const {
   resetForgottenPasswordFormState,
   setSelectedUserForSendOtp,
-  setOtpValue,
+  setEmailOtp,
+  setPhoneNumberOtp,
 } = forgottenPasswordSlice.actions;
 
 export default forgottenPasswordSlice.reducer;

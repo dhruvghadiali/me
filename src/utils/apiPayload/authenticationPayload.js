@@ -50,7 +50,8 @@ const forgottenPasswordOTPVerificationAPIPayload = (data) => {
     user_id: data && data.userId ? data.userId : "",
     verification_token:
       data && data.verificationToken ? data.verificationToken : "",
-    otp: data && data.otp ? Number(data.otp) : "",
+    email_otp: data && data.emailOtp ? Number(data.emailOtp) : "",
+    phone_otp: data && data.phoneNumberOtp ? Number(data.phoneNumberOtp) : "",
   };
 };
 

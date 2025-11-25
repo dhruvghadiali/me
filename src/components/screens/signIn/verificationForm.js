@@ -37,51 +37,71 @@ const VerificationForm = () => {
   const setPhoneNumberOtpValue = (value) => dispatch(setPhoneNumberOtp(value));
 
   return (
-    <div>
+    <div className="space-y-6">
       {error && (
-        <div className="bg-danger mb-2 flex items-center  rounded-md">
-          <CircleAlertIcon className="text-accent ml-2" />
-          <p className="text-accent p-2 text-center">{error}</p>
+        <div className="bg-destructive/10 border border-destructive/20 flex items-center gap-2 rounded-lg p-3">
+          <CircleAlertIcon className="text-destructive h-5 w-5 shrink-0" />
+          <p className="text-destructive text-sm font-medium">{error}</p>
         </div>
       )}
 
-      <Label className="text-dark mt-3">
-        {i18n.exists("otpVerificationMessage")
-          ? _.upperFirst(t("otpVerificationMessage"))
-          : _.upperFirst(signInFormTranslation.otpVerificationMessage)}
-      </Label>
-
-      <Label className="text-dark flex mb-1 mt-5">
-        {i18n.exists("emailOtpVerificationLabel")
-          ? _.upperFirst(t("emailOtpVerificationLabel"))
-          : _.upperFirst(signInFormTranslation.emailOtpVerificationLabel)}
-      </Label>
-      <MEOtpVerification
-        onComplete={(value) => setEmailOtpValue(value)}
-        onChange={(value) => setEmailOtpValue(value)}
-      />
-
-      <Label className="text-dark flex mb-1 mt-5">
-        {i18n.exists("phoneNumberOtpVerificationLabel")
-          ? _.upperFirst(t("phoneNumberOtpVerificationLabel"))
-          : _.upperFirst(signInFormTranslation.phoneNumberOtpVerificationLabel)}
-      </Label>
-      <MEOtpVerification
-        onComplete={(value) => setPhoneNumberOtpValue(value)}
-        onChange={(value) => setPhoneNumberOtpValue(value)}
-      />
-
-      <div className="mt-5">
-        <Label className="text-xs text-danger">
-          {i18n.exists("otpVerificationAlert")
-            ? _.upperFirst(t("otpVerificationAlert"))
-            : _.upperFirst(signInFormTranslation.otpVerificationAlert)}
-        </Label>
+      <div className="bg-muted/30 border border-border rounded-lg p-4">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {i18n.exists("otpVerificationMessage")
+            ? t("otpVerificationMessage")
+            : signInFormTranslation.otpVerificationMessage}
+        </p>
       </div>
 
-      <div className="mt-10">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label className="text-sm font-medium flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+              1
+            </span>
+            {i18n.exists("emailOtpVerificationLabel")
+              ? t("emailOtpVerificationLabel")
+              : signInFormTranslation.emailOtpVerificationLabel}
+          </Label>
+          <div className="flex justify-center py-2">
+            <MEOtpVerification
+              value={emailOtp}
+              onComplete={(value) => setEmailOtpValue(value)}
+              onChange={(value) => setEmailOtpValue(value)}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-sm font-medium flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+              2
+            </span>
+            {i18n.exists("phoneNumberOtpVerificationLabel")
+              ? t("phoneNumberOtpVerificationLabel")
+              : signInFormTranslation.phoneNumberOtpVerificationLabel}
+          </Label>
+          <div className="flex justify-center py-2">
+            <MEOtpVerification
+              value={phoneNumberOtp}
+              onComplete={(value) => setPhoneNumberOtpValue(value)}
+              onChange={(value) => setPhoneNumberOtpValue(value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/30 rounded-lg p-3">
+        <p className="text-xs text-amber-800 dark:text-amber-200">
+          {i18n.exists("otpVerificationAlert")
+            ? t("otpVerificationAlert")
+            : signInFormTranslation.otpVerificationAlert}
+        </p>
+      </div>
+
+      <div className="pt-2">
         <MEButton
-          meclassname="flex"
+          meclassname="flex w-full"
           disabled={
             !(_.size(emailOtp) === 6 && _.size(phoneNumberOtp) === 6) || loader
           }
