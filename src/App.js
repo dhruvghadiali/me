@@ -17,6 +17,7 @@ import SchoolPage from "@MEPages/schoolPage";
 import SignUpPage from "@MEPages/signUpPage";
 import SignInPage from "@MEPages/signInPage";
 import NotFoundPage from "@MEPages/NotFoundPage";
+import ForgottenPasswordPage from "@MEPages/forgottenPasswordPage";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";
 import AuthChecker from "@MECommonComponents//hoc/authChecker";
 import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
@@ -78,7 +79,7 @@ function App() {
                   redirectAuthenticated={true}
                   redirectTo={dashboard}
                 >
-                  <div> forgot-password </div>
+                  <ForgottenPasswordPage />
                 </PublicRoute>
               }
             />
