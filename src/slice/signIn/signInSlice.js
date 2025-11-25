@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { clearAuthData } from "@MEHelpers/authHelpers";
 import { SIGN_IN_SCREEN_STATUS, API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
 import { validateUser, sendOtp, verifyOtp } from "@MERedux/signIn/signInAction";
 
@@ -42,8 +43,9 @@ export const signInSlice = createSlice({
     },
     signOutUser: (state, _) => {
       state.user = {};
+      state.token = "";
       state.currentSignInScreenStatus = SIGN_IN_SCREEN_STATUS.SI;
-      localStorage.clear();
+      clearAuthData();
     },
   },
   extraReducers: (builder) => {

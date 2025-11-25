@@ -22,6 +22,8 @@ import PublicRoute from "@MECommonComponents/hoc/publicRoute";
 import AuthChecker from "@MECommonComponents//hoc/authChecker";
 import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
 
+import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+
 function App() {
   const isDevelopment = import.meta.env.DEV;
 
@@ -35,7 +37,8 @@ function App() {
               element={
                 <PublicRoute
                   redirectAuthenticated={true}
-                  redirectTo={dashboard}>
+                  redirectTo={dashboard}
+                >
                   <HomePage />
                 </PublicRoute>
               }
@@ -45,7 +48,8 @@ function App() {
               element={
                 <PublicRoute
                   redirectAuthenticated={true}
-                  redirectTo={dashboard}>
+                  redirectTo={dashboard}
+                >
                   <SchoolPage />
                 </PublicRoute>
               }
@@ -87,7 +91,9 @@ function App() {
               path={dashboard}
               element={
                 <ProtectedRoute>
-                  <div>Dashboard - Protected Area</div>
+                  <MESidebar>
+                    <div>Dashboard - Protected Area</div>
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />

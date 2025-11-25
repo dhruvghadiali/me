@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
+import { School, User, Settings, LogOut, ChevronUp, FolderMinusIcon } from "lucide-react";
 
-import { sidebarMenuName } from "@MEUtils/enums";
 import { signOutUser } from "@MERedux/signIn/signInSlice";
 
 import {
@@ -20,15 +20,13 @@ import {
   SidebarMenu,
 } from "@MEShadcnComponents/sidebar";
 import {
-  sidebarMenu,
-  footerMenu,
-} from "@MECommonComponents/sidebar/sidebarMenu";
-import {
-  sidebarMenuLabel,
-  sidebar,
-} from "@MELocalization/sidebar/sidebarTranslationEn";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@MEShadcnComponents/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@MEShadcnComponents/avatar";
 
-import MEButton from "@MECommonComponents/button/meButton";
 import logoGreen from "@MEAssets/img/logo-green.png";
 
 import _ from "lodash";
@@ -40,95 +38,124 @@ const MESidebar = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  let activeMenu = "";
+  const menuItems = [
+    {
+      title: "Admission Forms",
+      icon: FolderMinusIcon,
+      url: "/admission-forms",
+    },
+    {
+      title: "Schools",
+      icon: School,
+      url: "/schools",
+    },
+    {
+      title: "Profile",
+      icon: User,
+      url: "/profile",
+    },
+    {
+      title: "Settings",
+      icon: Settings,
+      url: "/settings",
+    },
+  ];
 
-  const onClick = (item) => {
-    if (item.title === sidebarMenuName.SIGNOUT) {
-      dispatch(signOutUser());
-    }
+  const handleSignOut = () => {
+    dispatch(signOutUser());
+    sleep(500);
+    navigate("/", { replace: true });
+  };
 
-    // else {
-    //   dispatch(changeActiveMenu(item.title));
-    // }
-    navigate(item.url, { replace: true });
+  const handleMenuClick = (url) => {
+    navigate(url, { replace: true });
   };
 
   return (
     <SidebarProvider>
-      <Sidebar className="shadow-xl shadow-dark">
+      <Sidebar className="shadow-xl">
         <SidebarContent>
-          <SidebarHeader className="h-20 p-2 bg-dark shadow-xl justify-center items-center">
-            <img src={logoGreen} alt="Logo" className="w-16 h-16 bg-secondary rounded-full" />
+          <SidebarHeader className="p-4 border-b">
+            <div className="flex items-center gap-3">
+              <img src={logoGreen} alt="Logo" className="w-12 h-12 rounded-full" />
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold">ME Platform</span>
+                <span className="text-xs text-muted-foreground">Student Portal</span>
+              </div>
+            </div>
           </SidebarHeader>
-          <SidebarGroup className="h-screen">
-            <SidebarGroupLabel className="mr-5 truncate ...">
-              {_.upperFirst(
-                i18n.exists("sidebarTitleDynamic")
-                  ? t("sidebarTitleDynamic", {
-                      username:
-                        user && user.firstName && user.lastName
-                          ? _.truncate(`${user.firstName} ${user.lastName}`)
-                          : "",
-                    })
-                  : sidebar.sidebarTitleStatic
-              )}
+
+          <SidebarGroup>
+            <SidebarGroupLabel className="px-4 py-2">
+              {i18n.exists("menuLabel")
+                ? _.upperFirst(t("menuLabel"))
+                : "Menu"}
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {sidebarMenu.map((item) => (
+                {menuItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <MEButton
-                        variant={"ghost"}
-                        className={`justify-start ${
-                          item.title === activeMenu
-                            ? "text-primary hover:text-primary"
-                            : "text-dark"
-                        } `}
-                        onClick={() => {}} //onClick(item)}
-                      >
-                        <item.icon />
-                        <span>
-                          {_.upperFirst(
-                            i18n.exists(item.title)
-                              ? t(item.title)
-                              : sidebarMenuLabel[item.title]
-                          )}
-                        </span>
-                      </MEButton>
+                    <SidebarMenuButton onClick={() => handleMenuClick(item.url)}>
+                      <item.icon className="h-4 w-4" />
+                      <span>
+                        {i18n.exists(item.title.toLowerCase())
+                          ? _.upperFirst(t(item.title.toLowerCase()))
+                          : item.title}
+                      </span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-          <SidebarFooter>
+
+          <SidebarFooter className="mt-auto border-t">
             <SidebarMenu>
-              {footerMenu.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <MEButton
-                      variant={"ghost"}
-                      className="justify-start text-dark"
-                      onClick={() => onClick(item)}
+              <SidebarMenuItem>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <SidebarMenuButton className="h-auto py-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user?.profile} alt={user?.username} />
+                        <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+                          {user?.username?.substring(0, 2).toUpperCase() || user?.firstName?.substring(0, 1).toUpperCase() + user?.lastName?.substring(0, 1).toUpperCase() || "ME"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-1 flex-col items-start text-left min-w-0">
+                        <span className="text-sm font-medium truncate w-full">
+                          {user?.username || `${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "Guest User"}
+                        </span>
+                        <span className="text-xs text-muted-foreground truncate w-full">
+                          {user?.email || "guest@example.com"}
+                        </span>
+                      </div>
+                      <ChevronUp className="h-4 w-4 ml-auto shrink-0" />
+                    </SidebarMenuButton>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="top" align="end" className="w-56">
+                    <DropdownMenuItem onClick={() => handleMenuClick("/profile")}>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>{i18n.exists("profile") ? _.upperFirst(t("profile")) : "Profile"}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleMenuClick("/settings")}>
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>{i18n.exists("settings") ? _.upperFirst(t("settings")) : "Settings"}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={handleSignOut} 
+                      className="text-destructive focus:text-destructive focus:bg-destructive/10"
                     >
-                      <item.icon />
-                      <span>
-                        {_.upperFirst(
-                          i18n.exists(item.title)
-                            ? t(item.title)
-                            : sidebarMenuLabel[item.title]
-                        )}
-                      </span>
-                    </MEButton>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>{i18n.exists("signOut") ? _.upperFirst(t("signOut")) : "Sign Out"}</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarFooter>
         </SidebarContent>
       </Sidebar>
-      <main className="w-full ">
+      <main className="w-full">
         <SidebarTrigger />
         <div className="ml-5">{children}</div>
       </main>
