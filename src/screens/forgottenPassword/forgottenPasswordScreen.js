@@ -3,7 +3,7 @@ import { CircleXIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
-import { routeName } from "@MEUtils/routeName";
+import { root } from "@MEUtils/pageRoutes";
 import { forgottenPasswordFormState } from "@MEUtils/enums";
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
 import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
@@ -26,7 +26,7 @@ const ForgottenPasswordScreen = () => {
   const navigate = useNavigate();
 
   const onCloseForgottenPasswordForm = () =>
-    navigate(routeName.root, { replace: true });
+    navigate(root, { replace: true });
 
   return (
       <div className="lg:w-1/3 md:w-1/2 w-full justify-self-center mt-10 mb-10">

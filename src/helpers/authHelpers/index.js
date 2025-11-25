@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const setAuthData = (user, token) => {
   localStorage.setItem("meStudentAuthData", JSON.stringify(user));
   localStorage.setItem("meStudentAuthToken", token);
@@ -6,7 +8,6 @@ export const setAuthData = (user, token) => {
 export const getAuthData = () => {
   const userData = localStorage.getItem("meStudentAuthData");
   const authToken = localStorage.getItem("meStudentAuthToken");
-  let isTokenExpired = false;
   
   if (userData && authToken) {
     try {
@@ -15,12 +16,14 @@ export const getAuthData = () => {
         const tokenParts = authToken.split('.');
         if (tokenParts.length === 3) {
           const payload = JSON.parse(atob(tokenParts[1]));
-          const expirationTime = payload.exp ? new Date(payload.exp * 1000) : null;
+          const expirationTime = payload.exp ? moment.unix(payload.exp) : null;
 
-          console.log("Token expiration time:", expirationTime);
-          console.log("Current time:", new Date());
+          console.log("Token expiration time:", expirationTime ? expirationTime.format('DD-MM-YYYY HH:mm:ss') : 'N/A');
+          console.log("Current time:", moment().format('DD-MM-YYYY HH:mm:ss'));
+          console.log("Time until expiration:", expirationTime ? expirationTime.diff(moment(), 'minutes') + ' minutes' : 'N/A');
 
-          if (expirationTime && new Date() >= expirationTime) {
+          if (expirationTime && moment().isSameOrAfter(expirationTime)) {
+            console.warn("Token has expired");
             clearAuthData();
             return null;
           }else{
