@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { forgottenPasswordFormState } from "@MEUtils/enums";
-
+import { FORGOTTEN_PASSWORD_FORM_STATUS, API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
+import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
 import {
   forgottenPasswordAPIResponse,
   forgottenPasswordSendOTPAPIResponse,
@@ -26,52 +26,33 @@ export const checkUserInformation = createAsyncThunk(
   "forgottenPassword/checkUserInformation",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "checkUserInformation"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${forgottenPasswordAPIRoute}`,
-          payload
-        );
+      let response = await axiosInstance.post(
+        forgottenPasswordAPIRoute,
+        payload,
+        { autoLogoutOnUnauthorized: false }
+      );
 
-        if (response) response = response.data;
-      }
+      console.log("checkUserInformation response", response);
 
-      if (isAPIServedSuccessfully(response)) {
-        if (response && response.data && response.data.length > 0) {
-          return {
-            users: forgottenPasswordAPIResponse(response.data),
-            currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
-            error: "",
-          };
-        } else {
-          return {
-            users: [],
-            error: response.message || defaultAPIErrorResponse.message,
-            currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
-          };
-        }
-      } else {
+      if(apiResponseHaveData(response)) {
+        return {
+          users: forgottenPasswordAPIResponse(response.data),
+          error: "",
+          currentForgottenPasswordFormState:
+            FORGOTTEN_PASSWORD_FORM_STATUS.UV,
+        };
+      }else{
         return {
           users: [],
-          error: response.message || defaultAPIErrorResponse.message,
-          currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
+          error: response.message || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG,
+          currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.FA,
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Check user information request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );
@@ -102,20 +83,22 @@ export const sendOtp = createAsyncThunk(
             verificationToken: forgottenPasswordSendOTPAPIResponse(
               response.data[0]
             ),
-            currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
+            currentForgottenPasswordFormState:
+              FORGOTTEN_PASSWORD_FORM_STATUS.SO,
           };
         } else {
           return {
             verificationToken: "",
             error: response.message || defaultAPIErrorResponse.message,
-            currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
+            currentForgottenPasswordFormState:
+              FORGOTTEN_PASSWORD_FORM_STATUS.UV,
           };
         }
       } else {
         return {
           verificationToken: "",
           error: response.message || defaultAPIErrorResponse.message,
-          currentForgottenPasswordFormState: forgottenPasswordFormState.UV,
+          currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.UV,
         };
       }
     } catch (error) {
@@ -158,20 +141,22 @@ export const verifyOtp = createAsyncThunk(
               response.data[0]
             ),
             error: "",
-            currentForgottenPasswordFormState: forgottenPasswordFormState.RP,
+            currentForgottenPasswordFormState:
+              FORGOTTEN_PASSWORD_FORM_STATUS.RP,
           };
         } else {
           return {
             resetPasswordToken: "",
             error: response.message || defaultAPIErrorResponse.message,
-            currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
+            currentForgottenPasswordFormState:
+              FORGOTTEN_PASSWORD_FORM_STATUS.SO,
           };
         }
       } else {
         return {
           resetPasswordToken: "",
           error: response.message || defaultAPIErrorResponse.message,
-          currentForgottenPasswordFormState: forgottenPasswordFormState.SO,
+          currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.SO,
         };
       }
     } catch (error) {
@@ -210,12 +195,12 @@ export const resetPassword = createAsyncThunk(
       if (isAPIServedSuccessfully(response)) {
         return {
           error: "",
-          currentForgottenPasswordFormState: forgottenPasswordFormState.SU,
+          currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.SU,
         };
       } else {
         return {
           error: response.message || defaultAPIErrorResponse.message,
-          currentForgottenPasswordFormState: forgottenPasswordFormState.ER,
+          currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.ER,
         };
       }
     } catch (error) {

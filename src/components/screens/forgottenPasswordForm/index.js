@@ -35,15 +35,14 @@ const ForgottenPasswordForm = () => {
 
   return (
     <>
-      <div className="py-3" />
       {error && (
-        <div className="bg-danger mb-2 flex items-center  rounded-md">
-          <CircleAlertIcon className="text-accent ml-2" />
-          <p className="text-accent p-2 text-center">{error}</p>
+        <div className="bg-destructive/10 border border-destructive/20 mb-4 flex items-center gap-2 rounded-lg p-3">
+          <CircleAlertIcon className="text-destructive h-5 w-5 shrink-0" />
+          <p className="text-destructive text-sm font-medium">{error}</p>
         </div>
       )}
 
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
         <MEInput
           id="accountName"
           type={"text"}
@@ -63,11 +62,13 @@ const ForgottenPasswordForm = () => {
           onChange={formik.handleChange}
         />
 
-        <div className="py-2">
+        <div className="pt-2">
           <MEButton
             type="submit"
             meclassname="flex"
             buttonVariant={variants.SUCCESS}
+            className="w-full"
+            disabled={loader}
           >
             {i18n.exists("findAccountButtonLabel")
               ? _.upperCase(t("findAccountButtonLabel"))

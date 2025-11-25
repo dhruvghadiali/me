@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
 import { root } from "@MEUtils/pageRoutes";
-import { forgottenPasswordFormState } from "@MEUtils/enums";
+import { FORGOTTEN_PASSWORD_FORM_STATUS } from "@MEHelpers/enums";
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
 import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
 
@@ -29,44 +29,53 @@ const ForgottenPasswordScreen = () => {
     navigate(root, { replace: true });
 
   return (
-      <div className="lg:w-1/3 md:w-1/2 w-full justify-self-center mt-10 mb-10">
-        <Card className="">
-          <CardHeader>
-            <div className="flex justify-between items-center text-2xl">
-              {i18n.exists("forgottenPasswordFormHeader")
-                ? _.upperFirst(t("forgottenPasswordFormHeader"))
-                : _.upperFirst(
-                    forgottenPasswordFormTranslation.forgottenPasswordFormHeader
-                  )}
+    <>
+      <div className="flex items-center justify-center min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-2 pb-4">
+            <div className="flex justify-between items-start gap-4">
+              <div className="space-y-1">
+                <p className="text-2xl sm:text-3xl font-bold  bg-clip-text ">
+                  {i18n.exists("forgottenPasswordFormHeader")
+                    ? _.upperFirst(t("forgottenPasswordFormHeader"))
+                    : _.upperFirst(
+                        forgottenPasswordFormTranslation.forgottenPasswordFormHeader
+                      )}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Enter your account details to recover access
+                </p>
+              </div>
               <MEButton
                 disabled={loader}
                 size="icon"
-                variant="link"
-                className="text-dark"
+                variant="ghost"
+                className="hover:bg-dark/10 hover:text-dark transition-colors shrink-0 [&_svg]:!size-6"
                 onClick={() => onCloseForgottenPasswordForm()}
               >
                 <CircleXIcon />
               </MEButton>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             {currentForgottenPasswordFormState ===
-              forgottenPasswordFormState.FA && <ForgottenPasswordForm />}
+              FORGOTTEN_PASSWORD_FORM_STATUS.FA && <ForgottenPasswordForm />}
             {currentForgottenPasswordFormState ===
-              forgottenPasswordFormState.UV && <VerifyUser />}
+              FORGOTTEN_PASSWORD_FORM_STATUS.UV && <VerifyUser />}
             {currentForgottenPasswordFormState ===
-              forgottenPasswordFormState.SO && <OtpVerificationForm />}
+              FORGOTTEN_PASSWORD_FORM_STATUS.SO && <OtpVerificationForm />}
             {currentForgottenPasswordFormState ===
-              forgottenPasswordFormState.RP && <ResetPasswordForm />}
+              FORGOTTEN_PASSWORD_FORM_STATUS.RP && <ResetPasswordForm />}
             {(currentForgottenPasswordFormState ===
-              forgottenPasswordFormState.SU ||
+              FORGOTTEN_PASSWORD_FORM_STATUS.SU ||
               currentForgottenPasswordFormState ===
-                forgottenPasswordFormState.ER) && (
+                FORGOTTEN_PASSWORD_FORM_STATUS.ER) && (
               <ForgottenPasswordFormNotification />
             )}
           </CardContent>
         </Card>
       </div>
+    </>
   );
 };
 

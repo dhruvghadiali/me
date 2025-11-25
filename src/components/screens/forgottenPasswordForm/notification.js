@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { Label } from "@MEShadcnComponents/label";
-import { forgottenPasswordFormState } from "@MEUtils/enums";
+import { FORGOTTEN_PASSWORD_FORM_STATUS } from "@MEHelpers/enums";
 import { forgottenPasswordFormTranslation } from "@MELocalization/forgottenPassword/forgottenPasswordTranslationEn";
 
 import _ from "lodash";
@@ -18,7 +18,7 @@ const ForgottenPasswordFormNotification = () => {
 
   return (
     <>
-      {currentForgottenPasswordFormState === forgottenPasswordFormState.ER && (
+      {currentForgottenPasswordFormState === FORGOTTEN_PASSWORD_FORM_STATUS.ER && (
         <>
           <div className="w-full h-80 ">
             <Lottie
@@ -45,7 +45,7 @@ const ForgottenPasswordFormNotification = () => {
         </>
       )}
 
-      {currentForgottenPasswordFormState === forgottenPasswordFormState.SU && (
+      {currentForgottenPasswordFormState === FORGOTTEN_PASSWORD_FORM_STATUS.SU && (
         <>
           <div className="w-full h-80 ">
             <Lottie

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { responseMessage } from "@MEUtils/responseMessage";
-import { forgottenPasswordFormState } from "@MEUtils/enums";
+import { API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
+import { FORGOTTEN_PASSWORD_FORM_STATUS } from "@MEHelpers/enums";
 import {
   sendOtp,
   verifyOtp,
@@ -19,7 +19,7 @@ export const forgottenPasswordSlice = createSlice({
     verificationToken: "",
     resetPasswordToken: "",
     selectedUserForSendOtp: {},
-    currentForgottenPasswordFormState: forgottenPasswordFormState.FA,
+    currentForgottenPasswordFormState: FORGOTTEN_PASSWORD_FORM_STATUS.FA,
   },
   reducers: {
     resetForgottenPasswordFormState: (state, _) => {
@@ -30,7 +30,7 @@ export const forgottenPasswordSlice = createSlice({
       state.verificationToken = "";
       state.resetPasswordToken = "";
       state.selectedUserForSendOtp = {};
-      state.currentForgottenPasswordFormState = forgottenPasswordFormState.FA;
+      state.currentForgottenPasswordFormState = FORGOTTEN_PASSWORD_FORM_STATUS.FA;
     },
     setSelectedUserForSendOtp: (state, action) => {
       state.selectedUserForSendOtp = action.payload;
@@ -69,7 +69,7 @@ export const forgottenPasswordSlice = createSlice({
         state.loader = false;
         state.selectedUserForSendOtp = {};
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
+          action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
       })
       .addCase(sendOtp.pending, (state, _) => {
         state.otp = "";
@@ -92,7 +92,7 @@ export const forgottenPasswordSlice = createSlice({
         state.resetPasswordToken = "";
         state.loader = false;
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
+          action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
       })
       .addCase(verifyOtp.pending, (state, _) => {
         state.loader = true;
@@ -109,7 +109,7 @@ export const forgottenPasswordSlice = createSlice({
       .addCase(verifyOtp.rejected, (state, action) => {
         state.loader = false;
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
+          action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
       })
       .addCase(resetPassword.pending, (state, _) => {
         state.loader = true;
@@ -124,8 +124,8 @@ export const forgottenPasswordSlice = createSlice({
       .addCase(resetPassword.rejected, (state, action) => {
         state.loader = false;
         state.error =
-          action.payload.message || responseMessage.somethingWentWrong;
-        state.currentForgottenPasswordFormState = forgottenPasswordFormState.ER;
+          action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
+        state.currentForgottenPasswordFormState = FORGOTTEN_PASSWORD_FORM_STATUS.ER;
       });
   },
 });
