@@ -4,22 +4,16 @@ import {
   FORGOTTEN_PASSWORD_FORM_STATUS,
   API_RESPONSE_MESSAGES,
 } from "@MEHelpers/enums";
-import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
+import { axiosInstance, apiResponseHaveData, isAPIServedSuccessfully } from "@MEUtils/axiosInstance";
 import {
   forgottenPasswordAPIResponse,
   forgottenPasswordSendOTPAPIResponse,
   forgottenPasswordOTPVerificationAPIResponse,
 } from "@MEUtils/apiResponse";
 import {
-  isMockEnvironment,
-  getMockAPIResponse,
-  defaultAPIErrorResponse,
-  isAPIServedSuccessfully,
-} from "@MEUtils/utilityFunctions";
-import {
   forgottenPasswordAPIRoute,
   forgottenPasswordSendOTPAPIRoute,
-  forgottenPasswordResetPasswordAPIRoute,
+  forgottenPasswordChangePasswordAPIRoute,
   forgottenPasswordOTPVerificationAPIRoute,
 } from "@MEUtils/apiRoutes";
 
@@ -127,21 +121,13 @@ export const resetPassword = createAsyncThunk(
   "forgottenPassword/resetPassword",
   async (payload, { rejectWithValue, getState }) => {
     try {
-      let response;
-      if (isMockEnvironment()) {
-        response = await getMockAPIResponse(
-          getState().mock.apiResponseStatus,
-          "resetPassword"
-        );
-      } else {
-        response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}${forgottenPasswordResetPasswordAPIRoute}`,
-          payload
+      let response = await axiosInstance.post(
+          forgottenPasswordChangePasswordAPIRoute,
+          payload,
+          { autoLogoutOnUnauthorized: false }
         );
 
-        if (response) response = response.data;
-      }
-
+      
       if (isAPIServedSuccessfully(response)) {
         return {
           error: "",
@@ -154,15 +140,9 @@ export const resetPassword = createAsyncThunk(
         };
       }
     } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return rejectWithValue({ message: error.response.data.message });
-      }
-      return rejectWithValue(defaultAPIErrorResponse);
+      const errMsg =
+        (error && (error.message || error.error)) || "Reset password request failed";
+      return rejectWithValue({ error: errMsg });
     }
   }
 );
