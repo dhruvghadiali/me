@@ -51,8 +51,8 @@ const SignInAccountNotVerified = () => {
           <div className="pt-2">
             <MEButton
               type="submit"
-              buttonVariant={variants.DARK}
-              className="w-full"
+              buttonVariant={variants.SUCCESS}
+              meclassname="w-full"
               disabled={loader}
               onClick={() => dispatch(sendOtp(signInSendOTPAPIPayload(user)))}
             >

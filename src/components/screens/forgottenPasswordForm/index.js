@@ -65,9 +65,8 @@ const ForgottenPasswordForm = () => {
         <div className="pt-2">
           <MEButton
             type="submit"
-            meclassname="flex"
+            meclassname="w-full flex "
             buttonVariant={variants.SUCCESS}
-            className="w-full"
             disabled={loader}
           >
             {i18n.exists("findAccountButtonLabel")
