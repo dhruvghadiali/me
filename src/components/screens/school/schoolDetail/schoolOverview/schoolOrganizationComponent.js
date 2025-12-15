@@ -1,13 +1,26 @@
 import { MapPin, Phone, Mail, Building } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import {
+  organizationDetailsHeader,
+  institutionInformation,
+  organizationName,
+  governmentRegistrationNumber,
+  contactInformationHeader,
+  organizationAddress,
+  administrativeTeamHeader,
+} from "@MELocalization/languages/en";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@MEShadcnComponents/card";
+
 import _ from "lodash";
 
 const SchoolOrganizationComponent = ({ organization }) => {
+  const { t } = useTranslation();
   const {
     name,
     governmentRegistrationNumber,
@@ -23,7 +36,11 @@ const SchoolOrganizationComponent = ({ organization }) => {
       <CardHeader className="pb-2 sm:pb-3">
         <CardTitle className="text-base sm:text-lg md:text-xl flex items-center gap-2">
           <Building className="h-4 w-4 sm:h-5 sm:w-5" />
-          Organization Details
+          {_.upperFirst(
+            t("organizationDetailsHeader", {
+              defaultValue: organizationDetailsHeader,
+            })
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -31,16 +48,28 @@ const SchoolOrganizationComponent = ({ organization }) => {
           <div className="space-y-3">
             <div>
               <h4 className="font-semibold text-xs sm:text-sm md:text-base mb-2">
-                Institution Information
+                {_.upperFirst(
+                  t("institutionInformation", {
+                    defaultValue: institutionInformation,
+                  })
+                )}
               </h4>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs sm:text-sm">
-                  <span className="text-primary/60">Name:</span>
+                  <span className="text-primary/60">
+                    {_.upperFirst(
+                      t("organizationName", { defaultValue: organizationName })
+                    )}
+                  </span>
                   <span className="font-medium">{name ? name : "N/A"}</span>
                 </div>
                 <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span className="text-primary/60">
-                    Government Registration Number:
+                    {_.upperFirst(
+                      t("governmentRegistrationNumber", {
+                        defaultValue: governmentRegistrationNumber,
+                      })
+                    )}
                   </span>
                   <span className="font-medium">
                     {governmentRegistrationNumber
@@ -81,14 +110,24 @@ const SchoolOrganizationComponent = ({ organization }) => {
 
         <div className="border-t text-primary pt-4">
           <h4 className="font-semibold text-xs sm:text-sm md:text-base mb-3">
-            Contact Information
+            {_.upperFirst(
+              t("contactInformationHeader", {
+                defaultValue: contactInformationHeader,
+              })
+            )}
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="space-y-2">
               <div className="flex items-start gap-2">
                 <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="font-medium text-xs sm:text-sm">Main Campus</p>
+                  <p className="font-medium text-xs sm:text-sm">
+                    {_.upperFirst(
+                      t("organizationAddress", {
+                        defaultValue: organizationAddress,
+                      })
+                    )}
+                  </p>
                   <p className="text-xs sm:text-sm text-primary/60">
                     {addressLine1 ? addressLine1 : "N/A"}
                   </p>
@@ -128,7 +167,11 @@ const SchoolOrganizationComponent = ({ organization }) => {
 
         <div className="border-t text-primary pt-4">
           <h4 className="font-semibold text-xs sm:text-sm md:text-base mb-3">
-            Administrative Team
+            {_.upperFirst(
+              t("administrativeTeamHeader", {
+                defaultValue: administrativeTeamHeader,
+              })
+            )}
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {members &&

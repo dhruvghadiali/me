@@ -1,7 +1,18 @@
+import { useTranslation } from "react-i18next";
 import { Users, GraduationCap, Award, Star } from "lucide-react";
+
 import { Card, CardContent } from "@MEShadcnComponents/card";
+import {
+  schoolRatingTitle,
+  facultyMembersTitle,
+  graduationRateTitle,
+  studentsEnrolledTitle,
+} from "@MELocalization/languages/en";
+
+import _ from "lodash";
 
 const SchoolKeyStatisticsComponent = (props) => {
+  const { t } = useTranslation();
   const { studentsEnrolled, facultyMembers, graduationRate, schoolRating } =
     props;
 
@@ -14,7 +25,11 @@ const SchoolKeyStatisticsComponent = (props) => {
             {studentsEnrolled || "-"}
           </h3>
           <p className="text-xs sm:text-sm text-background">
-            Students Enrolled
+            {_.startCase(
+              t("studentsEnrolledTitle", {
+                defaultValue: studentsEnrolledTitle,
+              })
+            )}
           </p>
         </CardContent>
       </Card>
@@ -25,7 +40,13 @@ const SchoolKeyStatisticsComponent = (props) => {
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
             {facultyMembers || "-"}
           </h3>
-          <p className="text-xs sm:text-sm text-background">Faculty Members</p>
+          <p className="text-xs sm:text-sm text-background">
+            {_.startCase(
+              t("facultyMembersTitle", {
+                defaultValue: facultyMembersTitle,
+              })
+            )}
+          </p>
         </CardContent>
       </Card>
 
@@ -35,7 +56,13 @@ const SchoolKeyStatisticsComponent = (props) => {
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
             {graduationRate || "-"}
           </h3>
-          <p className="text-xs sm:text-sm text-background">Graduation Rate</p>
+          <p className="text-xs sm:text-sm text-background">
+            {_.startCase(
+              t("graduationRateTitle", {
+                defaultValue: graduationRateTitle,
+              })
+            )}
+          </p>
         </CardContent>
       </Card>
 
@@ -45,7 +72,13 @@ const SchoolKeyStatisticsComponent = (props) => {
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
             {schoolRating || "-"}
           </h3>
-          <p className="text-xs sm:text-sm text-background">School Rating</p>
+          <p className="text-xs sm:text-sm text-background">
+            {_.startCase(
+              t("schoolRatingTitle", {
+                defaultValue: schoolRatingTitle,
+              })
+            )}
+          </p>
         </CardContent>
       </Card>
     </div>
