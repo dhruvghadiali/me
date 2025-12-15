@@ -1,19 +1,22 @@
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { Mail, Phone, XCircleIcon } from "lucide-react";
 
 import { Button } from "@MEShadcnComponents/button";
+import {
+  schoolType,
+  schoolEstablished,
+  schoolEducationBoard,
+  schoolAffiliateNumber,
+} from "@MELocalization/languages/en";
 
 import _ from "lodash";
 
-import SchoolFeesComponent from "@MEScreenComponents/school/schoolDetail/schoolFees/schoolFeesComponent";
 import SchoolDetailTabComponent from "@MEScreenComponents/school/schoolDetailTab/schoolDetailTabComponent";
-import SchoolAddressComponent from "@MEScreenComponents/school/schoolDetail/schoolAddress";
-import SchoolOverviewComponent from "@MEScreenComponents/school/schoolDetail/schoolOverview";
-import SchoolAdmissionComponent from "@MEScreenComponents/school/schoolDetail/schoolAdmission/schoolAdmissionComponent";
-import SchoolFacilitiesComponent from "@MEScreenComponents/school/schoolDetail/schoolFacilities/schoolFacilitiesComponent";
-import SchoolAcademicClassesComponent from "@MEScreenComponents/school/schoolDetail/schoolAcademicClasses/schoolAcademicClassesComponent";
+import { getSchoolDetailTabs } from "@MEScreenComponents/school/schoolDetail/schoolDetailTabs";
 
 const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
+  const { t } = useTranslation();
   const { school } = useSelector((state) => state.school);
 
   return (
@@ -21,12 +24,11 @@ const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
       <div className="mx-5 space-y-4">
         <div className="flex items-center justify-between mr-2">
           <h1 className="text-xl sm:text-2xl md:text-4xl font-bold">
-            {_.startCase(school.name)}
+            {_.upperCase(school.name)}
           </h1>
           {showCloseIcon && (
             <Button variant="ghost" onClick={() => handleCardClick()}>
-              {" "}
-              <XCircleIcon />{" "}
+              <XCircleIcon />
             </Button>
           )}
         </div>
@@ -34,21 +36,41 @@ const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
             <div className="flex items-center gap-2">
               <span className="font-medium text-primary/75">
-                Affiliate Number:
+                {_.upperFirst(
+                  t("schoolAffiliateNumber", {
+                    defaultValue: schoolAffiliateNumber,
+                  })
+                )}
               </span>
               <span>{school.affiliateNumber}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-primary/75">Established:</span>
+              <span className="font-medium text-primary/75">
+                {_.upperFirst(
+                  t("schoolEstablished", {
+                    defaultValue: schoolEstablished,
+                  })
+                )}
+              </span>
               <span>{school.establishedYear}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-primary/75">School Type:</span>
+              <span className="font-medium text-primary/75">
+                {_.upperFirst(
+                  t("schoolType", {
+                    defaultValue: schoolType,
+                  })
+                )}
+              </span>
               <span>{school.schoolType}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-primary/75">
-                Education Board:
+                {_.upperFirst(
+                  t("schoolEducationBoard", {
+                    defaultValue: schoolEducationBoard,
+                  })
+                )}
               </span>
               <span>{school.educationBoards}</span>
             </div>
@@ -65,38 +87,7 @@ const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
       </div>
 
       <SchoolDetailTabComponent
-        tabData={[
-          {
-            value: "tab-1",
-            label: "Overview",
-            content: <SchoolOverviewComponent school={school} />,
-          },
-          {
-            value: "tab-2",
-            label: "Address",
-            content: <SchoolAddressComponent school={school} />,
-          },
-          {
-            value: "tab-3",
-            label: "Academics Classes",
-            content: <SchoolAcademicClassesComponent />,
-          },
-          {
-            value: "tab-4",
-            label: "Facilities",
-            content: <SchoolFacilitiesComponent />,
-          },
-          {
-            value: "tab-5",
-            label: "Fees",
-            content: <SchoolFeesComponent />,
-          },
-          {
-            value: "tab-6",
-            label: "Admission",
-            content: <SchoolAdmissionComponent />,
-          },
-        ]}
+        tabData={getSchoolDetailTabs(school, t)}
       />
     </>
   );
