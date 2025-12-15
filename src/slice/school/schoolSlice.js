@@ -10,8 +10,14 @@ export const schoolSlice = createSlice({
     school: {},
     schoolSummaryError: "",
     schoolDetailError: "",
+    selectedEducationBoardForAcademicClassesTab: "",
   },
-  reducers: {},
+  reducers: {
+    setSelectedEducationBoardForAcademicClassesTab: (state, action) => {
+      state.selectedEducationBoardForAcademicClassesTab =
+        action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getSchools.pending, (state, _) => {
@@ -33,6 +39,7 @@ export const schoolSlice = createSlice({
         state.schools = [];
       })
       .addCase(getSchool.pending, (state, _) => {
+        state.selectedEducationBoardForAcademicClassesTab = "";
         state.schoolDetailLoader = true;
         state.schoolDetailError = "";
         state.school = {};
@@ -50,6 +57,8 @@ export const schoolSlice = createSlice({
   },
 });
 
-export const {} = schoolSlice.actions;
+export const {
+  setSelectedEducationBoardForAcademicClassesTab
+} = schoolSlice.actions;
 
 export default schoolSlice.reducer;

@@ -42,7 +42,7 @@ export const getSchoolDetailTabs = (school, t) => [
         defaultValue: schoolInformationAcademicClassesTab,
       })
     ),
-    content: <SchoolAcademicClassesComponent />,
+    content: <SchoolAcademicClassesComponent school={school}/>,
   },
   {
     value: "tab-4",

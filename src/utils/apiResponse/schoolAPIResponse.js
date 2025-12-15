@@ -51,6 +51,13 @@ const schoolDetailsAPIResponse = (response) => {
       affiliateNumber: school.affiliate_number,
       establishedYear: school.established_year,
       schoolType: school.school_type ? school.school_type.school_type : "",
+      educationBoardsDropdown: _.map(
+        school.education_boards,
+        (educationBoard) => ({
+          value: educationBoard.id,
+          label: educationBoard.education_board,
+        })
+      ),
       educationBoards: _.join(
         _.map(school.education_boards, (board) =>
           _.capitalize(board.education_board)
@@ -67,19 +74,25 @@ const schoolDetailsAPIResponse = (response) => {
       },
       organization: (() => {
         const organization = _.get(school, "organization", {});
-        const formatPhone = (phoneNumber) => (phoneNumber ? `+91 ${phoneNumber}` : null);
-        const members = _.map(_.get(organization, "organization_members", []), (member) => ({
-          position: _.upperFirst(member?.position) || "N/A",
-          name:
-            _.trim(
-              [
-                _.upperFirst(member?.first_name || ""),
-                _.upperFirst(member?.last_name || ""),
-              ].join(" ")
-            ) || "N/A",
-          phoneNumber: member?.phone_number ? formatPhone(member.phone_number) : "N/A",
-          email: member?.email || "N/A",
-        }));
+        const formatPhone = (phoneNumber) =>
+          phoneNumber ? `+91 ${phoneNumber}` : null;
+        const members = _.map(
+          _.get(organization, "organization_members", []),
+          (member) => ({
+            position: _.upperFirst(member?.position) || "N/A",
+            name:
+              _.trim(
+                [
+                  _.upperFirst(member?.first_name || ""),
+                  _.upperFirst(member?.last_name || ""),
+                ].join(" ")
+              ) || "N/A",
+            phoneNumber: member?.phone_number
+              ? formatPhone(member.phone_number)
+              : "N/A",
+            email: member?.email || "N/A",
+          })
+        );
 
         const addressLine1 = (() => {
           const address = _.get(organization, "address");
@@ -119,40 +132,55 @@ const schoolDetailsAPIResponse = (response) => {
           addressLine2,
         };
       })(),
-      addresses: school && school.school_address && _.size(school.school_address) > 0 ? _.map(school.school_address, (schoolAddress) => {
-        const addressLine1 = (() => {
-          const address = _.get(schoolAddress, "address");
-          const areaName = _.get(schoolAddress, "area_name.name");
-          const value = _.join(
-            _.compact([_.upperFirst(address), areaName]),
-            ", "
-          );
-          return value || null;
-        })();
+      addresses:
+        school && school.school_address && _.size(school.school_address) > 0
+          ? _.map(school.school_address, (schoolAddress) => {
+              const addressLine1 = (() => {
+                const address = _.get(schoolAddress, "address");
+                const areaName = _.get(schoolAddress, "area_name.name");
+                const value = _.join(
+                  _.compact([_.upperFirst(address), areaName]),
+                  ", "
+                );
+                return value || null;
+              })();
 
-        const addressLine2 = (() => {
-          const city = _.get(schoolAddress, "city.name");
-          const district = _.get(schoolAddress, "district.name");
-          const state = _.get(schoolAddress, "state.name");
-          const zipcode = _.get(schoolAddress, "zipcode.zipcode");
-          let value = _.join(
-            _.compact([
-              _.upperFirst(city),
-              _.upperFirst(district),
-              _.upperFirst(state),
-            ]),
-            ", "
-          );
-          if (zipcode) value += (value ? " - " : "") + zipcode;
-          return value || null;
-        })();
+              const addressLine2 = (() => {
+                const city = _.get(schoolAddress, "city.name");
+                const district = _.get(schoolAddress, "district.name");
+                const state = _.get(schoolAddress, "state.name");
+                const zipcode = _.get(schoolAddress, "zipcode.zipcode");
+                let value = _.join(
+                  _.compact([
+                    _.upperFirst(city),
+                    _.upperFirst(district),
+                    _.upperFirst(state),
+                  ]),
+                  ", "
+                );
+                if (zipcode) value += (value ? " - " : "") + zipcode;
+                return value || null;
+              })();
 
-        return {
-          addressLine1,
-          addressLine2,
-        }
-      }) : []
-
+              return {
+                addressLine1,
+                addressLine2,
+              };
+            })
+          : [],
+      academicClasses:
+        school &&
+        school.school_academic_class &&
+        _.size(school.school_academic_class) > 0
+          ? _.map(school.school_academic_class, (academicClass) => ({
+              educationBoard: academicClass?.education_board || null,
+              academicClass: academicClass?.academic_class?.academic_class || null,
+              students: null,
+              classes: null,
+              avgSize: null,
+              campusName: null,
+            }))
+          : [],
     };
   } else {
     return {};
