@@ -3,17 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getSchools, getSchool } from "@MERedux/school/schoolAction";
 
-import MEHeader from "@MECommonComponents/header/meHeader";
-import SchoolListComponent from "@MEScreenComponents/school/schoolList";
-import SchoolDetailComponent from "@MEScreenComponents/school/schoolDetail";
-
-import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import _ from "lodash";
+
+import MEHeader from "@MECommonComponents/header/meHeader";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import SchoolListComponent from "@MEScreenComponents/school/schoolList";
+import SchoolsNotFound from "@MEScreenComponents/school/schoolsNotFound";
+import SchoolDetailComponent from "@MEScreenComponents/school/schoolDetail";
 
 const SchoolPage = () => {
   const dispatch = useDispatch();
 
-  const { schoolSummaryLoader, schoolDetailLoader, school } = useSelector(
+  const { schoolSummaryLoader, schoolDetailLoader, school, schools } = useSelector(
     (state) => state.school
   );
 
@@ -55,6 +56,8 @@ const SchoolPage = () => {
     }
   };
 
+  
+
   return (
     <>
       <MEHeader />
@@ -62,6 +65,8 @@ const SchoolPage = () => {
         <div className="flex items-center justify-center min-h-[calc(100vh)]">
           <MELoaderIcon />
         </div>
+      ) : _.isEmpty(schools) ? (
+        <SchoolsNotFound/>
       ) : (
         <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)]">
           <div
