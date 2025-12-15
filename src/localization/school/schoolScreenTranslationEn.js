@@ -28,7 +28,21 @@ const governmentRegistrationNumber = "government registration number:";
 const contactInformationHeader = "contact information";
 const organizationAddress = "campus";
 const administrativeTeamHeader = "administrative team";
-
+const schoolAddressesNotProvided = "no address information available.";
+const schoolMainCampusLocation = "main campus location";
+const schoolCampusLocation = "campus location";
+const schoolPhysicalAddress = "physical address";
+const schoolCoordinates = "coordinates";
+const schoolLatitude = "latitude:";
+const schoolLongitude = "longitude:";
+const schoolQuickContact = "quick contact";
+const schoolCampusSize = "campus size:";
+const schoolTotalArea = "total area:";
+const schoolBuildingArea = "building area:";
+const schoolOutdoorArea = "outdoor area:";
+const schoolOpeningHours = "opening hours:";
+const schoolHours = "school hours:";
+const schoolAdministrativeStaff = "administrative hours:";
 
 
 
@@ -62,4 +76,19 @@ export {
   contactInformationHeader,
   organizationAddress,
   administrativeTeamHeader,
+  schoolAddressesNotProvided,
+  schoolMainCampusLocation,
+  schoolCampusLocation,
+  schoolPhysicalAddress,
+  schoolCoordinates,
+  schoolLatitude,
+  schoolLongitude,
+  schoolQuickContact,
+  schoolCampusSize,
+  schoolTotalArea,
+  schoolBuildingArea,
+  schoolOutdoorArea,
+  schoolOpeningHours,
+  schoolHours,
+  schoolAdministrativeStaff,
 };

@@ -1,20 +1,42 @@
+import { useTranslation } from "react-i18next";
 import { MapPin, Clock, Phone, Mail, Building, Compass } from "lucide-react";
+
+import {
+  schoolLatitude,
+  schoolTotalArea,
+  schoolLongitude,
+  schoolCampusSize,
+  schoolOutdoorArea,
+  schoolCoordinates,
+  schoolBuildingArea,
+  schoolQuickContact,
+  schoolCampusLocation,
+  schoolPhysicalAddress,
+  schoolPhoneNotProvided,
+  schoolEmailNotProvided,
+  schoolMainCampusLocation,
+  schoolOpeningHours,
+  schoolHours,
+  schoolAdministrativeStaff,
+} from "@MELocalization/languages/en";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@MEShadcnComponents/card";
-import _ from "lodash";
+
+import SchoolAddressesNotProvided from "@MEScreenComponents/school/schoolDetail/schoolAddress/schoolAddressesNotProvided";
+
+import _, { add } from "lodash";
+import moment from "moment";
 
 const SchoolAddressComponent = ({ school }) => {
+  const { t } = useTranslation();
+
   const addresses = _.get(school, "addresses", []);
   if (!_.size(addresses)) {
-    return (
-      <div className="text-sm text-gray-500">
-        No address information available.
-      </div>
-    );
+    return <SchoolAddressesNotProvided />;
   }
 
   return (
@@ -24,7 +46,17 @@ const SchoolAddressComponent = ({ school }) => {
           <CardHeader className="pb-2 sm:pb-3">
             <CardTitle className="text-base sm:text-lg md:text-xl text-dark flex items-center gap-2">
               <Building className="h-4 w-4 sm:h-5 sm:w-5 text-dark" />
-              {index === 0 ? "Main " : ""}Campus Location
+              {index === 0
+                ? _.upperFirst(
+                    t("schoolMainCampusLocation", {
+                      defaultValue: schoolMainCampusLocation,
+                    })
+                  )
+                : _.upperFirst(
+                    t("schoolCampusLocation", {
+                      defaultValue: schoolCampusLocation,
+                    })
+                  )}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -35,7 +67,11 @@ const SchoolAddressComponent = ({ school }) => {
                   <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-dark mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
                     <h4 className="font-semibold text-sm sm:text-base text-dark mb-2">
-                      Physical Address
+                      {_.upperFirst(
+                        t("schoolPhysicalAddress", {
+                          defaultValue: schoolPhysicalAddress,
+                        })
+                      )}
                     </h4>
                     <p className="text-xs sm:text-sm text-gray-700">
                       {address?.addressLine1 || "N/A"}
@@ -55,13 +91,27 @@ const SchoolAddressComponent = ({ school }) => {
                   <Compass className="h-4 w-4 sm:h-5 sm:w-5 text-dark mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
                     <h4 className="font-semibold text-sm sm:text-base text-dark mb-2">
-                      Coordinates
+                      {_.upperFirst(
+                        t("schoolCoordinates", {
+                          defaultValue: schoolCoordinates,
+                        })
+                      )}
                     </h4>
                     <p className="text-xs sm:text-sm text-gray-700">
-                      Latitude: {address?.latitude || "N/A"}
+                      {_.upperFirst(
+                        t("schoolLatitude", {
+                          defaultValue: schoolLatitude,
+                        })
+                      )}{" "}
+                      {address?.latitude || "N/A"}
                     </p>
                     <p className="text-xs sm:text-sm text-gray-700 mt-1">
-                      Longitude: {address?.longitude || "N/A"}
+                      {_.upperFirst(
+                        t("schoolLongitude", {
+                          defaultValue: schoolLongitude,
+                        })
+                      )}{" "}
+                      {address?.longitude || "N/A"}
                     </p>
                   </div>
                 </div>
@@ -73,21 +123,34 @@ const SchoolAddressComponent = ({ school }) => {
                   <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-dark mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
                     <h4 className="font-semibold text-sm sm:text-base text-dark mb-2">
-                      Quick Contact
+                      {_.upperFirst(
+                        t("schoolQuickContact", {
+                          defaultValue: schoolQuickContact,
+                        })
+                      )}
                     </h4>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <Phone className="h-3 w-3 text-dark flex-shrink-0" />
                         <span className="text-xs sm:text-sm text-dark ">
-                          {address?.phoneNumber
-                            ? `+91 ${address.phoneNumber}`
-                            : "Not Available"}
+                          {school?.phoneNumber
+                            ? `+91 ${school.phoneNumber}`
+                            : _.upperFirst(
+                                t("schoolPhoneNotProvided", {
+                                  defaultValue: schoolPhoneNotProvided,
+                                })
+                              )}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Mail className="h-3 w-3 text-dark flex-shrink-0" />
                         <span className="text-xs sm:text-sm text-dark">
-                          {address?.email || "Not Available"}
+                          {school?.email ||
+                            _.upperFirst(
+                              t("schoolEmailNotProvided", {
+                                defaultValue: schoolEmailNotProvided,
+                              })
+                            )}
                         </span>
                       </div>
                     </div>
@@ -101,12 +164,20 @@ const SchoolAddressComponent = ({ school }) => {
                   <Building className="h-4 w-4 sm:h-5 sm:w-5 text-dark mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
                     <h4 className="font-semibold text-sm sm:text-base text-dark mb-2">
-                      Campus Size
+                      {_.upperFirst(
+                        t("schoolCampusSize", {
+                          defaultValue: schoolCampusSize,
+                        })
+                      )}
                     </h4>
                     <div className="space-y-1">
                       <div className="flex justify-between">
                         <span className="text-xs sm:text-sm text-gray-600">
-                          Total Area:
+                          {_.upperFirst(
+                            t("schoolTotalArea", {
+                              defaultValue: schoolTotalArea,
+                            })
+                          )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
                           {address?.totalArea || "N/A"}
@@ -114,7 +185,11 @@ const SchoolAddressComponent = ({ school }) => {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-xs sm:text-sm text-gray-600">
-                          Building Area:
+                          {_.upperFirst(
+                            t("schoolBuildingArea", {
+                              defaultValue: schoolBuildingArea,
+                            })
+                          )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
                           {address?.buildingArea || "N/A"}
@@ -122,7 +197,11 @@ const SchoolAddressComponent = ({ school }) => {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-xs sm:text-sm text-gray-600">
-                          Outdoor:
+                          {_.upperFirst(
+                            t("schoolOutdoorArea", {
+                              defaultValue: schoolOutdoorArea,
+                            })
+                          )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
                           {address?.outdoorFacilities || "N/A"}
@@ -133,82 +212,72 @@ const SchoolAddressComponent = ({ school }) => {
                 </div>
               </div>
             </div>
+
             {/* Operating Hours */}
             <div className="pt-2 sm:pt-3 border-t border-dark/10">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-dark" />
                 <h4 className="font-semibold text-sm sm:text-base text-dark">
-                  Operating Hours
+                  {_.upperFirst(
+                    t("schoolOpeningHours", {
+                      defaultValue: schoolOpeningHours,
+                    })
+                  )}
                 </h4>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <h5 className="font-semibold text-sm text-dark">
-                    Regular School Hours
+                    {_.upperFirst(
+                      t("schoolRegularHours", {
+                        defaultValue: schoolHours,
+                      })
+                    )}
                   </h5>
                   <div className="space-y-1 text-xs sm:text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Monday - Friday:</span>
-                      <span className="text-dark font-medium">
-                        7:30 AM - 3:30 PM
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Saturday:</span>
-                      <span className="text-dark font-medium">Closed</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Sunday:</span>
-                      <span className="text-dark font-medium">Closed</span>
-                    </div>
+                    {_.map(_.range(7), (day) => (
+                      <div key={day} className="flex justify-between">
+                        <span className="text-gray-600">
+                          {moment()
+                            .startOf("isoWeek")
+                            .add(day, "days")
+                            .format("dddd")}
+                          :
+                        </span>
+                        <span className="text-dark font-medium">
+                          {address?.openingHours && address.openingHours[day]
+                            ? address.openingHours[day]
+                            : "N/A"}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <div className="space-y-2">
                   <h5 className="font-semibold text-sm text-dark">
-                    Administrative Office
+                    {_.upperFirst(
+                      t("schoolAdministrativeOffice", {
+                        defaultValue: schoolAdministrativeStaff,
+                      })
+                    )}
                   </h5>
                   <div className="space-y-1 text-xs sm:text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Monday - Friday:</span>
-                      <span className="text-dark font-medium">
-                        7:00 AM - 5:00 PM
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Saturday:</span>
-                      <span className="text-dark font-medium">
-                        8:00 AM - 12:00 PM
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Sunday:</span>
-                      <span className="text-dark font-medium">Closed</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <h5 className="font-semibold text-sm text-dark">
-                    Special Events
-                  </h5>
-                  <div className="space-y-1 text-xs sm:text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Evening Events:</span>
-                      <span className="text-dark font-medium">
-                        Until 9:00 PM
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Weekend Sports:</span>
-                      <span className="text-dark font-medium">
-                        9:00 AM - 6:00 PM
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Summer Hours:</span>
-                      <span className="text-dark font-medium">
-                        8:00 AM - 2:00 PM
-                      </span>
-                    </div>
+                    {_.map(_.range(7), (day) => (
+                      <div key={day} className="flex justify-between">
+                        <span className="text-gray-600">
+                          {moment()
+                            .startOf("isoWeek")
+                            .add(day, "days")
+                            .format("dddd")}
+                          :
+                        </span>
+                        <span className="text-dark font-medium">
+                          {address?.openingHours && address.openingHours[day]
+                            ? address.openingHours[day]
+                            : "N/A"}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
