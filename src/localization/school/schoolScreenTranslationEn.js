@@ -43,6 +43,15 @@ const schoolOutdoorArea = "outdoor area:";
 const schoolOpeningHours = "opening hours:";
 const schoolHours = "school hours:";
 const schoolAdministrativeStaff = "administrative hours:";
+const schoolAcademicClassesOverviewHeader = "academic classes overview";
+const schoolAcademicClasses = "academic classes";
+const schoolEducationBoardIsNotSelectedMessage = `please select an education board to view academic classes.`;
+const schoolAcademicClassesAreNotAvailableMessage = `no academic classes data available for the selected education board.`;
+const schoolAcademicClassTotalStudents = "students:";
+const schoolAcademicClassTotalClasses = "classes:";
+const schoolAcademicClassAvgSize = "avg size:";
+const schoolAcademicClassCampusName = "campus name:";
+const selectEducationBoardPlaceholder = "select education board";
 
 
 
@@ -91,4 +100,13 @@ export {
   schoolOpeningHours,
   schoolHours,
   schoolAdministrativeStaff,
+  schoolAcademicClassesOverviewHeader,
+  schoolAcademicClasses,
+  schoolEducationBoardIsNotSelectedMessage,
+  schoolAcademicClassesAreNotAvailableMessage,
+  schoolAcademicClassTotalStudents,
+  schoolAcademicClassTotalClasses,
+  schoolAcademicClassAvgSize,
+  schoolAcademicClassCampusName,
+  selectEducationBoardPlaceholder,
 };
