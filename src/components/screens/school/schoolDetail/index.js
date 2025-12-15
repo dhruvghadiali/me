@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Mail, Phone, XCircleIcon } from "lucide-react";
 
 import { Button } from "@MEShadcnComponents/button";
+import { getSchoolDetailTabs } from "@MEScreenComponents/school/schoolDetailTab/schoolDetailTabs";
 import {
   schoolType,
   schoolEstablished,
@@ -13,7 +14,6 @@ import {
 import _ from "lodash";
 
 import SchoolDetailTabComponent from "@MEScreenComponents/school/schoolDetailTab/schoolDetailTabComponent";
-import { getSchoolDetailTabs } from "@MEScreenComponents/school/schoolDetail/schoolDetailTabs";
 
 const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
   const { t } = useTranslation();
@@ -86,9 +86,7 @@ const SchoolDetailComponent = ({ handleCardClick, showCloseIcon }) => {
         </div>
       </div>
 
-      <SchoolDetailTabComponent
-        tabData={getSchoolDetailTabs(school, t)}
-      />
+      <SchoolDetailTabComponent tabData={getSchoolDetailTabs(school, t)} />
     </>
   );
 };
