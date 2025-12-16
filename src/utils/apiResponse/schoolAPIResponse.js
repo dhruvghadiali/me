@@ -37,6 +37,76 @@ const transformFacilitiesData = (facilitiesArray) => {
   });
 };
 
+const transformAcademicClassesData = (school) => {
+  let academicClasses = [];
+  let fees = [];
+  let admissionDocuments = [];
+
+  if (
+    school &&
+    school.school_academic_class &&
+    !_.isEmpty(school.school_academic_class)
+  ) {
+    for (let index = 0; index < school.school_academic_class.length; index++) {
+      const academicClass = school.school_academic_class[index];
+      academicClasses.push({
+        educationBoard: academicClass?.education_board || null,
+        academicClass: academicClass?.academic_class?.academic_class || null,
+        students: null,
+        classes: null,
+        avgSize: null,
+        campusName: null,
+      });
+      fees.push({
+        educationBoard: academicClass?.education_board || null,
+        academicClass: academicClass?.academic_class?.academic_class || null,
+        totalMonthlyFee:
+          academicClass && academicClass.school_fees
+            ? _.sumBy(academicClass.school_fees, (fee) =>
+                fee?.monthly_fee ? parseFloat(fee.monthly_fee) : 0
+              )
+            : 0,
+        totalQuarterlyFee:
+          academicClass && academicClass.school_fees
+            ? _.sumBy(academicClass.school_fees, (fee) =>
+                fee?.quarterly_fee ? parseFloat(fee.quarterly_fee) : 0
+              )
+            : 0,
+        totalHalfYearlyFee:
+          academicClass && academicClass.school_fees
+            ? _.sumBy(academicClass.school_fees, (fee) =>
+                fee?.half_yearly_fee ? parseFloat(fee.half_yearly_fee) : 0
+              )
+            : 0,
+        totalYearlyFee:
+          academicClass && academicClass.school_fees
+            ? _.sumBy(academicClass.school_fees, (fee) =>
+                fee?.yearly_fee ? parseFloat(fee.yearly_fee) : 0
+              )
+            : 0,
+        feeStructure:
+          academicClass &&
+          academicClass.school_fees &&
+          _.size(academicClass.school_fees) > 0
+            ? _.map(academicClass.school_fees, (fee) => ({
+                feeType: fee?.fee_type?.fee_type || null,
+                monthlyFee: fee?.monthly_fee || null,
+                quarterlyFee: fee?.quarterly_fee || null,
+                halfYearlyFee: fee?.half_yearly_fee || null,
+                yearlyFee: fee?.yearly_fee || null,
+              }))
+            : [],
+      });
+    }
+  }
+
+  return {
+    academicClasses,
+    fees,
+    admissionDocuments,
+  };
+};
+
 const schoolSummaryAPIResponse = (response) => {
   if (response && response.data && _.size(response.data) > 0) {
     return _.map(response.data, (school) => {
@@ -205,23 +275,12 @@ const schoolDetailsAPIResponse = (response) => {
               };
             })
           : [],
-      academicClasses:
-        school &&
-        school.school_academic_class &&
-        _.size(school.school_academic_class) > 0
-          ? _.map(school.school_academic_class, (academicClass) => ({
-              educationBoard: academicClass?.education_board || null,
-              academicClass: academicClass?.academic_class?.academic_class || null,
-              students: null,
-              classes: null,
-              avgSize: null,
-              campusName: null,
-            }))
-          : [],
+      academicClasses: transformAcademicClassesData(school).academicClasses,
+      fees: transformAcademicClassesData(school).fees,
+      admissionDocuments:
+        transformAcademicClassesData(school).admissionDocuments,
       facilities:
-        school &&
-        school.school_facility &&
-        _.size(school.school_facility) > 0
+        school && school.school_facility && _.size(school.school_facility) > 0
           ? transformFacilitiesData(school.school_facility)
           : [],
     };

@@ -54,6 +54,13 @@ const schoolAcademicClassCampusName = "campus name:";
 const selectEducationBoardPlaceholder = "select education board";
 const facilitiesTabTitle = "facilities";
 const noFacilitiesAvailableMessage = "facilities information is not available at the moment.";
+const schoolFeesOverviewHeader = "fees overview";
+const schoolFeesEducationBoardIsNotSelectedMessage = `please select an education board to view fees.`;
+const schoolFeesAreNotSelectedMessage = `no fees data available for the selected education board.`;
+const monthlyFee = "monthly fee:";
+const quarterlyFee = "quarterly fee:";
+const halfYearlyFee = "half-yearly fee:";
+const yearlyFee = "yearly fee:";
 
 
 export {
@@ -112,4 +119,11 @@ export {
   selectEducationBoardPlaceholder,
   facilitiesTabTitle,
   noFacilitiesAvailableMessage,
+  schoolFeesOverviewHeader,
+  schoolFeesAreNotSelectedMessage,
+  schoolFeesEducationBoardIsNotSelectedMessage,
+  monthlyFee,
+  quarterlyFee,
+  halfYearlyFee,
+  yearlyFee,
 };
