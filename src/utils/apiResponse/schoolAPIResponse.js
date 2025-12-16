@@ -1,4 +1,41 @@
-import _, { add, over } from "lodash";
+import _ from "lodash";
+
+/**
+ * Transform flat facilities array into grouped structure by facility_type
+ * Input: [{ facility: { facility_type: {...}, facility_name: "..." }, ... }]
+ * Output: [{ facilityType: "...", facility: [{ facilityName: "...", ... }] }, ...]
+ */
+const transformFacilitiesData = (facilitiesArray) => {
+  if (!facilitiesArray || !_.size(facilitiesArray)) {
+    return [];
+  }
+
+  // Group by facility_type
+  const groupedByType = _.groupBy(facilitiesArray, (item) => {
+    return _.get(item, "facility.facility_type._id");
+  });
+
+  console.log("transformFacilitiesData -> groupedByType", groupedByType);
+  // Transform into desired structure
+  return _.map(groupedByType, (facilities, facilityTypeId) => {
+    const firstFacility = facilities[0];
+    const facilityType = _.get(firstFacility, "facility.facility_type");
+
+    return {
+      _id: facilityType?._id || facilityTypeId,
+      facilityType: facilityType?.facility_type || null,
+      id: facilityType?.id || facilityTypeId,
+      facility: _.map(facilities, (item) => {
+        const facility = _.get(item, "facility");
+        return {
+          _id: facility?._id || null,
+          facilityName: facility?.facility_name || null,
+          id: facility?.id || null,
+        };
+      }),
+    };
+  });
+};
 
 const schoolSummaryAPIResponse = (response) => {
   if (response && response.data && _.size(response.data) > 0) {
@@ -180,6 +217,12 @@ const schoolDetailsAPIResponse = (response) => {
               avgSize: null,
               campusName: null,
             }))
+          : [],
+      facilities:
+        school &&
+        school.school_facility &&
+        _.size(school.school_facility) > 0
+          ? transformFacilitiesData(school.school_facility)
           : [],
     };
   } else {

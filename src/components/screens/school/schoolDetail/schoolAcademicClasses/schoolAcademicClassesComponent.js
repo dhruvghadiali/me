@@ -93,13 +93,6 @@ const SchoolAcademicClassesComponent = ({ school }) => {
           <CardContent className="space-y-4">
             {/* Grade Level Enrollment */}
             <div>
-              <h4 className="font-semibold text-sm sm:text-base text-dark mb-3">
-                {_.upperFirst(
-                  t("schoolAcademicClasses", {
-                    defaultValue: schoolAcademicClasses,
-                  })
-                )}
-              </h4>
               {!selectedEducationBoardForAcademicClassesTab ? (
                 <div className="flex items-center justify-center py-8 sm:py-12">
                   <div className="text-center">
@@ -137,74 +130,84 @@ const SchoolAcademicClassesComponent = ({ school }) => {
                       </div>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                      {_.map(
-                        filteredAcademicClasses,
-                        (academicClass, index) => (
-                          <div
-                            key={index}
-                            className="p-3 rounded-lg text-center bg-gray-50 border border-dark/10"
-                          >
-                            <h5 className="font-semibold text-sm text-dark text-left">
-                              {_.upperFirst(academicClass?.academicClass) ||
-                                "N/A"}
-                            </h5>
-                            <div className="mt-2 space-y-1">
-                              <div className="flex justify-between items-center text-xs">
-                                <span className="text-gray-600">
-                                  {_.upperFirst(
-                                    t("schoolAcademicClassTotalStudents", {
-                                      defaultValue:
-                                        schoolAcademicClassTotalStudents,
-                                    })
-                                  )}
-                                </span>
-                                <span className="text-dark font-medium">
-                                  {academicClass?.students || "N/A"}
-                                </span>
-                              </div>
-                              <div className="flex justify-between items-center text-xs">
-                                <span className="text-gray-600">
-                                  {_.upperFirst(
-                                    t("schoolAcademicClassTotalClasses", {
-                                      defaultValue:
-                                        schoolAcademicClassTotalClasses,
-                                    })
-                                  )}
-                                </span>
-                                <span className="text-dark font-medium">
-                                  {academicClass?.classes || "N/A"}
-                                </span>
-                              </div>
-                              <div className="flex justify-between items-center text-xs">
-                                <span className="text-gray-600">
-                                  {_.upperFirst(
-                                    t("schoolAcademicClassAvgSize", {
-                                      defaultValue: schoolAcademicClassAvgSize,
-                                    })
-                                  )}
-                                </span>
-                                <span className="text-dark font-medium">
-                                  {academicClass?.avgSize || "N/A"}
-                                </span>
-                              </div>
-                              <div className="flex justify-between items-center text-xs">
-                                <span className="text-gray-600">
-                                  {_.upperFirst(
-                                    t("schoolAcademicClassCampusName", {
-                                      defaultValue:
-                                        schoolAcademicClassCampusName,
-                                    })
-                                  )}
-                                </span>
-                                <span className="text-dark font-medium">
-                                  {academicClass?.campusName || "N/A"}
-                                </span>
+                    <div>
+                      <h4 className="font-semibold text-sm sm:text-base text-dark mb-3">
+                        {_.upperFirst(
+                          t("schoolAcademicClasses", {
+                            defaultValue: schoolAcademicClasses,
+                          })
+                        )}
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        {_.map(
+                          filteredAcademicClasses,
+                          (academicClass, index) => (
+                            <div
+                              key={index}
+                              className="p-3 rounded-lg text-center bg-gray-50 border border-dark/10"
+                            >
+                              <h5 className="font-semibold text-sm text-dark text-left">
+                                {_.upperFirst(academicClass?.academicClass) ||
+                                  "N/A"}
+                              </h5>
+                              <div className="mt-2 space-y-1">
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-gray-600">
+                                    {_.upperFirst(
+                                      t("schoolAcademicClassTotalStudents", {
+                                        defaultValue:
+                                          schoolAcademicClassTotalStudents,
+                                      })
+                                    )}
+                                  </span>
+                                  <span className="text-dark font-medium">
+                                    {academicClass?.students || "N/A"}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-gray-600">
+                                    {_.upperFirst(
+                                      t("schoolAcademicClassTotalClasses", {
+                                        defaultValue:
+                                          schoolAcademicClassTotalClasses,
+                                      })
+                                    )}
+                                  </span>
+                                  <span className="text-dark font-medium">
+                                    {academicClass?.classes || "N/A"}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-gray-600">
+                                    {_.upperFirst(
+                                      t("schoolAcademicClassAvgSize", {
+                                        defaultValue:
+                                          schoolAcademicClassAvgSize,
+                                      })
+                                    )}
+                                  </span>
+                                  <span className="text-dark font-medium">
+                                    {academicClass?.avgSize || "N/A"}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="text-gray-600">
+                                    {_.upperFirst(
+                                      t("schoolAcademicClassCampusName", {
+                                        defaultValue:
+                                          schoolAcademicClassCampusName,
+                                      })
+                                    )}
+                                  </span>
+                                  <span className="text-dark font-medium">
+                                    {academicClass?.campusName || "N/A"}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        )
-                      )}
+                          )
+                        )}
+                      </div>
                     </div>
                   );
                 })()

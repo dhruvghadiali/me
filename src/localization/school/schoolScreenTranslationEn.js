@@ -52,7 +52,8 @@ const schoolAcademicClassTotalClasses = "classes:";
 const schoolAcademicClassAvgSize = "avg size:";
 const schoolAcademicClassCampusName = "campus name:";
 const selectEducationBoardPlaceholder = "select education board";
-
+const facilitiesTabTitle = "facilities";
+const noFacilitiesAvailableMessage = "facilities information is not available at the moment.";
 
 
 export {
@@ -109,4 +110,6 @@ export {
   schoolAcademicClassAvgSize,
   schoolAcademicClassCampusName,
   selectEducationBoardPlaceholder,
+  facilitiesTabTitle,
+  noFacilitiesAvailableMessage,
 };
