@@ -14,15 +14,14 @@ import SchoolDetailComponent from "@MEScreenComponents/school/schoolDetail";
 const SchoolPage = () => {
   const dispatch = useDispatch();
 
-  const { schoolSummaryLoader, schoolDetailLoader, school, schools } = useSelector(
-    (state) => state.school
-  );
+  const { schoolSummaryLoader, schoolDetailLoader, school, schools } =
+    useSelector((state) => state.school);
 
   const [isFullScreen, setIsFullScreen] = useState(true);
   const [isHideMainContent, setIsHideMainContent] = useState(true);
 
   useEffect(() => {
-    dispatch(getSchools());
+    dispatch(getSchools({ callPublicAPI: true }));
     const handleResize = () => {
       const width = window.innerWidth;
 
@@ -47,7 +46,7 @@ const SchoolPage = () => {
   // };
 
   const handleCardClick = (schoolId) => {
-    dispatch(getSchool({ schoolId }));
+    dispatch(getSchool({ schoolId, callPublicAPI: true }));
     if (isFullScreen) {
       console.log(`Right now you are in full screen mode`);
     } else {
@@ -55,8 +54,6 @@ const SchoolPage = () => {
       console.log(`Right now you are in normal mode`);
     }
   };
-
-  
 
   return (
     <>
@@ -66,7 +63,7 @@ const SchoolPage = () => {
           <MELoaderIcon />
         </div>
       ) : _.isEmpty(schools) ? (
-        <SchoolsNotFound/>
+        <SchoolsNotFound />
       ) : (
         <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)]">
           <div

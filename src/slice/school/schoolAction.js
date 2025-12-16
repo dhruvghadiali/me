@@ -13,16 +13,11 @@ import { axiosInstance } from "@MEUtils/axiosInstance";
 
 const getSchools = createAsyncThunk(
   "school/getSchools",
-  async (payload, { getState, rejectWithValue, dispatch }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const state = getState();
-
-      const axiosInstanceConfig = setUpAxiosInstanceConfig(state, dispatch);
-
-      const response = await axiosInstance.get(
-        schoolsAPIRoute,
-        axiosInstanceConfig
-      );
+      let response = await axiosInstance.get(schoolsAPIRoute, {
+        callPublicAPI: payload.callPublicAPI,
+      });
 
       return {
         error: "",
@@ -40,17 +35,13 @@ const getSchools = createAsyncThunk(
 
 const getSchool = createAsyncThunk(
   "school/getSchool",
-  async (payload, { getState, rejectWithValue, dispatch }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const { schoolId } = payload;
-      const state = getState();
+      const { schoolId, callPublicAPI } = payload;
 
-      const axiosInstanceConfig = setUpAxiosInstanceConfig(state, dispatch);
-
-      const response = await axiosInstance.get(
-        `${schoolAPIRoute}/${schoolId}`,
-        axiosInstanceConfig
-      );
+      let response = await axiosInstance.get(`${schoolAPIRoute}/${schoolId}`, {
+        callPublicAPI,
+      });
 
       return {
         error: "",

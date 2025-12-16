@@ -6,7 +6,8 @@ import _ from "lodash";
 
 // API Configuration
 const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL,
+  BASE_URL_PUBLIC: import.meta.env.VITE_API_BASE_URL_PUBLIC,
+  BASE_URL_STUDENT: import.meta.env.VITE_API_BASE_URL_STUDENT,
   TIMEOUT: 30000, // 30 seconds
   HEADERS: {
     CONTENT_TYPE: "application/json",
@@ -105,7 +106,7 @@ const handleUnauthorizedUser = (redirectPath = "/signin") => {
  * }
  */
 const axiosInstance = axios.create({
-  baseURL: API_CONFIG.BASE_URL,
+  baseURL: API_CONFIG.BASE_URL_STUDENT,
   timeout: API_CONFIG.TIMEOUT,
   headers: {
     "Content-Type": API_CONFIG.HEADERS.CONTENT_TYPE,
@@ -116,6 +117,12 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const state = config.state;
     delete config.state;
+
+    // Determine base URL based on callPublicAPI flag (default: false for student API)
+    const callPublicAPI = config.callPublicAPI || false;
+    config.baseURL = callPublicAPI
+      ? API_CONFIG.BASE_URL_PUBLIC
+      : API_CONFIG.BASE_URL_STUDENT;
 
     // Store auto-logout preference from config (can be overridden per request)
     if (config.autoLogoutOnUnauthorized === undefined) {
