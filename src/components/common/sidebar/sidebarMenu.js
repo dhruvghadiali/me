@@ -7,7 +7,7 @@ import {
   House
 } from "lucide-react";
 import { SIDEBAR_MENU } from "@MEHelpers/enums";
-import { admissionForms, school, root, dashboard } from "@MEUtils/pageRoutes";
+import { admissionForm, school, root, dashboard } from "@MEUtils/pageRoutes";
 
 export const sidebarMenu = [
   {
@@ -17,7 +17,7 @@ export const sidebarMenu = [
   },
   {
     title: SIDEBAR_MENU.ADMISSION_FORMS,
-    url: admissionForms,
+    url: admissionForm,
     icon: FolderMinusIcon,
   },
   {

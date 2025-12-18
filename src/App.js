@@ -7,7 +7,7 @@ import {
   signUp,
   school,
   dashboard,
-  admissionForms,
+  admissionForm,
   forgottenPassword,
 } from "@MEPageRoutes";
 import { ThemeProvider } from "@MEContexts/themeProvider";
@@ -97,7 +97,7 @@ function App() {
               }
             />
             <Route
-              path={admissionForms}
+              path={admissionForm}
               element={
                 <ProtectedRoute>
                   <MESidebar>

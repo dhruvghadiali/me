@@ -4,5 +4,5 @@ export const school = "/school";
 export const signIn = "/sign-in";
 export const signUp = "/sign-up";
 export const dashboard = "/dashboard";
-export const admissionForms = "/admission-forms";
+export const admissionForm = "/admission-form";
 export const forgottenPassword = "/forgotten-password";
