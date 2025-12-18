@@ -129,13 +129,14 @@ axiosInstance.interceptors.request.use(
       config.autoLogoutOnUnauthorized = API_CONFIG.AUTO_LOGOUT_ON_UNAUTHORIZED;
     }
 
+    console.log("API Request Config:", config, state);
     if (
       state &&
-      state.authentication &&
-      state.authentication.user &&
-      state.authentication.user.token
+      state.signIn &&
+      state.signIn.user &&
+      state.signIn.user.token
     ) {
-      config.headers.Authorization = `Bearer ${state.authentication.user.token}`;
+      config.headers.Authorization = `Bearer ${state.signIn.user.token}`;
     }
     return config;
   },

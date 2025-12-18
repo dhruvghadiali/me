@@ -13,10 +13,11 @@ import { axiosInstance } from "@MEUtils/axiosInstance";
 
 const getSchools = createAsyncThunk(
   "school/getSchools",
-  async (payload, { rejectWithValue }) => {
+  async (payload, { getState, rejectWithValue }) => {
     try {
       let response = await axiosInstance.get(schoolsAPIRoute, {
-        callPublicAPI: payload.callPublicAPI,
+        callPublicAPI: payload?.callPublicAPI || false,
+        state: getState(),
       });
 
       return {
@@ -24,7 +25,6 @@ const getSchools = createAsyncThunk(
         schools: schoolSummaryAPIResponse(response),
       };
     } catch (error) {
-      console.log("Authentication State in getSchools: 2", error);
       return rejectWithValue({
         error: defaultAPIErrorResponse.message,
         schools: [],
@@ -35,12 +35,13 @@ const getSchools = createAsyncThunk(
 
 const getSchool = createAsyncThunk(
   "school/getSchool",
-  async (payload, { rejectWithValue }) => {
+  async (payload, {getState, rejectWithValue }) => {
     try {
       const { schoolId, callPublicAPI } = payload;
 
       let response = await axiosInstance.get(`${schoolAPIRoute}/${schoolId}`, {
-        callPublicAPI,
+        callPublicAPI: callPublicAPI || false,
+        state: getState(),
       });
 
       return {

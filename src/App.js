@@ -46,10 +46,7 @@ function App() {
             <Route
               path={school}
               element={
-                <PublicRoute
-                  redirectAuthenticated={true}
-                  redirectTo={dashboard}
-                >
+                <PublicRoute>
                   <SchoolPage />
                 </PublicRoute>
               }

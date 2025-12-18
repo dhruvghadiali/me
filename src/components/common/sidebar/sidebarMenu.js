@@ -1,46 +1,40 @@
 import {
-  Gauge,
-  Inbox,
+  FolderMinusIcon,
+  LogOut,
   User,
   Settings,
-  LogOutIcon,
-  SchoolIcon,
+  School
 } from "lucide-react";
-import { sidebarMenuName } from "@MEUtils/enums";
-import { routeName } from "@MEUtils/routeName";
+import { SIDEBAR_MENU } from "@MEHelpers/enums";
+import { dashboard, school, root } from "@MEUtils/pageRoutes";
 
 export const sidebarMenu = [
   {
-    title: sidebarMenuName.HOME,
-    url: routeName.root,
-    icon: Gauge,
+    title: SIDEBAR_MENU.ADMISSION_FORMS,
+    url: dashboard,
+    icon: FolderMinusIcon,
   },
   {
-    title: sidebarMenuName.SCHOOLS,
-    url: routeName.root,
-    icon: SchoolIcon,
+    title: SIDEBAR_MENU.SCHOOLS,
+    url: school,
+    icon: School,
   },
   {
-    title: sidebarMenuName.ADMISSIONS,
-    url: routeName.root,
-    icon: Inbox,
-  },
-  {
-    title: sidebarMenuName.PROFILE,
-    url: routeName.root,
+    title: SIDEBAR_MENU.PROFILE,
+    url: dashboard,
     icon: User,
   },
   {
-    title: sidebarMenuName.SETTINGS,
-    url: routeName.root,
+    title: SIDEBAR_MENU.SETTINGS,
+    url: dashboard,
     icon: Settings,
   },
 ];
 
 export const footerMenu = [
   {
-    title: sidebarMenuName.SIGNOUT,
-    url: routeName.root,
-    icon: LogOutIcon,
+    title: SIDEBAR_MENU.SIGN_OUT,
+    url: root,
+    icon: LogOut,
   },
 ];

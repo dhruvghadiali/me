@@ -13,12 +13,12 @@ import _ from "lodash";
 
 import MEButton from "@MECommonComponents/button/meButton";
 
-const SchoolsNotFound = () => {
+const SchoolsNotFound = ({callPublicAPI}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const handleRefresh = () => {
-    dispatch(getSchools());
+    dispatch(getSchools({ callPublicAPI: callPublicAPI || false }));
   };
 
   return (
