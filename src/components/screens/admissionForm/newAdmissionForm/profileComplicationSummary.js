@@ -1,29 +1,62 @@
-import React, { useState } from "react";
-import {User, Users, MapPin, Siren, Venus, Mars, Check, TriangleAlert} from "lucide-react";
+import { useSelector } from "react-redux";
+import {
+  User,
+  Users,
+  MapPin,
+  Siren,
+  Venus,
+  Mars,
+  Check,
+  TriangleAlert,
+} from "lucide-react";
+
+import { PROFILE_COMPLETION_SUMMARY } from "@MEHelpers/enums";
 
 const profileComplicationSummaryComponent = () => {
-  const [profileCompletion, setProfileCompletion] = useState({
-    studentProfile: true,
-    fatherProfile: true,
-    motherProfile: false,
-    siblingsProfile: true,
-    address: false,
-    emergencyContact: true,
-  });
+  const { profileComplicationSummary } = useSelector(
+    (state) => state.admissionForm
+  );
 
   const profileSections = [
-    { key: "studentProfile", label: "Student Profile", icon: <User/>},
-    { key: "fatherProfile", label: "Father Profile", icon: <Mars/> },
-    { key: "motherProfile", label: "Mother Profile", icon:  <Venus/> },
-    { key: "siblingsProfile", label: "Siblings Profile", icon: <Users/> },
-    { key: "address", label: "Address", icon: <MapPin/> },
-    { key: "emergencyContact", label: "Emergency Contact", icon: <Siren/> },
+    {
+      key: PROFILE_COMPLETION_SUMMARY.STUDENT_PROFILE,
+      label: "Student Profile",
+      icon: <User />,
+    },
+    {
+      key: PROFILE_COMPLETION_SUMMARY.FATHER_PROFILE,
+      label: "Father Profile",
+      icon: <Mars />,
+    },
+    {
+      key: PROFILE_COMPLETION_SUMMARY.MOTHER_PROFILE,
+      label: "Mother Profile",
+      icon: <Venus />,
+    },
+    {
+      key: PROFILE_COMPLETION_SUMMARY.SIBLINGS_PROFILE,
+      label: "Siblings Profile",
+      icon: <Users />,
+    },
+    {
+      key: PROFILE_COMPLETION_SUMMARY.ADDRESS,
+      label: "Address",
+      icon: <MapPin />,
+    },
+    {
+      key: PROFILE_COMPLETION_SUMMARY.EMERGENCY_CONTACT,
+      label: "Emergency Contact",
+      icon: <Siren />,
+    },
   ];
 
   const completedCount =
-    Object.values(profileCompletion).filter(Boolean).length;
-  const totalCount = Object.keys(profileCompletion).length;
-  const completionPercentage = Math.round((completedCount / totalCount) * 100);
+    Object.values(profileComplicationSummary)?.filter(Boolean)?.length || 0;
+  const totalCount = Object.keys(profileComplicationSummary)?.length || 0;
+  const completionPercentage =
+    Math.round((completedCount / totalCount) * 100) || 0;
+
+
   return (
     <div className="mb-5 sm:mb-6 md:mb-7 pb-5 sm:pb-6 md:pb-7 border-b border-border">
       <div className="flex items-center justify-between mb-2 sm:mb-3">
@@ -35,7 +68,6 @@ const profileComplicationSummaryComponent = () => {
         </span>
       </div>
 
-      {/* Progress Bar */}
       <div className="w-full bg-muted rounded-full h-2 sm:h-2.5 overflow-hidden mb-3 sm:mb-4">
         <div
           className="bg-primary h-full rounded-full transition-all duration-300"
@@ -43,7 +75,6 @@ const profileComplicationSummaryComponent = () => {
         ></div>
       </div>
 
-      {/* Profile Items */}
       <div className="space-y-2 sm:space-y-2.5">
         {profileSections.map((section) => (
           <div
@@ -65,11 +96,13 @@ const profileComplicationSummaryComponent = () => {
               </span>
             </div>
             <div className="flex-shrink-0 ml-2">
-              {profileCompletion[section.key] ? (
-                <span className="text-success text-lg sm:text-xl"><Check/></span>
+              {profileComplicationSummary?.[section.key] ? (
+                <span className="text-success text-lg sm:text-xl">
+                  <Check />
+                </span>
               ) : (
                 <span className="text-warning text-lg sm:text-xl">
-                  <TriangleAlert/>
+                  <TriangleAlert />
                 </span>
               )}
             </div>
@@ -77,7 +110,6 @@ const profileComplicationSummaryComponent = () => {
         ))}
       </div>
 
-      {/* Completion Status */}
       <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-muted-foreground text-center">
         {completedCount} of {totalCount} sections completed
       </div>
