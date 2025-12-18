@@ -3,15 +3,21 @@ import {
   LogOut,
   User,
   Settings,
-  School
+  School,
+  House
 } from "lucide-react";
 import { SIDEBAR_MENU } from "@MEHelpers/enums";
-import { dashboard, school, root } from "@MEUtils/pageRoutes";
+import { admissionForms, school, root, dashboard } from "@MEUtils/pageRoutes";
 
 export const sidebarMenu = [
   {
-    title: SIDEBAR_MENU.ADMISSION_FORMS,
+    title: SIDEBAR_MENU.DASHBOARD,
     url: dashboard,
+    icon: House,
+  },
+  {
+    title: SIDEBAR_MENU.ADMISSION_FORMS,
+    url: admissionForms,
     icon: FolderMinusIcon,
   },
   {

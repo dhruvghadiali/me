@@ -7,6 +7,7 @@ import {
   signUp,
   school,
   dashboard,
+  admissionForms,
   forgottenPassword,
 } from "@MEPageRoutes";
 import { ThemeProvider } from "@MEContexts/themeProvider";
@@ -16,6 +17,7 @@ import ThemePage from "@MEPages/ThemePage";
 import SchoolPage from "@MEPages/schoolPage";
 import SignUpPage from "@MEPages/signUpPage";
 import SignInPage from "@MEPages/signInPage";
+import DashboardPage from "@MEPages/dashboard";
 import NotFoundPage from "@MEPages/NotFoundPage";
 import ForgottenPasswordPage from "@MEPages/forgottenPasswordPage";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";
@@ -89,7 +91,17 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MESidebar>
-                    <div>Dashboard - Protected Area</div>
+                    <DashboardPage />
+                  </MESidebar>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={admissionForms}
+              element={
+                <ProtectedRoute>
+                  <MESidebar>
+                    <div>Admission Forms - Protected Area</div>
                   </MESidebar>
                 </ProtectedRoute>
               }
