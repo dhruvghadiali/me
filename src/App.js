@@ -19,9 +19,10 @@ import SignUpPage from "@MEPages/signUpPage";
 import SignInPage from "@MEPages/signInPage";
 import DashboardPage from "@MEPages/dashboard";
 import NotFoundPage from "@MEPages/NotFoundPage";
-import ForgottenPasswordPage from "@MEPages/forgottenPasswordPage";
+import AdmissionFormPage from "@MEPages/admissionFormPage";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";
 import AuthChecker from "@MECommonComponents//hoc/authChecker";
+import ForgottenPasswordPage from "@MEPages/forgottenPasswordPage";
 import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
 
 import MESidebar from "@MECommonComponents/sidebar/meSidebar";
@@ -101,7 +102,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MESidebar>
-                    <div>Admission Forms - Protected Area</div>
+                    <AdmissionFormPage />
                   </MESidebar>
                 </ProtectedRoute>
               }
