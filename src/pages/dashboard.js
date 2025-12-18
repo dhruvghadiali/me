@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import ScreenHeaderComponent from "@MECommonComponents/header/screenHeader";
+import ScreenSubTitleComponent from "@MECommonComponents/subTitle/screenSubTitle";
 
 const DashboardPage = () => {
   return (
@@ -15,27 +17,29 @@ const DashboardPage = () => {
               </div>
             </div>
 
-            {/* Main heading */}
-            <h1 className="text-5xl md:text-6xl font-bold text-center mb-4">
-              Welcome Back!
-            </h1>
-
-            {/* Subheading */}
-            <p className="text-xl md:text-2xl text-center text-foreground/80 mb-8">
-              We're thrilled to have you here
-            </p>
-
-            {/* Description */}
-            <p className="text-center text-muted-foreground mb-12 text-lg leading-relaxed">
-              Your dashboard is ready. Explore amazing features and make the most of your experience.
-            </p>
+            <ScreenHeaderComponent
+              headerText="Welcome Back!"
+              className={"text-center"}
+            />
+            <div className="mb-5">
+              <ScreenSubTitleComponent
+                subTitleText="We're thrilled to have you here"
+                className={"text-center mb-5"}
+              />
+              <ScreenSubTitleComponent
+                subTitleText="Your dashboard is ready. Explore amazing features and make the most of your experience."
+                className={"text-center"}
+              />
+            </div>
 
             {/* Feature cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <div className="bg-primary/90 rounded-lg p-4 border border-success/20 hover:shadow-lg transition-shadow">
                 <div className="text-3xl mb-2">⚡</div>
                 <h3 className="font-semibold text-secondary mb-1">Fast</h3>
-                <p className="text-sm text-secondary">Lightning quick performance</p>
+                <p className="text-sm text-secondary">
+                  Lightning quick performance
+                </p>
               </div>
               <div className="bg-primary/90 rounded-lg p-4 border border-info/20 hover:shadow-lg transition-shadow">
                 <div className="text-3xl mb-2">🔒</div>
@@ -45,7 +49,9 @@ const DashboardPage = () => {
               <div className="bg-primary/90 rounded-lg p-4 border border-warning/20 hover:shadow-lg transition-shadow">
                 <div className="text-3xl mb-2">✨</div>
                 <h3 className="font-semibold text-secondary mb-1">Modern</h3>
-                <p className="text-sm text-secondary">One platform for all your needs</p>
+                <p className="text-sm text-secondary">
+                  One platform for all your needs
+                </p>
               </div>
             </div>
           </div>

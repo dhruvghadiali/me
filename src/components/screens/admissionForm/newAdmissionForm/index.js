@@ -6,13 +6,8 @@ const NewAdmissionFormComponent = () => {
     return (
          <div className="lg:sticky lg:top-6 xl:top-8 lg:h-fit">
               <div className="bg-card rounded-lg sm:rounded-xl md:rounded-2xl border border-border p-4 sm:p-5 md:p-6 lg:p-8 shadow-lg">
-                {/* Icon: text-4xl mobile | text-5xl tablet+ */}
                 <NewAdmissionFormHeaderComponent/>
-
-                {/* Profile Completion Section */}
                 <ProfileComplicationSummaryComponent />
-
-                {/* CTA Button: py-2 mobile | py-3 tablet+ */}
                 <button
                 //   disabled={true < 100}
                   className={`w-full px-4 sm:px-5 md:px-6 py-2 sm:py-3 md:py-3 text-primary-foreground font-semibold text-sm sm:text-base rounded-lg transition-all ${
