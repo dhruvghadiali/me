@@ -32,19 +32,21 @@ const AdmissionFormSheetComponent = () => {
           {"Start New Application"}
         </MEButton>
       </SheetTrigger>
-      <SheetContent
+      <SheetContent 
       // onInteractOutside={(e) => e.preventDefault()}
       // onEscapeKeyDown={(e) => e.preventDefault()}
-      >
-        <SheetHeader>
+      className="w-full sm:max-w-md overflow-y-auto">
+        <SheetHeader className="mb-6">
           <SheetTitle>{"Admission Form"}</SheetTitle>
           <SheetDescription>
             {
               "Start a new admission application by filling out the necessary details."
             }
           </SheetDescription>
-          <AdmissionFormComponent/>
         </SheetHeader>
+        <div>
+          <AdmissionFormComponent />
+        </div>
       </SheetContent>
     </Sheet>
   );

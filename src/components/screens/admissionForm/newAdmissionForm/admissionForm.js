@@ -60,9 +60,9 @@ const AdmissionFormComponent = () => {
   ); // For debugging
 
   return (
-    <form onSubmit={handleSubmit} className="pt-10">
+    <form onSubmit={handleSubmit} className="space-y-5">
       {/* School Selection */}
-      <div className="mb-5">
+      <div className="space-y-2">
         <Select value={formik.values.school} onValueChange={handleSchoolChange}>
           <SelectTrigger
             className={`w-full ${
@@ -92,7 +92,7 @@ const AdmissionFormComponent = () => {
       </div>
 
       {/* Education Board Selection */}
-      <div className="mb-5">
+      <div className="space-y-2">
         <Select
           value={formik.values.educationBoard}
           onValueChange={handleEducationBoardChange}
@@ -129,7 +129,7 @@ const AdmissionFormComponent = () => {
       </div>
 
       {/* Academic Class Selection */}
-      <div className="mb-5">
+      <div className="space-y-2">
         <Select
           value={formik.values.academicClass}
           onValueChange={handleAcademicClassChange}
@@ -172,7 +172,7 @@ const AdmissionFormComponent = () => {
       </div>
 
       {/* Submit Button */}
-      <div className="flex gap-3">
+      <div className="flex gap-2 sm:gap-3 mt-6 pt-4">
         <MEButton
           type="submit"
           meclassname="flex-1"
