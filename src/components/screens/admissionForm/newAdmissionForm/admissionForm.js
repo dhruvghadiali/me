@@ -85,7 +85,9 @@ const AdmissionFormComponent = () => {
           </SelectContent>
         </Select>
         {formik.errors.school && formik.touched.school && (
-          <p className="text-xs text-danger mt-1">{formik.errors.school}</p>
+          <p className="text-xs text-danger mt-1 text-left">
+            {formik.errors.school}
+          </p>
         )}
       </div>
 
@@ -120,7 +122,7 @@ const AdmissionFormComponent = () => {
           </SelectContent>
         </Select>
         {formik.errors.educationBoard && formik.touched.educationBoard && (
-          <p className="text-xs text-danger mt-1">
+          <p className="text-xs text-danger mt-1 text-left">
             {formik.errors.educationBoard}
           </p>
         )}
@@ -163,7 +165,7 @@ const AdmissionFormComponent = () => {
           </SelectContent>
         </Select>
         {formik.errors.academicClass && formik.touched.academicClass && (
-          <p className="text-xs text-danger mt-1">
+          <p className="text-xs text-danger mt-1 text-left">
             {formik.errors.academicClass}
           </p>
         )}
