@@ -36,7 +36,7 @@ const AdmissionFormSheetComponent = () => {
       // onInteractOutside={(e) => e.preventDefault()}
       // onEscapeKeyDown={(e) => e.preventDefault()}
       className="w-full sm:max-w-md overflow-y-auto">
-        <SheetHeader className="mb-6">
+        <SheetHeader className="mb-6 text-left">
           <SheetTitle>{"Admission Form"}</SheetTitle>
           <SheetDescription>
             {
