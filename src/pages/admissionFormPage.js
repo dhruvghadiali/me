@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { use, useEffect } from "react";
+import { useDispatch } from "react-redux";
+
+import { getSchoolAcademicClasses } from "@MERedux/admissionForm/admissionFormAction";
 
 import AdmissionFormHeaderComponent from "@MEScreenComponents/admissionForm/header";
 import NewAdmissionFormComponent from "@MEScreenComponents/admissionForm/newAdmissionForm";
 import AdmissionFormHistoryComponent from "@MEScreenComponents/admissionForm/admissionFormHistory";
 
 const AdmissionFormPage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSchoolAcademicClasses());
+  }, [dispatch]);
+
   return (
     <div className="min-h-screen bg-background mr-4">
       <AdmissionFormHeaderComponent />

@@ -129,7 +129,6 @@ axiosInstance.interceptors.request.use(
       config.autoLogoutOnUnauthorized = API_CONFIG.AUTO_LOGOUT_ON_UNAUTHORIZED;
     }
 
-    console.log("API Request Config:", config, state);
     if (
       state &&
       state.signIn &&

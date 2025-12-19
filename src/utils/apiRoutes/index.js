@@ -4,6 +4,7 @@ export const schoolAPIRoute = "/school";
 export const schoolsAPIRoute = "/schools";
 export const signUpSendOTPAPIRoute = "/signup/send-otp";
 export const forgottenPasswordAPIRoute = "/forgotten-password";
+export const schoolAcademicClasses = "/schools/academic-classes";
 export const signUpOTPVerificationAPIRoute = "/signup/otp-verification";
 export const forgottenPasswordSendOTPAPIRoute = "/forgotten-password/send-otp";
 export const forgottenPasswordChangePasswordAPIRoute = "/forgotten-password/change-password";
