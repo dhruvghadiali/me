@@ -1,7 +1,11 @@
 import { useFormik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 
-import { ME_BUTTON_COMPONENT_VARIANTS } from "@MEHelpers/enums";
+import { addAdmissionApplication } from "@MERedux/admissionForm/admissionFormAction";
+import {
+  ME_BUTTON_COMPONENT_VARIANTS,
+  ADMISSION_APPLICATION_STATUS,
+} from "@MEHelpers/enums";
 import {
   Select,
   SelectContent,
@@ -19,18 +23,34 @@ import MEButton from "@MECommonComponents/button/meButton";
 
 const AdmissionFormComponent = () => {
   const dispatch = useDispatch();
-  const { schools } = useSelector((state) => state.admissionForm);
+  const { schools, admissionFormLoader } = useSelector(
+    (state) => state.admissionForm
+  );
 
   const formik = useFormik({
     initialValues: {
       school: "",
       educationBoard: "",
       academicClass: "",
+      submitType: "submit", // Track which button was pressed
     },
     validationSchema: admissionFormValidationSchema,
     onSubmit: (values) => {
-      console.log("Form submitted with values:", values);
-      // Handle form submission here
+      if (values.submitType === "draft") {
+        dispatch(
+          addAdmissionApplication({
+            school_academic_class: values.academicClass,
+            status: ADMISSION_APPLICATION_STATUS.DRAFT,
+          })
+        );
+      } else if (values.submitType === "submit") {
+        dispatch(
+          addAdmissionApplication({
+            school_academic_class: values.academicClass,
+            status: ADMISSION_APPLICATION_STATUS.SUBMITTED,
+          })
+        );
+      }
     },
   });
 
@@ -51,13 +71,11 @@ const AdmissionFormComponent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const submitter = e.nativeEvent.submitter;
+    const buttonType = submitter?.name || "submit";
+    formik.setFieldValue("submitType", buttonType);
     formik.handleSubmit();
   };
-
-  console.log(
-    "Selected Values:",
-    _.filter(schools, { value: formik.values.school })
-  ); // For debugging
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -175,17 +193,19 @@ const AdmissionFormComponent = () => {
       <div className="flex gap-2 sm:gap-3 mt-6 pt-4">
         <MEButton
           type="submit"
+          name="draft"
           meclassname="flex-1"
           buttonVariant={ME_BUTTON_COMPONENT_VARIANTS.PRIMARY}
-          disabled={!formik.isValid}
+          disabled={!formik.isValid || admissionFormLoader}
         >
           {"Draft"}
         </MEButton>
         <MEButton
           type="submit"
+          name="submit"
           meclassname="flex-1"
           buttonVariant={ME_BUTTON_COMPONENT_VARIANTS.SUCCESS}
-          disabled={!formik.isValid}
+          disabled={!formik.isValid || admissionFormLoader}
         >
           {"Submit"}
         </MEButton>

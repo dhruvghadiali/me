@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { PROFILE_COMPLETION_SUMMARY } from "@MEHelpers/enums";
-import { getSchoolAcademicClasses } from "@MERedux/admissionForm/admissionFormAction";
+import {
+  getSchoolAcademicClasses,
+  addAdmissionApplication,
+} from "@MERedux/admissionForm/admissionFormAction";
 
 import _ from "lodash";
 
@@ -9,6 +12,7 @@ export const admissionFormSlice = createSlice({
   name: "admissionForm",
   initialState: {
     admissionFormLoader: false,
+    isAdmissionFormSheetOpen: false,
     admissionFormError: "",
     schools: [],
     admissionForms: [],
@@ -21,7 +25,11 @@ export const admissionFormSlice = createSlice({
       [PROFILE_COMPLETION_SUMMARY.EMERGENCY_CONTACT]: false,
     },
   },
-  reducers: {},
+  reducers: {
+    handleSheetOpenChange: (state, action) => {
+      state.isAdmissionFormSheetOpen = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getSchoolAcademicClasses.pending, (state, _) => {
@@ -35,82 +43,22 @@ export const admissionFormSlice = createSlice({
       .addCase(getSchoolAcademicClasses.rejected, (state, action) => {
         state.schools = [];
         state.admissionFormError = action.payload.error;
+      })
+      .addCase(addAdmissionApplication.pending, (state, _) => {
+        state.admissionFormLoader = true;
+        state.admissionFormError = "";
+      })
+      .addCase(addAdmissionApplication.fulfilled, (state, action) => {
+        state.admissionFormLoader = false;
+        state.admissionFormError = action.payload.error;
+      })
+      .addCase(addAdmissionApplication.rejected, (state, action) => {
+        state.admissionFormLoader = false;
+        state.admissionFormError = action.payload.error;
       });
   },
 });
 
-export const {} = admissionFormSlice.actions;
+export const { handleSheetOpenChange } = admissionFormSlice.actions;
 
 export default admissionFormSlice.reducer;
-
-//  {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       },
-//        {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       },
-//        {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       },
-//        {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       },
-//        {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       }, {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       }, {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       }, {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       }, {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       }, {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       }, {
-//         id: 1,
-//         schoolName: "Springfield High School",
-//         appliedDate: "2024-09-15",
-//         status: "accepted",
-//         grade: "Grade 10",
-//       },

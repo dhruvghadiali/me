@@ -1,15 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { schoolAcademicClasses } from "@MEUtils/apiRoutes";
 import { formatSchoolAcademicClassesData } from "@MEUtils/apiResponse";
 import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
+import {
+  schoolAcademicClassesAPIRoute,
+  admissionApplicationAPIRoute,
+} from "@MEUtils/apiRoutes";
 
 const getSchoolAcademicClasses = createAsyncThunk(
   "admissionForm/getSchoolAcademicClasses",
   async (payload, { getState, rejectWithValue }) => {
     try {
       let schools = [];
-      let response = await axiosInstance.get(schoolAcademicClasses, {
+      let response = await axiosInstance.get(schoolAcademicClassesAPIRoute, {
         state: getState(),
       });
 
@@ -35,4 +38,28 @@ const getSchoolAcademicClasses = createAsyncThunk(
   }
 );
 
-export { getSchoolAcademicClasses };
+const addAdmissionApplication = createAsyncThunk(
+  "admissionForm/addAdmissionApplication",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      let response = await axiosInstance.post(
+        admissionApplicationAPIRoute,
+        payload,
+        {
+          state: getState(),
+        }
+      );
+
+      return {
+        error: "",
+      };
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Adding admission application failed. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
+export { getSchoolAcademicClasses, addAdmissionApplication };

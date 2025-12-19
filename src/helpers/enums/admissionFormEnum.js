@@ -11,4 +11,16 @@ const PROFILE_COMPLETION_SUMMARY = Object.freeze({
     EMERGENCY_CONTACT: "emergencyContact",
 });
 
-export { PROFILE_COMPLETION_SUMMARY };
+/**
+ * Admission Application Status enumeration
+ * Central enum for admission application lifecycle statuses
+ */
+const ADMISSION_APPLICATION_STATUS = Object.freeze({
+  DRAFT: "draft",
+  DELETED: "deleted",
+  SUBMITTED: "submitted",
+  CANCELLED: "cancelled",
+  WITHDRAWN: "withdrawn",
+});
+
+export { PROFILE_COMPLETION_SUMMARY, ADMISSION_APPLICATION_STATUS };
