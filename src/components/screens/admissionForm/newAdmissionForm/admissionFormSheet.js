@@ -22,9 +22,9 @@ const AdmissionFormSheetComponent = () => {
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={handleSheetOpenChange}>
-      <SheetTrigger className="w-full flex">
+      <SheetTrigger asChild>
         <MEButton
-          type="submit"
+          type="button"
           meclassname="w-full flex "
           buttonVariant={ME_BUTTON_COMPONENT_VARIANTS.PRIMARY}
           disabled={false}
@@ -32,13 +32,14 @@ const AdmissionFormSheetComponent = () => {
           {"Start New Application"}
         </MEButton>
       </SheetTrigger>
-      <SheetContent 
-      // onInteractOutside={(e) => e.preventDefault()}
-      // onEscapeKeyDown={(e) => e.preventDefault()}
-      className="w-full sm:max-w-md overflow-y-auto">
-        <SheetHeader className="mb-6 text-left">
-          <SheetTitle>{"Admission Form"}</SheetTitle>
-          <SheetDescription>
+      <SheetContent
+        // onInteractOutside={(e) => e.preventDefault()}
+        // onEscapeKeyDown={(e) => e.preventDefault()}
+        className="w-full sm:max-w-md overflow-y-auto"
+      >
+        <SheetHeader className="mb-6">
+          <SheetTitle className="text-left">{"Admission Form"}</SheetTitle>
+          <SheetDescription className="text-left">
             {
               "Start a new admission application by filling out the necessary details."
             }
