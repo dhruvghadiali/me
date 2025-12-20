@@ -52,6 +52,7 @@ export const admissionFormSlice = createSlice({
       })
       .addCase(addAdmissionApplication.fulfilled, (state, action) => {
         state.admissionFormLoader = false;
+        state.isAdmissionFormSheetOpen = false;
         state.admissionFormError = action.payload.error;
       })
       .addCase(addAdmissionApplication.rejected, (state, action) => {

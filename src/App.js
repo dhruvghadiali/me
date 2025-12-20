@@ -9,6 +9,7 @@ import {
   dashboard,
   admissionForm,
   forgottenPassword,
+  admissionFormDetails,
 } from "@MEPageRoutes";
 import { ThemeProvider } from "@MEContexts/themeProvider";
 
@@ -24,6 +25,7 @@ import PublicRoute from "@MECommonComponents/hoc/publicRoute";
 import AuthChecker from "@MECommonComponents//hoc/authChecker";
 import ForgottenPasswordPage from "@MEPages/forgottenPasswordPage";
 import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
+import AdmissionFormDetailPage from "@MEPages/admissionFormDetailPage";
 
 import MESidebar from "@MECommonComponents/sidebar/meSidebar";
 
@@ -103,6 +105,16 @@ function App() {
                 <ProtectedRoute>
                   <MESidebar>
                     <AdmissionFormPage />
+                  </MESidebar>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={`${admissionFormDetails}/:id`}
+              element={
+                <ProtectedRoute>
+                  <MESidebar>
+                    <AdmissionFormDetailPage />
                   </MESidebar>
                 </ProtectedRoute>
               }

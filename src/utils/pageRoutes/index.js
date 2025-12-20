@@ -6,3 +6,4 @@ export const signUp = "/sign-up";
 export const dashboard = "/dashboard";
 export const admissionForm = "/admission-form";
 export const forgottenPassword = "/forgotten-password";
+export const admissionFormDetails = "/admission-form-details";
