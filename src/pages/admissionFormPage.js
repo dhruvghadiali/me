@@ -1,7 +1,10 @@
 import React, { use, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { getSchoolAcademicClasses } from "@MERedux/admissionForm/admissionFormAction";
+import {
+  getSchoolAcademicClasses,
+  getSchoolAdmissions,
+} from "@MERedux/admissionForm/admissionFormAction";
 
 import AdmissionFormHeaderComponent from "@MEScreenComponents/admissionForm/header";
 import NewAdmissionFormComponent from "@MEScreenComponents/admissionForm/newAdmissionForm";
@@ -11,6 +14,7 @@ const AdmissionFormPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getSchoolAdmissions());
     dispatch(getSchoolAcademicClasses());
   }, [dispatch]);
 

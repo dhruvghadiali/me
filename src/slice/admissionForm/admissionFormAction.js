@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { formatSchoolAcademicClassesData } from "@MEUtils/apiResponse";
+import { formatSchoolAcademicClassesData, formatSchoolAdmissionsData } from "@MEUtils/apiResponse";
 import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
 import {
   schoolAcademicClassesAPIRoute,
@@ -38,6 +38,38 @@ const getSchoolAcademicClasses = createAsyncThunk(
   }
 );
 
+const getSchoolAdmissions = createAsyncThunk(
+  "admissionForm/getSchoolAdmissions",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      let admissionForms = [];
+      let response = await axiosInstance.get(admissionApplicationAPIRoute, {
+        state: getState(),
+      });
+
+      if (apiResponseHaveData(response)) {
+        admissionForms = formatSchoolAdmissionsData(response.data);
+
+        return {
+          error: "",
+          admissionForms,
+        };
+      } else {
+        return {
+          error:
+            response?.message || "Admissions information is not available.",
+          admissionForms,
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Admissions information could not be retrieved. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 const addAdmissionApplication = createAsyncThunk(
   "admissionForm/addAdmissionApplication",
   async (payload, { getState, rejectWithValue }) => {
@@ -62,4 +94,8 @@ const addAdmissionApplication = createAsyncThunk(
   }
 );
 
-export { getSchoolAcademicClasses, addAdmissionApplication };
+export {
+  getSchoolAdmissions,
+  addAdmissionApplication,
+  getSchoolAcademicClasses,
+};
