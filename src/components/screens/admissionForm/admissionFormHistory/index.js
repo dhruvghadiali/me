@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { CalendarDaysIcon, GraduationCapIcon, FileTextIcon, BookOpenIcon } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  CalendarDaysIcon,
+  GraduationCapIcon,
+  FileTextIcon,
+  BookOpenIcon,
+} from "lucide-react";
 
 import { ME_BUTTON_COMPONENT_VARIANTS } from "@MEHelpers/enums";
-import { admissionFormDetails } from "@MEPageRoutes";
+import { toggleAdmissionFormCardVisibility } from "@MERedux/admissionForm/admissionFormSlice";
 
 import _ from "lodash";
 import moment from "moment";
@@ -13,7 +17,7 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import MEButton from "@MECommonComponents/button/meButton";
 
 const AdmissionFormHistoryComponent = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { admissionForms, admissionFormsLoader } = useSelector(
     (state) => state.admissionForm
   );
@@ -27,8 +31,15 @@ const AdmissionFormHistoryComponent = () => {
   const currentAdmissions = admissionForms.slice(startIndex, endIndex);
 
   const onClick = (admissionId) => {
-    if(!admissionId) return;
-    navigate(`${admissionFormDetails}/${admissionId}`);
+    if (!admissionId) return;
+    dispatch(
+      toggleAdmissionFormCardVisibility({
+        status: true,
+        admissionForm: admissionForms.find(
+          (admission) => admission.id === admissionId
+        ),
+      })
+    );
   };
 
   return (
@@ -82,7 +93,8 @@ const AdmissionFormHistoryComponent = () => {
                         <span className="inline-flex items-center gap-1 text-muted-foreground truncate">
                           <BookOpenIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary flex-shrink-0" />
                           {_.upperCase(
-                            admission?.schoolAcademicClass?.educationBoard?.educationBoard
+                            admission?.schoolAcademicClass?.educationBoard
+                              ?.educationBoard
                           ) || "N/A"}
                         </span>
                         <span className="inline-flex items-center gap-1 text-muted-foreground truncate">

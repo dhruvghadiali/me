@@ -14,10 +14,12 @@ export const admissionFormSlice = createSlice({
   initialState: {
     admissionFormLoader: false,
     admissionFormsLoader: false,
-    isAdmissionFormSheetOpen: false,
+    isAdmissionFormCardVisible: false,
+    hideAdmissionFormCard: true,
     admissionFormError: "",
     schools: [],
     admissionForms: [],
+    admissionForm: {},
     profileComplicationSummary: {
       [PROFILE_COMPLETION_SUMMARY.STUDENT_PROFILE]: false,
       [PROFILE_COMPLETION_SUMMARY.FATHER_PROFILE]: false,
@@ -30,6 +32,10 @@ export const admissionFormSlice = createSlice({
   reducers: {
     handleSheetOpenChange: (state, action) => {
       state.isAdmissionFormSheetOpen = action.payload;
+    },
+    toggleAdmissionFormCardVisibility: (state, action) => {
+      state.isAdmissionFormCardVisible = action.payload.status;
+      state.admissionForm = action.payload.admissionForm || {};
     },
   },
   extraReducers: (builder) => {
@@ -77,6 +83,7 @@ export const admissionFormSlice = createSlice({
   },
 });
 
-export const { handleSheetOpenChange } = admissionFormSlice.actions;
+export const { handleSheetOpenChange, toggleAdmissionFormCardVisibility } =
+  admissionFormSlice.actions;
 
 export default admissionFormSlice.reducer;
