@@ -27,7 +27,7 @@ const AdmissionFormDetailTabComponent = () => {
 
   return (
     <>
-      <div className="border-b border-border/60 bg-card/50 rounded-t-lg sm:rounded-t-xl md:rounded-t-2xl overflow-x-auto">
+      <div className=" bg-card/50 rounded-t-lg sm:rounded-t-xl md:rounded-t-2xl overflow-x-auto">
         <div className="flex gap-0 px-2 sm:px-3 md:px-4 lg:px-6">
           {tabs.map((tab, index) => {
             const Icon = tab.icon;

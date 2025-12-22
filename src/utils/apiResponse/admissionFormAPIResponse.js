@@ -70,7 +70,12 @@ const formatSchoolAdmissionsData = (admissions) => {
         status: history?.status || "",
         remarks: history?.remarks || "",
         changedAt: history?.changed_at || "",
-        changedBy: history?.changed_by || "",
+        changedBy: history?.changed_by ? {
+          id: history.changed_by?.id || "",
+          firstName: history.changed_by?.first_name || "",
+          lastName: history.changed_by?.last_name || "",
+          username: history.changed_by?.username || "",
+        } : {},
       })) : [],
       schoolAcademicClass: admission?.school_academic_class ? {
         id: admission.school_academic_class?.id || "",
