@@ -3,8 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PROFILE_COMPLETION_SUMMARY } from "@MEHelpers/enums";
 import {
   getSchoolAdmissions,
-  getSchoolAcademicClasses,
   addAdmissionApplication,
+  getSchoolAcademicClasses,
+  updateAdmissionApplicationStatus,
 } from "@MERedux/admissionForm/admissionFormAction";
 
 import _ from "lodash";
@@ -82,6 +83,19 @@ export const admissionFormSlice = createSlice({
       .addCase(getSchoolAdmissions.rejected, (state, action) => {
         state.admissionFormsLoader = false;
         state.admissionForms = [];
+        state.admissionFormError = action.payload.error;
+      })
+      .addCase(updateAdmissionApplicationStatus.pending, (state, _) => {
+        state.admissionFormLoader = true;
+        state.admissionFormError = "";
+      })
+      .addCase(updateAdmissionApplicationStatus.fulfilled, (state, action) => {
+        state.admissionFormLoader = false;
+        state.isAdmissionFormCardVisible = false;
+        state.admissionFormError = action.payload.error;
+      })
+      .addCase(updateAdmissionApplicationStatus.rejected, (state, action) => {
+        state.admissionFormLoader = false;
         state.admissionFormError = action.payload.error;
       });
   },

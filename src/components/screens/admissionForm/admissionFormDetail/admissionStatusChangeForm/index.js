@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import * as Yup from "yup";
-import _, { set } from "lodash";
+import _ from "lodash";
 
 import { ME_BUTTON_COMPONENT_VARIANTS } from "@MEHelpers/enums";
+import { updateAdmissionApplicationStatus } from "@MERedux/admissionForm/admissionFormAction";
 import {
   Select,
   SelectContent,
@@ -28,16 +29,12 @@ import {
 
 import MEButton from "@MECommonComponents/button/meButton";
 
-// Validation Schema
-const statusChangeValidationSchema = Yup.object().shape({
-  newStatus: Yup.string()
-    .required("Please select a new status")
-    .min(1, "Status is required"),
-});
-
 const AdmissionChangeStatusFormComponent = () => {
+  const dispatch = useDispatch();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const { admissionForm } = useSelector((state) => state.admissionForm);
+  const { admissionForm, admissionFormLoader } = useSelector(
+    (state) => state.admissionForm
+  );
 
   // Initialize Formik
   const formik = useFormik({
@@ -48,13 +45,27 @@ const AdmissionChangeStatusFormComponent = () => {
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("Form submitted with values:", values);
       setOpenConfirmDialog(true);
     },
   });
 
   const handleStatusChange = (value) => {
     formik.setFieldValue("newStatus", value);
+  };
+
+  const handleNoOption = () => {
+    setOpenConfirmDialog(false);
+    formik.resetForm();
+  };
+
+  const handleYesOption = () => {
+    setOpenConfirmDialog(false);
+    dispatch(
+      updateAdmissionApplicationStatus({
+        admissionFormId: admissionForm.id,
+        status: formik.values.newStatus,
+      })
+    );
   };
 
   const hasError = formik.touched.newStatus && formik.errors.newStatus;
@@ -87,7 +98,7 @@ const AdmissionChangeStatusFormComponent = () => {
                       <Select
                         value={formik.values.newStatus}
                         onValueChange={handleStatusChange}
-                        disabled={formik.isSubmitting}
+                        disabled={formik.isSubmitting || admissionFormLoader}
                       >
                         <SelectTrigger
                           className={`w-full h-11 sm:h-12 md:h-13 border-2 transition-all duration-200 text-sm sm:text-base ${
@@ -127,9 +138,15 @@ const AdmissionChangeStatusFormComponent = () => {
                       name="submit"
                       meclassname="w-full lg:w-auto lg:px-8 h-11 sm:h-12 md:h-13 text-sm sm:text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                       buttonVariant={ME_BUTTON_COMPONENT_VARIANTS.PRIMARY}
-                      disabled={!formik.isValid || formik.isSubmitting}
+                      disabled={
+                        !formik.isValid ||
+                        formik.isSubmitting ||
+                        admissionFormLoader
+                      }
                     >
-                      {"Confirm Status Change"}
+                      {admissionFormLoader
+                        ? "Updating..."
+                        : "Confirm Status Change"}
                     </MEButton>
                   </div>
 
@@ -163,18 +180,13 @@ const AdmissionChangeStatusFormComponent = () => {
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-2 sm:gap-3">
             <AlertDialogCancel
-              onClick={() => {
-                setOpenConfirmDialog(false);
-                formik.resetForm();
-              }}
+              onClick={handleNoOption}
               className="w-full sm:w-auto"
             >
               {"No"}
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => {
-                setOpenConfirmDialog(false);
-              }}
+              onClick={handleYesOption}
               className="w-full sm:w-auto"
             >
               {"Yes"}
@@ -185,5 +197,12 @@ const AdmissionChangeStatusFormComponent = () => {
     </>
   );
 };
+
+// Validation Schema
+const statusChangeValidationSchema = Yup.object().shape({
+  newStatus: Yup.string()
+    .required("Please select a new status")
+    .min(1, "Status is required"),
+});
 
 export default AdmissionChangeStatusFormComponent;

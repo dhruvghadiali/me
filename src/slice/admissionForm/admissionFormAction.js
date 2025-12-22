@@ -109,8 +109,41 @@ const addAdmissionApplication = createAsyncThunk(
   }
 );
 
+const updateAdmissionApplicationStatus = createAsyncThunk(
+  "admissionForm/updateAdmissionApplicationStatus",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      let response = await axiosInstance.put(
+        `${admissionApplicationAPIRoute}/${payload.admissionFormId}/status`,
+        { status: payload.status },
+        {
+          state: getState(),
+        }
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getSchoolAdmissions());
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error: "",
+        };
+      }
+    } catch (error) {
+      console.log("error in updating admission application status", error);
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Updating admission application status failed. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 export {
   getSchoolAdmissions,
   addAdmissionApplication,
   getSchoolAcademicClasses,
+  updateAdmissionApplicationStatus,
 };
