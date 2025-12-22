@@ -17,6 +17,7 @@ export const admissionFormSlice = createSlice({
     isAdmissionFormCardVisible: false,
     hideAdmissionFormCard: true,
     admissionFormError: "",
+    admissionFormActiveIndex: 0,
     schools: [],
     admissionForms: [],
     admissionForm: {},
@@ -36,6 +37,9 @@ export const admissionFormSlice = createSlice({
     toggleAdmissionFormCardVisibility: (state, action) => {
       state.isAdmissionFormCardVisible = action.payload.status;
       state.admissionForm = action.payload.admissionForm || {};
+    },
+    setAdmissionFormActiveIndex: (state, action) => {
+      state.admissionFormActiveIndex = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -83,7 +87,10 @@ export const admissionFormSlice = createSlice({
   },
 });
 
-export const { handleSheetOpenChange, toggleAdmissionFormCardVisibility } =
-  admissionFormSlice.actions;
+export const {
+  handleSheetOpenChange,
+  setAdmissionFormActiveIndex,
+  toggleAdmissionFormCardVisibility,
+} = admissionFormSlice.actions;
 
 export default admissionFormSlice.reducer;
