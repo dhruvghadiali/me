@@ -66,7 +66,7 @@ const formatSchoolAdmissionsData = (admissions) => {
       updatedBy: admission?.updated_by || "",
       status: admission?.status || "",
       statusHistory: admission?.status_history
-        ? _.map([admission.status_history], (history) => ({
+        ? _.map(admission.status_history, (history) => ({
             id: history?.id || "",
             status: history?.status || "",
             remarks: history?.remarks || "",
