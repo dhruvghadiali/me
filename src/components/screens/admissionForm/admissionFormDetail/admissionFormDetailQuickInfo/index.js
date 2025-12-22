@@ -7,12 +7,12 @@ const AdmissionFormDetailQuickInfoComponent = () => {
   const { admissionForm } = useSelector((state) => state.admissionForm);
   return (
     <div className="bg-gradient-to-br from-card to-card/95 rounded-lg sm:rounded-xl md:rounded-2xl border border-primary/30 p-3 sm:p-4 md:p-5 lg:p-6 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 md:gap-6 mb-3 sm:mb-4 md:mb-5 pb-3 sm:pb-4 md:pb-5 border-b border-primary/30">
-        <div className="flex-1">
-          <p className="text-xs sm:text-xs md:text-sm text-muted-foreground mb-1 sm:mb-1.5 md:mb-2 font-semibold uppercase tracking-wide">
+      <div className="mt-4 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-5 md:mb-6 pb-4 sm:pb-5 md:pb-6 border-b border-primary/30">
+        <div className="flex-1 w-full sm:w-auto">
+          <p className="text-xs sm:text-xs md:text-sm text-muted-foreground mb-2 sm:mb-2.5 md:mb-3 font-semibold uppercase tracking-wide">
             Status
           </p>
-          <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg border border-primary/50 font-semibold text-xs sm:text-xs md:text-sm transition-all">
+          <span className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 md:px-4 py-1.5 sm:py-2 md:py-2.5 rounded-lg border border-primary/60 bg-primary/5 font-semibold text-xs sm:text-sm md:text-sm text-primary transition-all">
             {_.upperCase(admissionForm?.status) || "N/A"}
           </span>
         </div>
