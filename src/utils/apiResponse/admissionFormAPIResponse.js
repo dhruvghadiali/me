@@ -65,33 +65,49 @@ const formatSchoolAdmissionsData = (admissions) => {
       updatedAt: admission?.updated_at || "",
       updatedBy: admission?.updated_by || "",
       status: admission?.status || "",
-      statusHistory: admission?.status_history ? _.map(admission.status_history, (history) => ({
-        id: history?.id || "",
-        status: history?.status || "",
-        remarks: history?.remarks || "",
-        changedAt: history?.changed_at || "",
-        changedBy: history?.changed_by ? {
-          id: history.changed_by?.id || "",
-          firstName: history.changed_by?.first_name || "",
-          lastName: history.changed_by?.last_name || "",
-          username: history.changed_by?.username || "",
-        } : {},
-      })) : [],
-      schoolAcademicClass: admission?.school_academic_class ? {
-        id: admission.school_academic_class?.id || "",
-        school: admission.school_academic_class?.school ? {
-          id: admission.school_academic_class.school?.id || "",
-          name: admission.school_academic_class.school?.name || "",
-        }: null,
-        academicClass: admission.school_academic_class?.academic_class ? {
-          id: admission.school_academic_class.academic_class?.id || "",
-          academicClass: admission.school_academic_class.academic_class?.academic_class || "",
-        } : null,
-        educationBoard: admission.school_academic_class?.education_board ? {
-          id: admission.school_academic_class.education_board?.id || "",
-          educationBoard: admission.school_academic_class.education_board?.education_board || "",
-        } : null,
-      } : null,
+      statusHistory: admission?.status_history
+        ? _.map([admission.status_history], (history) => ({
+            id: history?.id || "",
+            status: history?.status || "",
+            remarks: history?.remarks || "",
+            changedAt: history?.changed_at || "",
+            changedBy: history?.changed_by
+              ? {
+                  id: history.changed_by?.id || "",
+                  firstName: history.changed_by?.first_name || "",
+                  lastName: history.changed_by?.last_name || "",
+                  username: history.changed_by?.username || "",
+                }
+              : {},
+          }))
+        : [],
+      schoolAcademicClass: admission?.school_academic_class
+        ? {
+            id: admission.school_academic_class?.id || "",
+            school: admission.school_academic_class?.school
+              ? {
+                  id: admission.school_academic_class.school?.id || "",
+                  name: admission.school_academic_class.school?.name || "",
+                }
+              : null,
+            academicClass: admission.school_academic_class?.academic_class
+              ? {
+                  id: admission.school_academic_class.academic_class?.id || "",
+                  academicClass:
+                    admission.school_academic_class.academic_class
+                      ?.academic_class || "",
+                }
+              : null,
+            educationBoard: admission.school_academic_class?.education_board
+              ? {
+                  id: admission.school_academic_class.education_board?.id || "",
+                  educationBoard:
+                    admission.school_academic_class.education_board
+                      ?.education_board || "",
+                }
+              : null,
+          }
+        : null,
     };
   });
 };

@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 
+import HistoryTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/historyTab";
 import OverviewTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/overviewTab";
 import NoInformationFoundTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/noInformationFoundTab";
 
@@ -13,7 +14,7 @@ const TabContentComponent = () => {
       case 0:
         return <OverviewTabComponent />;
       case 1:
-        return <NoInformationFoundTabComponent />;
+        return <HistoryTabComponent />;
       case 2:
         return <NoInformationFoundTabComponent />;
       case 3:
