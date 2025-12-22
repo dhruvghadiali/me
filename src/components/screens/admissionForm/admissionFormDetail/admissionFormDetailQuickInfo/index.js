@@ -62,7 +62,7 @@ const AdmissionFormDetailQuickInfoComponent = () => {
           </p>
           <p className="text-xs sm:text-sm md:text-sm font-bold text-foreground">
             {moment(admissionForm?.createdAt).isValid()
-              ? moment(admissionForm?.createdAt).format("DD MMM")
+              ? moment(admissionForm?.createdAt).format("DD MMMM YYYY")
               : "N/A"}
           </p>
         </div>
