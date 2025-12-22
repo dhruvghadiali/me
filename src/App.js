@@ -109,16 +109,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path={`${admissionFormDetails}/:id`}
-              element={
-                <ProtectedRoute>
-                  <MESidebar>
-                    <AdmissionFormDetailPage />
-                  </MESidebar>
-                </ProtectedRoute>
-              }
-            />
             {isDevelopment && <Route path={theme} element={<ThemePage />} />}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

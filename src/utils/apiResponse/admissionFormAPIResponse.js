@@ -1,5 +1,26 @@
-import _, { update } from "lodash";
+import _ from "lodash";
 
+import {ADMISSION_APPLICATION_STATUS} from "@MEHelpers/enums";
+
+const setChangeStatusDropdownOptions = (currentStatus) => {
+  switch (currentStatus) {
+    case ADMISSION_APPLICATION_STATUS.DRAFT:
+      return [
+        {label: ADMISSION_APPLICATION_STATUS.SUBMITTED, value: ADMISSION_APPLICATION_STATUS.SUBMITTED},
+        {label: ADMISSION_APPLICATION_STATUS.DELETED, value: ADMISSION_APPLICATION_STATUS.DELETED},
+      ];
+    case ADMISSION_APPLICATION_STATUS.SUBMITTED || ADMISSION_APPLICATION_STATUS.UNDER_REVIEW || ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING:
+      return [
+        {label: ADMISSION_APPLICATION_STATUS.CANCELLED, value: ADMISSION_APPLICATION_STATUS.CANCELLED},
+      ];
+    case ADMISSION_APPLICATION_STATUS.APPROVED:
+      return [
+        {label: ADMISSION_APPLICATION_STATUS.WITHDRAWN, value: ADMISSION_APPLICATION_STATUS.WITHDRAWN},
+      ];
+    default:
+      return [];
+  }
+}
 /**
  * Transform API response to format with label and value fields using lodash
  * @param {Array} schools - Array of school objects from API
@@ -108,6 +129,7 @@ const formatSchoolAdmissionsData = (admissions) => {
               : null,
           }
         : null,
+      changeStatusDropdownOptions: setChangeStatusDropdownOptions(admission?.status),
     };
   });
 };

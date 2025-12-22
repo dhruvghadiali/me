@@ -21,6 +21,9 @@ const ADMISSION_APPLICATION_STATUS = Object.freeze({
   SUBMITTED: "submitted",
   CANCELLED: "cancelled",
   WITHDRAWN: "withdrawn",
+  UNDER_REVIEW: "under_review",
+  DOCUMENTS_VERIFICATION_PENDING: "documents_verification_pending",
+  APPROVED: "approved",
 });
 
 export { PROFILE_COMPLETION_SUMMARY, ADMISSION_APPLICATION_STATUS };
