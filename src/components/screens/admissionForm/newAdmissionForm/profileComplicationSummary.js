@@ -58,7 +58,7 @@ const profileComplicationSummaryComponent = () => {
 
 
   return (
-    <div className="mb-5 sm:mb-6 md:mb-7 pb-5 sm:pb-6 md:pb-7 border-b border-border">
+    <div className="mb-6 pb-7 border-b border-border">
       <div className="flex items-center justify-between mb-2 sm:mb-3">
         <h4 className="text-xs sm:text-sm font-semibold text-foreground">
           Profile Completion
@@ -79,7 +79,7 @@ const profileComplicationSummaryComponent = () => {
         {profileSections.map((section) => (
           <div
             key={section.key}
-            className="flex items-center justify-between p-2 sm:p-2.5 bg-background rounded-lg border border-border/50 hover:border-primary/30 cursor-pointer transition-colors"
+            className="flex items-center justify-between p-2 sm:p-2.5 bg-background rounded-lg border border-primary/50 hover:border-primary/30 cursor-pointer transition-colors"
             onClick={() =>
               setProfileCompletion((prev) => ({
                 ...prev,
@@ -110,7 +110,7 @@ const profileComplicationSummaryComponent = () => {
         ))}
       </div>
 
-      <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-muted-foreground text-center">
+      <div className="mt-3 text-xs sm:text-sm text-muted-foreground text-center">
         {completedCount} of {totalCount} sections completed
       </div>
     </div>

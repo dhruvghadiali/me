@@ -72,7 +72,7 @@ const AdmissionFormHistoryComponent = () => {
               {currentAdmissions.map((admission) => (
                 <div
                   key={admission.id}
-                  className="group bg-background rounded-lg sm:rounded-xl md:rounded-2xl border border-border p-2 sm:p-3 md:p-4 lg:p-5 hover:border-primary/50 transition-colors duration-200"
+                  className="group bg-background rounded-lg sm:rounded-xl md:rounded-2xl border border-border p-2 sm:p-3 md:p-3 lg:p-3 hover:border-primary/50 transition-colors duration-200"
                 >
                   {/* Mobile: flex-col | Tablet+: flex-row */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
@@ -125,39 +125,32 @@ const AdmissionFormHistoryComponent = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2 mt-4 sm:mt-5 md:mt-6 lg:mt-7 pt-3 sm:pt-4 md:pt-5 border-t border-border overflow-x-auto pb-2 sm:pb-0">
+            <div className="flex items-center justify-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 mt-4 sm:mt-5 md:mt-6 lg:mt-7 pt-3 sm:pt-4 md:pt-5 border-t border-border">
               <button
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg border border-border text-foreground disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted text-xs sm:text-xs md:text-sm font-medium whitespace-nowrap transition-colors duration-150"
+                className="px-2 sm:px-2.5 md:px-3 lg:px-3.5 py-1 sm:py-1.5 md:py-2 lg:py-2.5 rounded-md border border-border bg-background text-foreground font-medium text-xs sm:text-xs md:text-xs lg:text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary/10 hover:border-primary/50 transition-all duration-200 whitespace-nowrap flex items-center gap-1"
               >
-                Prev
+                <span>←</span>
+                <span className="hidden sm:inline">Prev</span>
               </button>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`px-1.5 sm:px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 rounded-lg border font-semibold text-xs sm:text-xs md:text-sm whitespace-nowrap transition-colors duration-150 ${
-                      currentPage === page
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "border-border text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                )
-              )}
+              <div className="flex items-center gap-0.5 sm:gap-1 md:gap-1.5 lg:gap-2 text-foreground font-medium text-xs sm:text-xs md:text-xs lg:text-sm whitespace-nowrap">
+                <span>Page</span>
+                <span className="text-primary font-bold text-xs sm:text-xs md:text-sm lg:text-base">{currentPage}</span>
+                <span>of</span>
+                <span className="text-primary font-bold text-xs sm:text-xs md:text-sm lg:text-base">{totalPages}</span>
+              </div>
 
               <button
                 onClick={() =>
                   setCurrentPage(Math.min(totalPages, currentPage + 1))
                 }
                 disabled={currentPage === totalPages}
-                className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg border border-border text-foreground disabled:opacity-50 disabled:cursor-not-allowed hover:bg-muted text-xs sm:text-xs md:text-sm font-medium whitespace-nowrap transition-colors duration-150"
+                className="px-2 sm:px-2.5 md:px-3 lg:px-3.5 py-1 sm:py-1.5 md:py-2 lg:py-2.5 rounded-md border border-border bg-background text-foreground font-medium text-xs sm:text-xs md:text-xs lg:text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary/10 hover:border-primary/50 transition-all duration-200 whitespace-nowrap flex items-center gap-1"
               >
-                Next
+                <span className="hidden sm:inline">Next</span>
+                <span>→</span>
               </button>
             </div>
           </>
