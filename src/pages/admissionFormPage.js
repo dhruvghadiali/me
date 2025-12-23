@@ -28,7 +28,7 @@ const AdmissionFormPage = () => {
       {isAdmissionFormCardVisible ? (
         <AdmissionFormDetailComponent />
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:gap-6 lg:grid-cols-3 lg:gap-8 xl:gap-10 auto-rows-fr mb-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-10 px-4 sm:px-6 md:px-8 mb-5">
           <NewAdmissionFormComponent />
           <AdmissionFormHistoryComponent />
         </div>

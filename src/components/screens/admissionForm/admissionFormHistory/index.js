@@ -41,7 +41,6 @@ const AdmissionFormHistoryComponent = () => {
       })
     );
   };
-
   return (
     <div className="lg:col-span-2">
       {/* Card: p-3 mobile | p-4 tablet | p-5 desktop | p-6 large | p-7 xl */}
