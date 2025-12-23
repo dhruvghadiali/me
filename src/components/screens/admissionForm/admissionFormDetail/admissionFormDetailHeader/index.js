@@ -1,7 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { CircleXIcon } from "lucide-react";
-import { toggleAdmissionFormCardVisibility } from "@MERedux/admissionForm/admissionFormSlice";
+import {
+  toggleAdmissionFormCardVisibility,
+  setAdmissionFormActiveIndex,
+} from "@MERedux/admissionForm/admissionFormSlice";
 
 import _ from "lodash";
 
@@ -10,6 +13,11 @@ import MEButton from "@MECommonComponents/button/meButton";
 const AdmissionFormDetailHeaderComponent = () => {
   const dispatch = useDispatch();
   const { admissionForm } = useSelector((state) => state.admissionForm);
+
+  const onClose = () => {
+    dispatch(toggleAdmissionFormCardVisibility({ status: false }));
+    dispatch(setAdmissionFormActiveIndex(0));
+  };
 
   return (
     <div className="flex items-center justify-between gap-2 sm:gap-3 md:gap-4">
@@ -26,7 +34,7 @@ const AdmissionFormDetailHeaderComponent = () => {
         size="icon"
         variant="ghost"
         className="hover:bg-dark/10 hover:text-dark transition-colors shrink-0 [&_svg]:!size-5 sm:[&_svg]:!size-5 md:[&_svg]:!size-6"
-        onClick={() => dispatch(toggleAdmissionFormCardVisibility(false))}
+        onClick={onClose}
       >
         <CircleXIcon />
       </MEButton>
