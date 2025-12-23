@@ -7,7 +7,7 @@ import {
   House
 } from "lucide-react";
 import { SIDEBAR_MENU } from "@MEHelpers/enums";
-import { admissionForm, school, root, dashboard } from "@MEUtils/pageRoutes";
+import { admissionForm, school, root, dashboard, profile } from "@MEUtils/pageRoutes";
 
 export const sidebarMenu = [
   {
@@ -27,7 +27,7 @@ export const sidebarMenu = [
   },
   {
     title: SIDEBAR_MENU.PROFILE,
-    url: dashboard,
+    url: profile,
     icon: User,
   },
   {

@@ -1,4 +1,4 @@
-const ScreenSubTitleComponent = ({ subTitleText, className = "" }) => {
+const ScreenSubtitleComponent = ({ subTitleText, className = "" }) => {
   return (
     <p
       className={`text-sm sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base text-muted-foreground ${className}`}
@@ -7,4 +7,4 @@ const ScreenSubTitleComponent = ({ subTitleText, className = "" }) => {
     </p>
   );
 };
-export default ScreenSubTitleComponent;
+export default ScreenSubtitleComponent;

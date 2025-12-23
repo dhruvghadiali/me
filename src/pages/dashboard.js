@@ -1,6 +1,6 @@
 import React from "react";
-import ScreenHeaderComponent from "@MECommonComponents/header/screenHeader";
-import ScreenSubTitleComponent from "@MECommonComponents/subTitle/screenSubTitle";
+import ScreenHeaderComponent from "@MECommonComponents/typography/screenHeader";
+import ScreenSubtitleComponent from "@MECommonComponents/typography/screenSubtitle";
 
 const DashboardPage = () => {
   return (
@@ -22,11 +22,11 @@ const DashboardPage = () => {
               className={"text-center"}
             />
             <div className="mb-5">
-              <ScreenSubTitleComponent
+              <ScreenSubtitleComponent
                 subTitleText="We're thrilled to have you here"
                 className={"text-center mb-5"}
               />
-              <ScreenSubTitleComponent
+              <ScreenSubtitleComponent
                 subTitleText="Your dashboard is ready. Explore amazing features and make the most of your experience."
                 className={"text-center"}
               />
