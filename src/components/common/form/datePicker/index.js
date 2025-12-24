@@ -1,49 +1,50 @@
 import { useMemo, useState } from "react";
-import { format, isValid as isValidDate, setMonth, setYear } from "date-fns";
+import { format, isValid as isValidDate} from "date-fns";
 
 import { CalendarIcon } from "lucide-react";
 import { Label } from "@MEShadcnComponents/label";
 import { Calendar } from "@MEShadcnComponents/calendar";
+import { ME_DATEPICKER_COMPONENT_VARIANTS } from "@MEHelpers/enums/variantsEnum";
+import { 
+  datePickerLabelClassNameByVariant,
+  datePickerButtonClassNameByVariant,
+  datePickerMessageClassNameByVariant,
+} from "@MECommonComponents/form/datePicker/meDatePickerClassNameWrapper";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@MEShadcnComponents/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@MEShadcnComponents/select";
 
 import MEButton from "@MECommonComponents/button/meButton";
 
 import "react-day-picker/dist/style.css";
 
 // MEDatePicker: single-date input with popover calendar
-export default function MEDatePicker({
-  required,
-  disabled,
-  label,
-  selectedDate,
-  defaultDate,
-  displayDateFormate,
-  fromDate,
-  message,
-  inputvariant,
-  labelvariant,
-  messagevariant,
-  onSelect,
-  placeholder = "DD/MM/YYYY",
-  popoverModal = true,
-  useDefaultAsSelected = true,
-}) {
+const MEDatePicker = (props) => {
+  const {
+    label,
+    onBlur,
+    message,
+    required,
+    disabled,
+    fromDate,
+    onSelect,
+    defaultDate,
+    selectedDate,
+    displayDateFormate,
+    popoverModal = true,
+    placeholder = "DD/MM/YYYY",
+    useDefaultAsSelected = true,
+    labelVariant = ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY,
+    buttonVariant = ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY,
+    messageVariant = ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY,
+  } = props;
+
   const [open, setOpen] = useState(false);
   const [placeholderTextColor, setPlaceholderTextColor] = useState(
     "text-muted-foreground"
   );
-  const [displayMonth, setDisplayMonth] = useState(new Date());
 
   const normalizeFormat = (fmt) => {
     if (!fmt) return "dd MMM yyyy";
@@ -70,33 +71,28 @@ export default function MEDatePicker({
     ? format(effectiveForDisplay, normalizeFormat(displayDateFormate))
     : placeholder;
 
-  const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
-  const years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - 25 + i);
-
-  const handleMonthChange = (monthValue) => {
-    setDisplayMonth(setMonth(displayMonth, parseInt(monthValue)));
-  };
-
-  const handleYearChange = (yearValue) => {
-    setDisplayMonth(setYear(displayMonth, parseInt(yearValue)));
-  };
-
   return (
     <div className="space-y-2">
       {label && (
-        <Label className={labelvariant}>
+        <Label className={datePickerLabelClassNameByVariant(labelVariant)}>
           {label} {required && <span className="text-danger">*</span>}
         </Label>
       )}
-      <Popover open={open} onOpenChange={setOpen} modal={popoverModal}>
+      <Popover
+        open={open}
+        onOpenChange={(newOpen) => {
+          setOpen(newOpen);
+          if (!newOpen) {
+            onBlur?.();
+          }
+        }}
+        modal={popoverModal}
+      >
         <PopoverTrigger asChild>
           <MEButton
             disabled={disabled}
-            className={`w-full border bg-transparent ${placeholderTextColor} font-normal shadow-xs transition-[color,box-shadow] hover:bg-transparent cursor-pointer`}
+            onBlur={onBlur}
+            className={datePickerButtonClassNameByVariant(buttonVariant)}
           >
             <span className="text-left truncate w-full">{displayText}</span>
             <CalendarIcon className="ml-2 h-4 w-4 text-dark" />
@@ -128,10 +124,12 @@ export default function MEDatePicker({
         </PopoverContent>
       </Popover>
       {message && (
-        <p className={messagevariant} role="alert" aria-live="polite">
+        <p className={datePickerMessageClassNameByVariant(messageVariant)} role="alert" aria-live="polite">
           {message}
         </p>
       )}
     </div>
   );
-}
+};
+
+export default MEDatePicker;
