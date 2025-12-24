@@ -58,8 +58,9 @@ const StudentProfileComponent = () => {
       },
     },
     validationSchema: studentValidationSchema,
-    validateOnChange: false,
+    validateOnChange: true,
     validateOnBlur: true,
+    validateOnMount: true,
     onSubmit: (values) => {
       // Handle form submission
       console.log("Form submitted");
@@ -73,6 +74,7 @@ const StudentProfileComponent = () => {
     touched,
     setFieldValue,
     setFieldTouched,
+    isValid,
     handleChange,
     handleBlur,
     setTouched,
