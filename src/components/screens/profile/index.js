@@ -8,6 +8,8 @@ import {
 } from "@MEShadcnComponents/accordion";
 
 import ProfileHeaderComponent from "@MEScreenComponents/profile/header";
+import FatherProfileComponent from "@MEScreenComponents/profile/fatherProfile";
+import MotherProfileComponent from "@MEScreenComponents/profile/motherProfile";
 import StudentProfileComponent from "@MEScreenComponents/profile/studentProfile";
 
 const ProfileScreenComponent = () => {
@@ -24,68 +26,14 @@ const ProfileScreenComponent = () => {
       title: "Father Profile",
       sub: "Father's contact and occupation details",
       icon: <Mars className="w-5 h-5" />,
-      content: (
-        <div className="space-y-3 text-sm md:text-base">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Full Name
-              </p>
-              <p className="font-medium text-foreground">Robert Doe</p>
-            </div>
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Occupation
-              </p>
-              <p className="font-medium text-foreground">Engineer</p>
-            </div>
-            <div className="md:col-span-2">
-              <p className="text-xs md:text-sm text-muted-foreground">Phone</p>
-              <p className="font-medium text-foreground">+91 9876543211</p>
-            </div>
-            <div className="md:col-span-2">
-              <p className="text-xs md:text-sm text-muted-foreground">Email</p>
-              <p className="font-medium text-foreground">
-                robert.doe@example.com
-              </p>
-            </div>
-          </div>
-        </div>
-      ),
+      content: <FatherProfileComponent />,
     },
     {
       id: "mother",
       title: "Mother Profile",
       sub: "Mother's contact and occupation details",
       icon: <Venus className="w-5 h-5" />,
-      content: (
-        <div className="space-y-3 text-sm md:text-base">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Full Name
-              </p>
-              <p className="font-medium text-foreground">Mary Doe</p>
-            </div>
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Occupation
-              </p>
-              <p className="font-medium text-foreground">Doctor</p>
-            </div>
-            <div className="md:col-span-2">
-              <p className="text-xs md:text-sm text-muted-foreground">Phone</p>
-              <p className="font-medium text-foreground">+91 9876543212</p>
-            </div>
-            <div className="md:col-span-2">
-              <p className="text-xs md:text-sm text-muted-foreground">Email</p>
-              <p className="font-medium text-foreground">
-                mary.doe@example.com
-              </p>
-            </div>
-          </div>
-        </div>
-      ),
+      content: <MotherProfileComponent />,
     },
     {
       id: "siblings",

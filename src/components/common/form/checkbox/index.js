@@ -10,6 +10,15 @@ import {
   checkboxInputLabelClassNameByVariant,
 } from "@MECommonComponents/form/checkbox/meCheckboxClassNameWrapper";
 
+// Helper function to get dynamic grid columns based on checkboxList length
+const getGridColumnsClass = (listLength) => {
+  if (listLength === 0) return "grid-cols-1";
+  if (listLength === 1) return "grid-cols-1";
+  if (listLength === 2) return "grid-cols-1 sm:grid-cols-2";
+  if (listLength === 3) return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
+  return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
+};
+
 const MECheckbox = (props) => {
   const {
     required,
@@ -23,12 +32,14 @@ const MECheckbox = (props) => {
     messageVariant = ME_CHECKBOX_COMPONENT_VARIANTS.PRIMARY,
   } = props;
 
+  const gridClass = getGridColumnsClass(checkboxList.length);
+
   return (
     <div className="space-y-2">
       <Label className={`${checkboxLabelClassNameByVariant(labelVariant)}`}>
         {label} {required && <span className="text-danger">*</span>}
       </Label>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className={`grid ${gridClass} gap-3`}>
         {_.map(checkboxList, (checkboxItem, index) => (
           <div className="flex items-center" key={index}>
             <Input
