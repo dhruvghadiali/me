@@ -5,14 +5,13 @@ import { Edit2, Check, X } from "lucide-react";
 import _ from "lodash";
 import * as Yup from "yup";
 
-import MESelect from "@/components/common/form/select";
 import MEInput from "@MECommonComponents/input/meInput";
 import MEButton from "@MECommonComponents/button/meButton";
 import MECombobox from "@MECommonComponents/form/combobox";
 
 import {
   ME_INPUT_COMPONENT_VARIANTS,
-  ME_SELECT_COMPONENT_VARIANTS,
+  ME_COMBOBOX_COMPONENT_VARIANTS,
 } from "@MEHelpers/enums";
 
 // Enumerations for address dropdowns
@@ -161,18 +160,18 @@ const AddressProfileComponent = () => {
                 searchPlaceholder={"Search State..."}
                 labelVariant={
                   errors.state && touched.state
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 comboboxVariant={
                   errors.state && touched.state
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.state && touched.state
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={errors.state && touched.state ? errors.state : ""}
                 options={_.map(STATES, (label, value) => ({
@@ -191,18 +190,18 @@ const AddressProfileComponent = () => {
                 searchPlaceholder={"Search District..."}
                 labelVariant={
                   errors.district && touched.district
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 comboboxVariant={
                   errors.district && touched.district
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.district && touched.district
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={
                   errors.district && touched.district ? errors.district : ""
@@ -223,18 +222,18 @@ const AddressProfileComponent = () => {
                 searchPlaceholder={"Search City..."}
                 labelVariant={
                   errors.city && touched.city
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 comboboxVariant={
                   errors.city && touched.city
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.city && touched.city
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={errors.city && touched.city ? errors.city : ""}
                 options={_.map(CITIES, (label, value) => ({
@@ -253,18 +252,18 @@ const AddressProfileComponent = () => {
                 searchPlaceholder={"Search Area Name..."}
                 labelVariant={
                   errors.areaName && touched.areaName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 comboboxVariant={
                   errors.areaName && touched.areaName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.areaName && touched.areaName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={
                   errors.areaName && touched.areaName ? errors.areaName : ""
@@ -285,18 +284,18 @@ const AddressProfileComponent = () => {
                 searchPlaceholder={"Search Zipcode..."}
                 labelVariant={
                   errors.zipcode && touched.zipcode
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 comboboxVariant={
                   errors.zipcode && touched.zipcode
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.zipcode && touched.zipcode
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                    : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={
                   errors.zipcode && touched.zipcode ? errors.zipcode : ""

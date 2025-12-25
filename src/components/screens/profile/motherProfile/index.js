@@ -10,12 +10,14 @@ import MESelect from "@/components/common/form/select";
 import MEInput from "@MECommonComponents/input/meInput";
 import MEButton from "@MECommonComponents/button/meButton";
 import MECheckbox from "@MECommonComponents/form/checkbox";
+import MECombobox from "@MECommonComponents/form/combobox";
 import MEDatePicker from "@MECommonComponents/form/datePicker";
 
 import { phoneRegExp } from "@MEUtils/regexp";
 import {
   ME_INPUT_COMPONENT_VARIANTS,
   ME_SELECT_COMPONENT_VARIANTS,
+  ME_COMBOBOX_COMPONENT_VARIANTS,
   ME_CHECKBOX_COMPONENT_VARIANTS,
   ME_DATEPICKER_COMPONENT_VARIANTS,
 } from "@MEHelpers/enums";
@@ -575,29 +577,29 @@ const MotherProfileComponent = () => {
                   }
                 />
 
-                <MESelect
+                <MECombobox
                   label="State"
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.state}
-                  selectLabel="Select State"
-                  selectVariant={
-                    errors.addressOverride?.state &&
-                    touched.addressOverride?.state
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                  }
+                  searchPlaceholder={"Search State..."}
                   labelVariant={
                     errors.addressOverride?.state &&
                     touched.addressOverride?.state
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                  }
+                  comboboxVariant={
+                    errors.addressOverride?.state &&
+                    touched.addressOverride?.state
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   messageVariant={
                     errors.addressOverride?.state &&
                     touched.addressOverride?.state
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   message={
                     errors.addressOverride?.state &&
@@ -615,29 +617,29 @@ const MotherProfileComponent = () => {
                   }
                 />
 
-                <MESelect
+                <MECombobox
                   label="District"
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.district}
-                  selectLabel="Select District"
-                  selectVariant={
-                    errors.addressOverride?.district &&
-                    touched.addressOverride?.district
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                  }
+                  searchPlaceholder={"Search District..."}
                   labelVariant={
                     errors.addressOverride?.district &&
                     touched.addressOverride?.district
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                  }
+                  comboboxVariant={
+                    errors.addressOverride?.district &&
+                    touched.addressOverride?.district
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   messageVariant={
                     errors.addressOverride?.district &&
                     touched.addressOverride?.district
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   message={
                     errors.addressOverride?.district &&
@@ -657,29 +659,29 @@ const MotherProfileComponent = () => {
                   }
                 />
 
-                <MESelect
+                <MECombobox
                   label="City"
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.city}
-                  selectLabel="Select City"
-                  selectVariant={
-                    errors.addressOverride?.city &&
-                    touched.addressOverride?.city
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                  }
+                  searchPlaceholder={"Search City..."}
                   labelVariant={
                     errors.addressOverride?.city &&
                     touched.addressOverride?.city
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                  }
+                  comboboxVariant={
+                    errors.addressOverride?.city &&
+                    touched.addressOverride?.city
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   messageVariant={
                     errors.addressOverride?.city &&
                     touched.addressOverride?.city
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   message={
                     errors.addressOverride?.city &&
@@ -697,29 +699,29 @@ const MotherProfileComponent = () => {
                   }
                 />
 
-                <MESelect
+                <MECombobox
                   label="Area Name"
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.areaName}
-                  selectLabel="Select Area"
-                  selectVariant={
-                    errors.addressOverride?.areaName &&
-                    touched.addressOverride?.areaName
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                  }
+                  searchPlaceholder={"Search Area Name..."}
                   labelVariant={
                     errors.addressOverride?.areaName &&
                     touched.addressOverride?.areaName
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                  }
+                  comboboxVariant={
+                    errors.addressOverride?.areaName &&
+                    touched.addressOverride?.areaName
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   messageVariant={
                     errors.addressOverride?.areaName &&
                     touched.addressOverride?.areaName
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   message={
                     errors.addressOverride?.areaName &&
@@ -739,29 +741,29 @@ const MotherProfileComponent = () => {
                   }
                 />
 
-                <MESelect
+                <MECombobox
                   label="Zipcode"
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.zipcode}
-                  selectLabel="Select Zipcode"
-                  selectVariant={
-                    errors.addressOverride?.zipcode &&
-                    touched.addressOverride?.zipcode
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                  }
+                  searchPlaceholder={"Search Zipcode..."}
                   labelVariant={
                     errors.addressOverride?.zipcode &&
                     touched.addressOverride?.zipcode
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                  }
+                  comboboxVariant={
+                    errors.addressOverride?.zipcode &&
+                    touched.addressOverride?.zipcode
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   messageVariant={
                     errors.addressOverride?.zipcode &&
                     touched.addressOverride?.zipcode
-                      ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                      : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
                   }
                   message={
                     errors.addressOverride?.zipcode &&
@@ -863,7 +865,9 @@ const fatherValidationSchema = Yup.object().shape({
     })
   ),
   addressOverride: Yup.object().when("sameAddressAsStudent", {
-    is: (sameAddressAsStudent) => Array.isArray(sameAddressAsStudent) && !sameAddressAsStudent[0]?.isSelected,
+    is: (sameAddressAsStudent) =>
+      Array.isArray(sameAddressAsStudent) &&
+      !sameAddressAsStudent[0]?.isSelected,
     then: (schema) =>
       schema.shape({
         state: Yup.string().required("State is required"),
