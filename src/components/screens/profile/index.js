@@ -11,6 +11,7 @@ import ProfileHeaderComponent from "@MEScreenComponents/profile/header";
 import FatherProfileComponent from "@MEScreenComponents/profile/fatherProfile";
 import MotherProfileComponent from "@MEScreenComponents/profile/motherProfile";
 import StudentProfileComponent from "@MEScreenComponents/profile/studentProfile";
+import SiblingProfileComponent from "@MEScreenComponents/profile/siblingProfile";
 
 const ProfileScreenComponent = () => {
   const accordionItems = [
@@ -40,28 +41,7 @@ const ProfileScreenComponent = () => {
       title: "Siblings Profile",
       sub: "Information about your siblings",
       icon: <Users className="w-5 h-5" />,
-      content: (
-        <div className="space-y-4 text-sm md:text-base">
-          <div className="border-l-2 border-primary pl-4 py-2">
-            <p className="text-xs md:text-sm text-muted-foreground">
-              Sibling 1
-            </p>
-            <p className="font-medium text-foreground">Jane Doe</p>
-            <p className="text-xs md:text-sm text-muted-foreground">
-              Class: 10th
-            </p>
-          </div>
-          <div className="border-l-2 border-primary pl-4 py-2">
-            <p className="text-xs md:text-sm text-muted-foreground">
-              Sibling 2
-            </p>
-            <p className="font-medium text-foreground">James Doe</p>
-            <p className="text-xs md:text-sm text-muted-foreground">
-              Class: 8th
-            </p>
-          </div>
-        </div>
-      ),
+      content: <SiblingProfileComponent />,
     },
     {
       id: "address",

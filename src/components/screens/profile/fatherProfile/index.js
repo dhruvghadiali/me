@@ -522,13 +522,59 @@ const FatherProfileComponent = () => {
                   ? ME_CHECKBOX_COMPONENT_VARIANTS.DANGER
                   : ME_CHECKBOX_COMPONENT_VARIANTS.PRIMARY
               }
-              message={errors.sameAddressAsStudent && touched.sameAddressAsStudent ? errors.sameAddressAsStudent : ""}
+              message={
+                errors.sameAddressAsStudent && touched.sameAddressAsStudent
+                  ? errors.sameAddressAsStudent
+                  : ""
+              }
               checkboxList={values.sameAddressAsStudent}
-              onChange={(values) => setFieldValue("sameAddressAsStudent", values)}
+              onChange={(values) =>
+                setFieldValue("sameAddressAsStudent", values)
+              }
             />
 
             {!values.sameAddressAsStudent[0].isSelected && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <MEInput
+                  id="homeAddress"
+                  meclassname="flex"
+                  type={"text"}
+                  label={"Home Address"}
+                  required={true}
+                  disabled={!isEditMode}
+                  value={values.addressOverride.homeAddress}
+                  labelvariant={
+                    errors.addressOverride?.homeAddress &&
+                    touched.addressOverride?.homeAddress
+                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                  }
+                  inputvariant={
+                    errors.addressOverride?.homeAddress &&
+                    touched.addressOverride?.homeAddress
+                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                  }
+                  messagevariant={
+                    errors.addressOverride?.homeAddress &&
+                    touched.addressOverride?.homeAddress
+                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                  }
+                  message={
+                    errors.addressOverride?.homeAddress &&
+                    touched.addressOverride?.homeAddress
+                      ? errors.addressOverride?.homeAddress
+                      : ""
+                  }
+                  onChange={(e) =>
+                    setFieldValue("addressOverride.homeAddress", e.target.value)
+                  }
+                  onBlur={() =>
+                    setFieldTouched("addressOverride.homeAddress", true)
+                  }
+                />
+                
                 <MESelect
                   label="State"
                   required={true}
@@ -734,46 +780,6 @@ const FatherProfileComponent = () => {
                     setFieldValue("addressOverride.zipcode", value)
                   }
                 />
-
-                <MEInput
-                  id="homeAddress"
-                  meclassname="flex"
-                  type={"text"}
-                  label={"Home Address"}
-                  required={true}
-                  disabled={!isEditMode}
-                  value={values.addressOverride.homeAddress}
-                  labelvariant={
-                    errors.addressOverride?.homeAddress &&
-                    touched.addressOverride?.homeAddress
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  inputvariant={
-                    errors.addressOverride?.homeAddress &&
-                    touched.addressOverride?.homeAddress
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messagevariant={
-                    errors.addressOverride?.homeAddress &&
-                    touched.addressOverride?.homeAddress
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.addressOverride?.homeAddress &&
-                    touched.addressOverride?.homeAddress
-                      ? errors.addressOverride?.homeAddress
-                      : ""
-                  }
-                  onChange={(e) =>
-                    setFieldValue("addressOverride.homeAddress", e.target.value)
-                  }
-                  onBlur={() =>
-                    setFieldTouched("addressOverride.homeAddress", true)
-                  }
-                />
               </div>
             )}
           </div>
@@ -829,25 +835,35 @@ const fatherValidationSchema = Yup.object().shape({
   annualIncome: Yup.number()
     .positive("Annual income must be a positive number")
     .required("Annual income is required"),
-  isAlive: Yup.boolean(),
+  isAlive: Yup.array().of(
+    Yup.object().shape({
+      isSelected: Yup.boolean(),
+      label: Yup.string(),
+    })
+  ),
   dateOfDeath: Yup.date().when("isAlive", {
-    is: false,
+    is: (isAlive) => Array.isArray(isAlive) && !isAlive[0]?.isSelected,
     then: (schema) =>
       schema
         .required("Date of death is required")
         .max(moment().endOf("day"), "Date of death cannot be in the future"),
   }),
   caringChildBy: Yup.string().when("isAlive", {
-    is: false,
+    is: (isAlive) => Array.isArray(isAlive) && !isAlive[0]?.isSelected,
     then: (schema) =>
       schema
         .min(2, "Caring child by must be at least 2 characters")
         .max(50, "Caring child by must be at most 50 characters")
         .required("Please provide caring child by information"),
   }),
-  sameAddressAsStudent: Yup.boolean(),
+  sameAddressAsStudent: Yup.array().of(
+    Yup.object().shape({
+      isSelected: Yup.boolean(),
+      label: Yup.string(),
+    })
+  ),
   addressOverride: Yup.object().when("sameAddressAsStudent", {
-    is: false,
+    is: (sameAddressAsStudent) => Array.isArray(sameAddressAsStudent) && !sameAddressAsStudent[0]?.isSelected,
     then: (schema) =>
       schema.shape({
         state: Yup.string().required("State is required"),
