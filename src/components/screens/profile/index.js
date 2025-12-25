@@ -12,6 +12,7 @@ import FatherProfileComponent from "@MEScreenComponents/profile/fatherProfile";
 import MotherProfileComponent from "@MEScreenComponents/profile/motherProfile";
 import StudentProfileComponent from "@MEScreenComponents/profile/studentProfile";
 import SiblingProfileComponent from "@MEScreenComponents/profile/siblingProfile";
+import AddressProfileComponent from "@MEScreenComponents/profile/addressProfile";
 
 const ProfileScreenComponent = () => {
   const accordionItems = [
@@ -48,40 +49,7 @@ const ProfileScreenComponent = () => {
       title: "Address",
       sub: "Residential address and location details",
       icon: <MapPin className="w-5 h-5" />,
-      content: (
-        <div className="space-y-3 text-sm md:text-base">
-          <div>
-            <p className="text-xs md:text-sm text-muted-foreground">
-              Street Address
-            </p>
-            <p className="font-medium text-foreground">
-              123 Main Street, Apt 4B
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">City</p>
-              <p className="font-medium text-foreground">New York</p>
-            </div>
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">State</p>
-              <p className="font-medium text-foreground">NY</p>
-            </div>
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Postal Code
-              </p>
-              <p className="font-medium text-foreground">10001</p>
-            </div>
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Country
-              </p>
-              <p className="font-medium text-foreground">USA</p>
-            </div>
-          </div>
-        </div>
-      ),
+      content: <AddressProfileComponent />,
     },
     {
       id: "emergency",
