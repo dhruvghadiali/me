@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { Edit2, Check, X } from "lucide-react";
+import { Edit2, Check, X, Plus, Trash2 } from "lucide-react";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -41,16 +41,20 @@ const CLASSES = {
 const SiblingProfileComponent = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
+  const initialSiblingObject = {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    dateOfBirth: "",
+    studyingInClass: "",
+    sameSchool: [{ isSelected: false, label: "Same school as student" }],
+    schoolName: "",
+    admissionNumber: "",
+  };
+
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      gender: "",
-      dateOfBirth: "",
-      studyingInClass: "",
-      sameSchool: [{ isSelected: false, label: "Same school as student" }],
-      schoolName: "",
-      admissionNumber: "",
+      siblings: [initialSiblingObject],
     },
     validationSchema: siblingValidationSchema,
     validateOnChange: true,
@@ -80,6 +84,18 @@ const SiblingProfileComponent = () => {
     setIsEditMode(false);
   };
 
+  const handleAddSibling = () => {
+    setFieldValue("siblings", [
+      ...values.siblings,
+      initialSiblingObject,
+    ]);
+  };
+
+  const handleRemoveSibling = (index) => {
+    const updatedSiblings = values.siblings.filter((_, i) => i !== index);
+    setFieldValue("siblings", updatedSiblings);
+  };
+
   console.log("Sibling Profile - Form Values:", errors);
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
@@ -106,263 +122,300 @@ const SiblingProfileComponent = () => {
 
           {/* Basic Information Section */}
           <div className="mt-3">
-            <h3 className="text-base font-semibold mb-4 text-primary">
-              Basic Information
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <MEInput
-                id="firstName"
-                meclassname="flex"
-                type={"text"}
-                label={"First Name"}
-                required={true}
-                disabled={!isEditMode}
-                value={values.firstName}
-                labelvariant={
-                  errors.firstName && touched.firstName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                }
-                inputvariant={
-                  errors.firstName && touched.firstName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                }
-                messagevariant={
-                  errors.firstName && touched.firstName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                }
-                message={
-                  errors.firstName && touched.firstName ? errors.firstName : ""
-                }
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-
-              <MEInput
-                id="lastName"
-                meclassname="flex"
-                type={"text"}
-                label={"Last Name"}
-                required={true}
-                disabled={!isEditMode}
-                value={values.lastName}
-                labelvariant={
-                  errors.lastName && touched.lastName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                }
-                inputvariant={
-                  errors.lastName && touched.lastName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                }
-                messagevariant={
-                  errors.lastName && touched.lastName
-                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                }
-                message={
-                  errors.lastName && touched.lastName ? errors.lastName : ""
-                }
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-
-              <MEDatePicker
-                label={"Date of Birth"}
-                placeholder={""}
-                required={true}
-                disabled={!isEditMode}
-                selectedDate={values.dateOfBirth}
-                labelVariant={
-                  errors.dateOfBirth && touched.dateOfBirth
-                    ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
-                    : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
-                }
-                buttonVariant={
-                  errors.dateOfBirth && touched.dateOfBirth
-                    ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
-                    : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
-                }
-                messageVariant={
-                  errors.dateOfBirth && touched.dateOfBirth
-                    ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
-                    : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
-                }
-                message={
-                  errors.dateOfBirth && touched.dateOfBirth
-                    ? errors.dateOfBirth
-                    : ""
-                }
-                onSelect={(date) => setFieldValue("dateOfBirth", date)}
-                onBlur={() => setFieldTouched("dateOfBirth", true)}
-              />
-
-              <MESelect
-                label="Studying in Class"
-                required={true}
-                disabled={!isEditMode}
-                value={values.studyingInClass}
-                selectLabel="Select Class"
-                selectVariant={
-                  errors.studyingInClass && touched.studyingInClass
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                }
-                labelVariant={
-                  errors.studyingInClass && touched.studyingInClass
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                }
-                messageVariant={
-                  errors.studyingInClass && touched.studyingInClass
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                }
-                message={
-                  errors.studyingInClass && touched.studyingInClass
-                    ? errors.studyingInClass
-                    : ""
-                }
-                options={_.map(CLASSES, (label, value) => ({
-                  label,
-                  value,
-                }))}
-                onBlur={() => setFieldTouched("studyingInClass", true)}
-                onChange={(value) => setFieldValue("studyingInClass", value)}
-              />
-
-              <MERadioButton
-                label="Gender"
-                value={values.gender}
-                disabled={!isEditMode}
-                labelVariant={
-                  errors.gender && touched.gender
-                    ? ME_RADIO_BUTTON_COMPONENT_VARIANTS.DANGER
-                    : ME_RADIO_BUTTON_COMPONENT_VARIANTS.PRIMARY
-                }
-                radioButtonItemVariant={
-                  errors.gender && touched.gender
-                    ? ME_RADIO_BUTTON_COMPONENT_VARIANTS.DANGER
-                    : ME_RADIO_BUTTON_COMPONENT_VARIANTS.PRIMARY
-                }
-                messageVariant={
-                  errors.gender && touched.gender
-                    ? ME_RADIO_BUTTON_COMPONENT_VARIANTS.DANGER
-                    : ME_RADIO_BUTTON_COMPONENT_VARIANTS.PRIMARY
-                }
-                message={errors.gender && touched.gender ? errors.gender : ""}
-                radioGroupItems={_.map(GENDERS, (label, value) => ({
-                  label,
-                  value,
-                }))}
-                onBlur={() => setFieldTouched("gender", true)}
-                onChange={(value) => setFieldValue("gender", value)}
-              />
-            </div>
-          </div>
-
-          {/* School Information Section */}
-          <div className="mt-3">
-            <h3 className="text-base font-semibold mb-2 text-primary">
-              School Information
-            </h3>
-            <div className="grid grid-cols-1 gap-4">
-              <MECheckbox
-                label=""
-                disabled={!isEditMode}
-                labelVariant={
-                  errors.sameSchool && touched.sameSchool
-                    ? ME_CHECKBOX_COMPONENT_VARIANTS.DANGER
-                    : ME_CHECKBOX_COMPONENT_VARIANTS.PRIMARY
-                }
-                checkboxVariant={
-                  errors.sameSchool && touched.sameSchool
-                    ? ME_CHECKBOX_COMPONENT_VARIANTS.DANGER
-                    : ME_CHECKBOX_COMPONENT_VARIANTS.PRIMARY
-                }
-                messageVariant={
-                  errors.sameSchool && touched.sameSchool
-                    ? ME_CHECKBOX_COMPONENT_VARIANTS.DANGER
-                    : ME_CHECKBOX_COMPONENT_VARIANTS.PRIMARY
-                }
-                message={
-                  errors.sameSchool && touched.sameSchool
-                    ? errors.sameSchool
-                    : ""
-                }
-                checkboxList={values.sameSchool}
-                onChange={(values) => setFieldValue("sameSchool", values)}
-              />
-
-              {!values.sameSchool[0].isSelected && (
-                <MEInput
-                  id="schoolName"
-                  meclassname="flex"
-                  type={"text"}
-                  label={"School Name"}
-                  disabled={!isEditMode}
-                  value={values.schoolName}
-                  labelvariant={
-                    errors.schoolName && touched.schoolName
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  inputvariant={
-                    errors.schoolName && touched.schoolName
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messagevariant={
-                    errors.schoolName && touched.schoolName
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.schoolName && touched.schoolName
-                      ? errors.schoolName
-                      : ""
-                  }
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              )}
-
-              {values.sameSchool[0].isSelected && (
-                <MEInput
-                  id="admissionNumber"
-                  meclassname="flex"
-                  type={"text"}
-                  label={"Admission Number"}
-                  disabled={!isEditMode}
-                  value={values.admissionNumber}
-                  labelvariant={
-                    errors.admissionNumber && touched.admissionNumber
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  inputvariant={
-                    errors.admissionNumber && touched.admissionNumber
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messagevariant={
-                    errors.admissionNumber && touched.admissionNumber
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.admissionNumber && touched.admissionNumber
-                      ? errors.admissionNumber
-                      : ""
-                  }
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-semibold text-primary">
+                Sibling Information
+              </h3>
+              {isEditMode && (
+                <button
+                  type="button"
+                  onClick={handleAddSibling}
+                  className="flex items-center gap-2 px-3 py-1 text-sm bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Sibling
+                </button>
               )}
             </div>
+
+            {_.map(values.siblings, (sibling, siblingIndex) => (
+              <div key={siblingIndex} className="mb-6 p-4 border border-primary/20 rounded-lg">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-sm font-medium text-primary">
+                    Sibling {siblingIndex + 1}
+                  </h4>
+                  {isEditMode && values.siblings.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveSibling(siblingIndex)}
+                      className="p-1 text-danger hover:bg-danger/10 rounded transition-colors"
+                      title="Remove sibling"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <MEInput
+                    id={`firstName-${siblingIndex}`}
+                    meclassname="flex"
+                    type={"text"}
+                    label={"First Name"}
+                    required={true}
+                    disabled={!isEditMode}
+                    value={sibling.firstName}
+                    labelvariant={
+                      errors.siblings?.[siblingIndex]?.firstName && touched.siblings?.[siblingIndex]?.firstName
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    inputvariant={
+                      errors.siblings?.[siblingIndex]?.firstName && touched.siblings?.[siblingIndex]?.firstName
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messagevariant={
+                      errors.siblings?.[siblingIndex]?.firstName && touched.siblings?.[siblingIndex]?.firstName
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.siblings?.[siblingIndex]?.firstName && touched.siblings?.[siblingIndex]?.firstName 
+                        ? errors.siblings[siblingIndex].firstName 
+                        : ""
+                    }
+                    onChange={(e) => setFieldValue(`siblings.${siblingIndex}.firstName`, e.target.value)}
+                    onBlur={() => setFieldTouched(`siblings.${siblingIndex}.firstName`, true)}
+                  />
+
+                  <MEInput
+                    id={`lastName-${siblingIndex}`}
+                    meclassname="flex"
+                    type={"text"}
+                    label={"Last Name"}
+                    required={true}
+                    disabled={!isEditMode}
+                    value={sibling.lastName}
+                    labelvariant={
+                      errors.siblings?.[siblingIndex]?.lastName && touched.siblings?.[siblingIndex]?.lastName
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    inputvariant={
+                      errors.siblings?.[siblingIndex]?.lastName && touched.siblings?.[siblingIndex]?.lastName
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messagevariant={
+                      errors.siblings?.[siblingIndex]?.lastName && touched.siblings?.[siblingIndex]?.lastName
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.siblings?.[siblingIndex]?.lastName && touched.siblings?.[siblingIndex]?.lastName 
+                        ? errors.siblings[siblingIndex].lastName 
+                        : ""
+                    }
+                    onChange={(e) => setFieldValue(`siblings.${siblingIndex}.lastName`, e.target.value)}
+                    onBlur={() => setFieldTouched(`siblings.${siblingIndex}.lastName`, true)}
+                  />
+
+                  <MEDatePicker
+                    label={"Date of Birth"}
+                    placeholder={""}
+                    required={true}
+                    disabled={!isEditMode}
+                    selectedDate={sibling.dateOfBirth}
+                    labelVariant={
+                      errors.siblings?.[siblingIndex]?.dateOfBirth && touched.siblings?.[siblingIndex]?.dateOfBirth
+                        ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
+                        : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    buttonVariant={
+                      errors.siblings?.[siblingIndex]?.dateOfBirth && touched.siblings?.[siblingIndex]?.dateOfBirth
+                        ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
+                        : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.siblings?.[siblingIndex]?.dateOfBirth && touched.siblings?.[siblingIndex]?.dateOfBirth
+                        ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
+                        : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.siblings?.[siblingIndex]?.dateOfBirth && touched.siblings?.[siblingIndex]?.dateOfBirth
+                        ? errors.siblings[siblingIndex].dateOfBirth
+                        : ""
+                    }
+                    onSelect={(date) => setFieldValue(`siblings.${siblingIndex}.dateOfBirth`, date)}
+                    onBlur={() => setFieldTouched(`siblings.${siblingIndex}.dateOfBirth`, true)}
+                  />
+
+                  <MESelect
+                    label="Studying in Class"
+                    required={true}
+                    disabled={!isEditMode}
+                    value={sibling.studyingInClass}
+                    selectLabel="Select Class"
+                    selectVariant={
+                      errors.siblings?.[siblingIndex]?.studyingInClass && touched.siblings?.[siblingIndex]?.studyingInClass
+                        ? ME_SELECT_COMPONENT_VARIANTS.DANGER
+                        : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    labelVariant={
+                      errors.siblings?.[siblingIndex]?.studyingInClass && touched.siblings?.[siblingIndex]?.studyingInClass
+                        ? ME_SELECT_COMPONENT_VARIANTS.DANGER
+                        : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.siblings?.[siblingIndex]?.studyingInClass && touched.siblings?.[siblingIndex]?.studyingInClass
+                        ? ME_SELECT_COMPONENT_VARIANTS.DANGER
+                        : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.siblings?.[siblingIndex]?.studyingInClass && touched.siblings?.[siblingIndex]?.studyingInClass
+                        ? errors.siblings[siblingIndex].studyingInClass
+                        : ""
+                    }
+                    options={_.map(CLASSES, (label, value) => ({
+                      label,
+                      value,
+                    }))}
+                    onBlur={() => setFieldTouched(`siblings.${siblingIndex}.studyingInClass`, true)}
+                    onChange={(value) => setFieldValue(`siblings.${siblingIndex}.studyingInClass`, value)}
+                  />
+
+                  <MERadioButton
+                    label="Gender"
+                    value={sibling.gender}
+                    disabled={!isEditMode}
+                    labelVariant={
+                      errors.siblings?.[siblingIndex]?.gender && touched.siblings?.[siblingIndex]?.gender
+                        ? ME_RADIO_BUTTON_COMPONENT_VARIANTS.DANGER
+                        : ME_RADIO_BUTTON_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    radioButtonItemVariant={
+                      errors.siblings?.[siblingIndex]?.gender && touched.siblings?.[siblingIndex]?.gender
+                        ? ME_RADIO_BUTTON_COMPONENT_VARIANTS.DANGER
+                        : ME_RADIO_BUTTON_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.siblings?.[siblingIndex]?.gender && touched.siblings?.[siblingIndex]?.gender
+                        ? ME_RADIO_BUTTON_COMPONENT_VARIANTS.DANGER
+                        : ME_RADIO_BUTTON_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={errors.siblings?.[siblingIndex]?.gender && touched.siblings?.[siblingIndex]?.gender ? errors.siblings[siblingIndex].gender : ""}
+                    radioGroupItems={_.map(GENDERS, (label, value) => ({
+                      label,
+                      value,
+                    }))}
+                    onBlur={() => setFieldTouched(`siblings.${siblingIndex}.gender`, true)}
+                    onChange={(value) => setFieldValue(`siblings.${siblingIndex}.gender`, value)}
+                  />
+                </div>
+
+                {/* School Information Section */}
+                <div className="mt-4 pt-4 border-t border-primary/10">
+                  <h5 className="text-sm font-semibold mb-3 text-primary">
+                    School Information
+                  </h5>
+                  <div className="grid grid-cols-1 gap-4">
+                    <MECheckbox
+                      label=""
+                      disabled={!isEditMode}
+                      labelVariant={
+                        errors.siblings?.[siblingIndex]?.sameSchool && touched.siblings?.[siblingIndex]?.sameSchool
+                          ? ME_CHECKBOX_COMPONENT_VARIANTS.DANGER
+                          : ME_CHECKBOX_COMPONENT_VARIANTS.PRIMARY
+                      }
+                      checkboxVariant={
+                        errors.siblings?.[siblingIndex]?.sameSchool && touched.siblings?.[siblingIndex]?.sameSchool
+                          ? ME_CHECKBOX_COMPONENT_VARIANTS.DANGER
+                          : ME_CHECKBOX_COMPONENT_VARIANTS.PRIMARY
+                      }
+                      messageVariant={
+                        errors.siblings?.[siblingIndex]?.sameSchool && touched.siblings?.[siblingIndex]?.sameSchool
+                          ? ME_CHECKBOX_COMPONENT_VARIANTS.DANGER
+                          : ME_CHECKBOX_COMPONENT_VARIANTS.PRIMARY
+                      }
+                      message={
+                        errors.siblings?.[siblingIndex]?.sameSchool && touched.siblings?.[siblingIndex]?.sameSchool
+                          ? errors.siblings[siblingIndex].sameSchool
+                          : ""
+                      }
+                      checkboxList={sibling.sameSchool}
+                      onChange={(values) => setFieldValue(`siblings.${siblingIndex}.sameSchool`, values)}
+                    />
+
+                    {!sibling.sameSchool[0].isSelected && (
+                      <MEInput
+                        id={`schoolName-${siblingIndex}`}
+                        meclassname="flex"
+                        type={"text"}
+                        label={"School Name"}
+                        disabled={!isEditMode}
+                        value={sibling.schoolName}
+                        labelvariant={
+                          errors.siblings?.[siblingIndex]?.schoolName && touched.siblings?.[siblingIndex]?.schoolName
+                            ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                            : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                        }
+                        inputvariant={
+                          errors.siblings?.[siblingIndex]?.schoolName && touched.siblings?.[siblingIndex]?.schoolName
+                            ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                            : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                        }
+                        messagevariant={
+                          errors.siblings?.[siblingIndex]?.schoolName && touched.siblings?.[siblingIndex]?.schoolName
+                            ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                            : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                        }
+                        message={
+                          errors.siblings?.[siblingIndex]?.schoolName && touched.siblings?.[siblingIndex]?.schoolName
+                            ? errors.siblings[siblingIndex].schoolName
+                            : ""
+                        }
+                        onChange={(e) => setFieldValue(`siblings.${siblingIndex}.schoolName`, e.target.value)}
+                        onBlur={() => setFieldTouched(`siblings.${siblingIndex}.schoolName`, true)}
+                      />
+                    )}
+
+                    {sibling.sameSchool[0].isSelected && (
+                      <MEInput
+                        id={`admissionNumber-${siblingIndex}`}
+                        meclassname="flex"
+                        type={"text"}
+                        label={"Admission Number"}
+                        disabled={!isEditMode}
+                        value={sibling.admissionNumber}
+                        labelvariant={
+                          errors.siblings?.[siblingIndex]?.admissionNumber && touched.siblings?.[siblingIndex]?.admissionNumber
+                            ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                            : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                        }
+                        inputvariant={
+                          errors.siblings?.[siblingIndex]?.admissionNumber && touched.siblings?.[siblingIndex]?.admissionNumber
+                            ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                            : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                        }
+                        messagevariant={
+                          errors.siblings?.[siblingIndex]?.admissionNumber && touched.siblings?.[siblingIndex]?.admissionNumber
+                            ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                            : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                        }
+                        message={
+                          errors.siblings?.[siblingIndex]?.admissionNumber && touched.siblings?.[siblingIndex]?.admissionNumber
+                            ? errors.siblings[siblingIndex].admissionNumber
+                            : ""
+                        }
+                        onChange={(e) => setFieldValue(`siblings.${siblingIndex}.admissionNumber`, e.target.value)}
+                        onBlur={() => setFieldTouched(`siblings.${siblingIndex}.admissionNumber`, true)}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           {isEditMode && (
@@ -392,41 +445,45 @@ const SiblingProfileComponent = () => {
 
 // Validation Schema
 const siblingValidationSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(2, "First name must be at least 2 characters")
-    .max(25, "First name must be at most 25 characters")
-    .required("First name is required"),
-  lastName: Yup.string()
-    .min(2, "Last name must be at least 2 characters")
-    .max(25, "Last name must be at most 25 characters")
-    .required("Last name is required"),
-  gender: Yup.string().required("Gender is required"),
-  dateOfBirth: Yup.date()
-    .required("Date of birth is required")
-    .max(moment().endOf("day"), "Date of birth cannot be in the future"),
-  studyingInClass: Yup.string().required("Class is required"),
-  sameSchool: Yup.array().of(
+  siblings: Yup.array().of(
     Yup.object().shape({
-      isSelected: Yup.boolean(),
-      label: Yup.string(),
+      firstName: Yup.string()
+        .min(2, "First name must be at least 2 characters")
+        .max(25, "First name must be at most 25 characters")
+        .required("First name is required"),
+      lastName: Yup.string()
+        .min(2, "Last name must be at least 2 characters")
+        .max(25, "Last name must be at most 25 characters")
+        .required("Last name is required"),
+      gender: Yup.string().required("Gender is required"),
+      dateOfBirth: Yup.date()
+        .required("Date of birth is required")
+        .max(moment().endOf("day"), "Date of birth cannot be in the future"),
+      studyingInClass: Yup.string().required("Class is required"),
+      sameSchool: Yup.array().of(
+        Yup.object().shape({
+          isSelected: Yup.boolean(),
+          label: Yup.string(),
+        })
+      ),
+      schoolName: Yup.string().when("sameSchool", {
+        is: (sameSchool) => Array.isArray(sameSchool) && !sameSchool[0]?.isSelected,
+        then: (schema) =>
+          schema
+            .min(2, "School name must be at least 2 characters")
+            .max(100, "School name must be at most 100 characters")
+            .required("School name is required"),
+      }),
+      admissionNumber: Yup.string().when("sameSchool", {
+        is: (sameSchool) => Array.isArray(sameSchool) && sameSchool[0]?.isSelected,
+        then: (schema) =>
+          schema
+            .min(2, "Admission number must be at least 2 characters")
+            .max(50, "Admission number must be at most 50 characters")
+            .required("Admission number is required"),
+      }),
     })
   ),
-  schoolName: Yup.string().when("sameSchool", {
-    is: (sameSchool) => Array.isArray(sameSchool) && !sameSchool[0]?.isSelected,
-    then: (schema) =>
-      schema
-        .min(2, "School name must be at least 2 characters")
-        .max(100, "School name must be at most 100 characters")
-        .required("School name is required"),
-  }),
-  admissionNumber: Yup.string().when("sameSchool", {
-    is: (sameSchool) => Array.isArray(sameSchool) && sameSchool[0]?.isSelected,
-    then: (schema) =>
-      schema
-        .min(2, "Admission number must be at least 2 characters")
-        .max(50, "Admission number must be at most 50 characters")
-        .required("Admission number is required"),
-  }),
 });
 
 export default SiblingProfileComponent;

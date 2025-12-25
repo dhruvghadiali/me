@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import { format, isValid as isValidDate} from "date-fns";
 
 import { CalendarIcon } from "lucide-react";
@@ -45,6 +45,7 @@ const MEDatePicker = (props) => {
   const [placeholderTextColor, setPlaceholderTextColor] = useState(
     "text-muted-foreground"
   );
+  const openingRef = useRef(false);
 
   const normalizeFormat = (fmt) => {
     if (!fmt) return "dd MMM yyyy";
@@ -81,6 +82,9 @@ const MEDatePicker = (props) => {
       <Popover
         open={open}
         onOpenChange={(newOpen) => {
+          if (newOpen) {
+            openingRef.current = true;
+          }
           setOpen(newOpen);
           if (!newOpen) {
             onBlur?.();
@@ -91,7 +95,12 @@ const MEDatePicker = (props) => {
         <PopoverTrigger asChild>
           <MEButton
             disabled={disabled}
-            onBlur={onBlur}
+            onBlur={() => {
+              if (!openingRef.current) {
+                onBlur?.();
+              }
+              openingRef.current = false;
+            }}
             className={datePickerButtonClassNameByVariant(buttonVariant)}
           >
             <span className="text-left truncate w-full">{displayText}</span>
