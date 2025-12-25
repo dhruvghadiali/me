@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import MESelect from "@/components/common/form/select";
 import MEInput from "@MECommonComponents/input/meInput";
 import MEButton from "@MECommonComponents/button/meButton";
+import MECombobox from "@MECommonComponents/form/combobox";
 
 import {
   ME_INPUT_COMPONENT_VARIANTS,
@@ -152,30 +153,28 @@ const AddressProfileComponent = () => {
                 onBlur={handleBlur}
               />
 
-              <MESelect
+              <MECombobox
                 label="State"
                 required={true}
                 disabled={!isEditMode}
                 value={values.state}
-                selectLabel="Select State"
-                selectVariant={
-                  errors.state && touched.state
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                }
+                searchPlaceholder={"Search State..."}
                 labelVariant={
                   errors.state && touched.state
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                }
+                comboboxVariant={
+                  errors.state && touched.state
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.state && touched.state
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
-                message={
-                  errors.state && touched.state ? errors.state : ""
-                }
+                message={errors.state && touched.state ? errors.state : ""}
                 options={_.map(STATES, (label, value) => ({
                   label,
                   value,
@@ -184,31 +183,29 @@ const AddressProfileComponent = () => {
                 onChange={(value) => setFieldValue("state", value)}
               />
 
-              <MESelect
+              <MECombobox
                 label="District"
                 required={true}
                 disabled={!isEditMode}
                 value={values.district}
-                selectLabel="Select District"
-                selectVariant={
-                  errors.district && touched.district
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                }
+                searchPlaceholder={"Search District..."}
                 labelVariant={
                   errors.district && touched.district
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                }
+                comboboxVariant={
+                  errors.district && touched.district
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.district && touched.district
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={
-                  errors.district && touched.district
-                    ? errors.district
-                    : ""
+                  errors.district && touched.district ? errors.district : ""
                 }
                 options={_.map(DISTRICTS, (label, value) => ({
                   label,
@@ -218,30 +215,28 @@ const AddressProfileComponent = () => {
                 onChange={(value) => setFieldValue("district", value)}
               />
 
-              <MESelect
+              <MECombobox
                 label="City"
                 required={true}
                 disabled={!isEditMode}
                 value={values.city}
-                selectLabel="Select City"
-                selectVariant={
-                  errors.city && touched.city
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                }
+                searchPlaceholder={"Search City..."}
                 labelVariant={
                   errors.city && touched.city
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                }
+                comboboxVariant={
+                  errors.city && touched.city
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.city && touched.city
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
-                message={
-                  errors.city && touched.city ? errors.city : ""
-                }
+                message={errors.city && touched.city ? errors.city : ""}
                 options={_.map(CITIES, (label, value) => ({
                   label,
                   value,
@@ -250,31 +245,29 @@ const AddressProfileComponent = () => {
                 onChange={(value) => setFieldValue("city", value)}
               />
 
-              <MESelect
+              <MECombobox
                 label="Area Name"
                 required={true}
                 disabled={!isEditMode}
                 value={values.areaName}
-                selectLabel="Select Area"
-                selectVariant={
-                  errors.areaName && touched.areaName
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                }
+                searchPlaceholder={"Search Area Name..."}
                 labelVariant={
                   errors.areaName && touched.areaName
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                }
+                comboboxVariant={
+                  errors.areaName && touched.areaName
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.areaName && touched.areaName
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={
-                  errors.areaName && touched.areaName
-                    ? errors.areaName
-                    : ""
+                  errors.areaName && touched.areaName ? errors.areaName : ""
                 }
                 options={_.map(AREAS, (label, value) => ({
                   label,
@@ -284,31 +277,29 @@ const AddressProfileComponent = () => {
                 onChange={(value) => setFieldValue("areaName", value)}
               />
 
-              <MESelect
+              <MECombobox
                 label="Zipcode"
                 required={true}
                 disabled={!isEditMode}
                 value={values.zipcode}
-                selectLabel="Select Zipcode"
-                selectVariant={
-                  errors.zipcode && touched.zipcode
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
-                }
+                searchPlaceholder={"Search Zipcode..."}
                 labelVariant={
                   errors.zipcode && touched.zipcode
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                }
+                comboboxVariant={
+                  errors.zipcode && touched.zipcode
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 messageVariant={
                   errors.zipcode && touched.zipcode
-                    ? ME_SELECT_COMPONENT_VARIANTS.DANGER
-                    : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
+                    ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                    : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={
-                  errors.zipcode && touched.zipcode
-                    ? errors.zipcode
-                    : ""
+                  errors.zipcode && touched.zipcode ? errors.zipcode : ""
                 }
                 options={_.map(ZIPCODES, (label, value) => ({
                   label,
