@@ -13,6 +13,7 @@ import MotherProfileComponent from "@MEScreenComponents/profile/motherProfile";
 import StudentProfileComponent from "@MEScreenComponents/profile/studentProfile";
 import SiblingProfileComponent from "@MEScreenComponents/profile/siblingProfile";
 import AddressProfileComponent from "@MEScreenComponents/profile/addressProfile";
+import EmergencyContactProfileComponent from "@MEScreenComponents/profile/emergencyContactProfile";
 
 const ProfileScreenComponent = () => {
   const accordionItems = [
@@ -56,32 +57,7 @@ const ProfileScreenComponent = () => {
       title: "Emergency Contact",
       sub: "Emergency contact information and relationship",
       icon: <Siren className="w-5 h-5" />,
-      content: (
-        <div className="space-y-3 text-sm md:text-base">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">Name</p>
-              <p className="font-medium text-foreground">David Smith</p>
-            </div>
-            <div>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Relationship
-              </p>
-              <p className="font-medium text-foreground">Uncle</p>
-            </div>
-            <div className="md:col-span-2">
-              <p className="text-xs md:text-sm text-muted-foreground">Phone</p>
-              <p className="font-medium text-foreground">+91 9876543220</p>
-            </div>
-            <div className="md:col-span-2">
-              <p className="text-xs md:text-sm text-muted-foreground">Email</p>
-              <p className="font-medium text-foreground">
-                david.smith@example.com
-              </p>
-            </div>
-          </div>
-        </div>
-      ),
+      content: <EmergencyContactProfileComponent />,
     },
   ];
 
