@@ -42,11 +42,21 @@ const getStudentProfile = createAsyncThunk(
 
 const addStudentProfile = createAsyncThunk(
   "profile/addStudentProfile",
-  async (payload, { getState, rejectWithValue }) => {
+  async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       let response = await axiosInstance.post(studentProfileAPIRoute, payload, {
         state: getState(),
       });
+      
+      if(isAPIServedSuccessfully()){
+        // Refresh profile after successful addition
+        await dispatch(getStudentProfile());
+        return {};
+      }else{
+        return {
+          error: response?.message || "Student profile information could not be added. Please try again.",
+        };
+      }
     } catch (error) {
       const errMsg =
         (error && (error.message || error.error)) ||

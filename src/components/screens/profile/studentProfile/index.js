@@ -1,21 +1,16 @@
 import React, { useState } from "react";
+
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 import { Edit2, Check, X } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import _ from "lodash";
 import * as Yup from "yup";
 import moment from "moment";
 
-import MESelect from "@/components/common/form/select";
-import MEInput from "@MECommonComponents/input/meInput";
-import MEButton from "@MECommonComponents/button/meButton";
-import MECheckbox from "@MECommonComponents/form/checkbox";
-import MEDatePicker from "@MECommonComponents/form/datePicker";
-import MERadioButton from "@MECommonComponents/form/radioButton";
-import StudentProfileMedicalInformFormCardComponent from "@MEScreenComponents/profile/studentProfile/studentProfileMedicalInformFormCard";
-
 import { phoneRegExp } from "@MEUtils/regexp";
+import { createStudentProfilePayload } from "@MEUtils/apiPayload";
+import { addStudentProfile } from "@MERedux/profile/profileAction";
 import {
   GENDERS,
   BOOLEANS,
@@ -27,9 +22,20 @@ import {
   ME_RADIO_BUTTON_COMPONENT_VARIANTS,
 } from "@MEHelpers/enums";
 
+import MESelect from "@/components/common/form/select";
+import MEInput from "@MECommonComponents/input/meInput";
+import MEButton from "@MECommonComponents/button/meButton";
+import MECheckbox from "@MECommonComponents/form/checkbox";
+import MEDatePicker from "@MECommonComponents/form/datePicker";
+import MERadioButton from "@MECommonComponents/form/radioButton";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import ProfileErrorMessageComponent from "@MEScreenComponents/profile/errorMessage";
+import StudentProfileMedicalInformFormCardComponent from "@MEScreenComponents/profile/studentProfile/studentProfileMedicalInformFormCard";
+
 const StudentProfileComponent = () => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const { profile } = useSelector((state) => state.profile);
+  const { profile, studentProfileFormLoader, studentProfileFormError } =
+    useSelector((state) => state.profile);
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -43,6 +49,8 @@ const StudentProfileComponent = () => {
       console.log("Form submitted");
       console.log("Submitted Values:", values);
       if (values.id) {
+      } else {
+        dispatch(addStudentProfile(createStudentProfilePayload(values)));
       }
     },
   });
@@ -94,6 +102,9 @@ const StudentProfileComponent = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
+      {studentProfileFormError && (
+        <ProfileErrorMessageComponent message={studentProfileFormError} />
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           {/* Header with Edit Button */}
@@ -832,10 +843,14 @@ const StudentProfileComponent = () => {
             <div className="flex gap-4 mt-8">
               <MEButton
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || studentProfileFormLoader}
                 className="flex items-center gap-2"
               >
-                <Check className="w-4 h-4" />
+                {studentProfileFormLoader ? (
+                  <MELoaderIcon />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
                 Save Changes
               </MEButton>
               <MEButton
@@ -865,11 +880,19 @@ const studentValidationSchema = Yup.object().shape({
     .required("Last name is required"),
   dateOfBirth: Yup.date()
     .required("Date of birth is required")
-    .min(
-      moment().subtract(25, "years").startOf("day"),
-      "You must be at least 25 years old"
+    .typeError("Date of birth must be a valid date")
+    .max(
+      moment().startOf("day"),
+      "Date of birth cannot be today or in the future"
     )
-    .max(moment().endOf("day"), "Date of birth cannot be in the future"),
+    .min(
+      moment().subtract(25, "years").endOf("day"),
+      "You must be at least 3 years old"
+    )
+    .max(
+      moment().subtract(3, "years").startOf("day"),
+      "You must be at most 25 years old"
+    ),
   aadhaarNumber: Yup.string()
     .matches(/^\d{12}$/, "Aadhaar must be 12 digits")
     .required("Aadhaar number is required"),

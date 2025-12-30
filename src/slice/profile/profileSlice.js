@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getStudentProfile } from "@MERedux/profile/profileAction";
+import { getStudentProfile, addStudentProfile } from "@MERedux/profile/profileAction";
 
 import _ from "lodash";
 
@@ -10,6 +10,8 @@ export const profileSlice = createSlice({
     profile: {},
     profileScreenError: "",
     profileScreenLoader: false,
+    studentProfileFormLoader: false,
+    studentProfileFormError: "",
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -27,6 +29,18 @@ export const profileSlice = createSlice({
         state.profile = {};
         state.profileScreenLoader = false;
         state.profileScreenError = action.payload.error;
+      })
+      .addCase(addStudentProfile.pending, (state, _) => {
+        state.studentProfileFormLoader = true;
+        state.studentProfileFormError = "";
+      })
+      .addCase(addStudentProfile.fulfilled, (state, action) => {
+        state.studentProfileFormLoader = false;
+        state.studentProfileFormError = action.payload.error || "";
+      })
+      .addCase(addStudentProfile.rejected, (state, action) => {
+        state.studentProfileFormLoader = false;
+        state.studentProfileFormError = action.payload.error;
       });
   },
 });

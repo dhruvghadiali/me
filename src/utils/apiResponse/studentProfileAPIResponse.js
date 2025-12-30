@@ -8,65 +8,79 @@ import { GENDERS, ALLERGIES, BLOOD_GROUPS } from "@MEHelpers/enums";
  * @returns {Array} Formatted student profile object
  */
 const formatStudentProfileData = (profile) => {
+  let studentData = profile?.student || {};
+
+  console.log("Student Profile Data:", profile);
   return {
     studentProfile: {
-      id: _.get(profile, "id", "1111"),
-      firstName: _.get(profile, "first_name", "Dhruv"),
-      lastName: _.get(profile, "last_name", "Ghadiali"),
-      dateOfBirth: moment(
-        _.get(profile, "date_of_birth", "21/04/2022"),
-        "DD/MM/YYYY"
-      ).toISOString(),
+      id: _.get(studentData, "id", ""),
+      firstName: _.get(studentData, "first_name", ""),
+      lastName: _.get(studentData, "last_name", ""),
+      dateOfBirth: (() => {
+        const dateStr = _.get(studentData, "date_of_birth", "");
+        if (!dateStr) return "";
+        
+        // Check if it's an ISO string or DD/MM/YYYY format
+        const momentDate = dateStr.includes("T") 
+          ? moment(dateStr) // ISO format
+          : moment(dateStr, "DD/MM/YYYY"); // DD/MM/YYYY format
+        
+        return momentDate.isValid() ? momentDate.toISOString() : "";
+      })(),
       gender:
         _.find(
           _.values(GENDERS),
-          (val) => val === _.get(profile, "gender", "male")
-        ) || _.get(profile, "gender", "male"),
+          (val) => val === _.get(studentData, "gender", "")
+        ) || _.get(studentData, "gender", ""),
       bloodGroup: _.upperFirst(
         _.find(
           _.values(BLOOD_GROUPS),
-          (val) => val === _.get(profile, "blood_group", "O+")
-        ) || _.get(profile, "blood_group", "O+")
+          (val) => val === _.get(studentData, "blood_group", "")
+        ) || _.get(studentData, "blood_group", "")
       ),
-      aadhaarNumber: _.get(profile, "aadhaar_number", "123456789012"),
-      nationality: _.get(profile, "nationality", "indian"),
-      phoneNumber: _.get(profile, "phone_number", "7405111564"),
-      email: _.get(profile, "email", "dhruvghadiali21@gmail.com"),
+      aadhaarNumber: _.get(studentData, "aadhaar_number", ""),
+      nationality: _.get(studentData, "nationality", ""),
+      phoneNumber: _.get(studentData, "phone_number", ""),
+      email: _.get(studentData, "email", ""),
       medicalInfo: {
-        hasHearingIssue: _.get(profile, "medical_info.has_hearing_issue", true),
-        hearingIssueDetails: _.get(
-          profile,
-          "medical_info.hearing_issue_details",
-          "test hearing issue details"
+        hasHearingIssue: _.get(
+          studentData,
+          "medical_info.has_hearing_issue",
+          false
         ),
-        hasVisionIssue: _.get(profile, "medical_info.has_vision_issue", false),
+        hearingIssueDetails: _.get(
+          studentData,
+          "medical_info.hearing_issue_details",
+          ""
+        ),
+        hasVisionIssue: _.get(studentData, "medical_info.has_vision_issue", false),
         visionIssueDetails: _.get(
-          profile,
+          studentData,
           "medical_info.vision_issue_details",
-          "test vision issue details"
+          ""
         ),
         hasPhysicalIssue: _.get(
-          profile,
+          studentData,
           "medical_info.has_physical_issue",
           false
         ),
         physicalIssueDetails: _.get(
-          profile,
+          studentData,
           "medical_info.physical_issue_details",
-          "test physical issue details"
+          ""
         ),
-        hasMentalIssue: _.get(profile, "medical_info.has_mental_issue", false),
+        hasMentalIssue: _.get(studentData, "medical_info.has_mental_issue", false),
         mentalIssueDetails: _.get(
-          profile,
+          studentData,
           "medical_info.mental_issue_details",
-          "test mental issue details"
+          ""
         ),
-        hasAllergies: _.get(profile, "medical_info.has_allergies", false),
+        hasAllergies: _.get(studentData, "medical_info.has_allergies", false),
         allergies: (() => {
           const profileAllergies = _.isArray(
-            _.get(profile, "medical_info.allergies")
+            _.get(studentData, "medical_info.allergies")
           )
-            ? _.get(profile, "medical_info.allergies")
+            ? _.get(studentData, "medical_info.allergies")
             : [];
           const allergiesFromEnum = _.map(ALLERGIES, (val) => ({
             label: val,
