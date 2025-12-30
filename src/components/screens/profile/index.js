@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useEffect} from "react";
+import { useDispatch } from "react-redux";
 import { User, Users, MapPin, Mars, Venus, Siren } from "lucide-react";
+
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@MEShadcnComponents/accordion";
+import { getStudentProfile } from "@MERedux/profile/profileAction";
 
 import ProfileHeaderComponent from "@MEScreenComponents/profile/header";
 import FatherProfileComponent from "@MEScreenComponents/profile/fatherProfile";
@@ -16,6 +19,12 @@ import AddressProfileComponent from "@MEScreenComponents/profile/addressProfile"
 import EmergencyContactProfileComponent from "@MEScreenComponents/profile/emergencyContactProfile";
 
 const ProfileScreenComponent = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getStudentProfile());
+  }, [dispatch]);
+  
   const accordionItems = [
     {
       id: "student",
