@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { format, isValid as isValidDate} from "date-fns";
 
 import { CalendarIcon } from "lucide-react";
@@ -42,6 +42,7 @@ const MEDatePicker = (props) => {
   } = props;
 
   const [open, setOpen] = useState(false);
+  const [month, setMonth] = useState(undefined);
   const [placeholderTextColor, setPlaceholderTextColor] = useState(
     "text-muted-foreground"
   );
@@ -66,6 +67,14 @@ const MEDatePicker = (props) => {
     () => (minDate ? [{ before: minDate }] : undefined),
     [minDate]
   );
+
+  // Update month when selected or default date changes
+  useEffect(() => {
+    const dateToUse = selected || (useDefaultAsSelected ? defDate : undefined);
+    if (dateToUse) {
+      setMonth(dateToUse);
+    }
+  }, [selected, defDate, useDefaultAsSelected]);
 
   const effectiveForDisplay = selected || defDate;
   const displayText = effectiveForDisplay
@@ -121,7 +130,8 @@ const MEDatePicker = (props) => {
             mode="single"
             captionLayout="dropdown"
             disabled={disabledDays}
-            month={selected || (useDefaultAsSelected ? defDate : undefined)}
+            month={month}
+            onMonthChange={setMonth}
             selected={selected || (useDefaultAsSelected ? defDate : undefined)}
             onSelect={(date) => {
               setPlaceholderTextColor(
