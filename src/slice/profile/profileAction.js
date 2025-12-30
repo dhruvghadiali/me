@@ -1,16 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import {
-  formatStudentProfileData,
-} from "@MEUtils/apiResponse";
+import { formatStudentProfileData } from "@MEUtils/apiResponse";
 import {
   axiosInstance,
   apiResponseHaveData,
   isAPIServedSuccessfully,
 } from "@MEUtils/axiosInstance";
-import {
-  studentProfileAPIRoute,
-} from "@MEUtils/apiRoutes";
+import { studentProfileAPIRoute } from "@MEUtils/apiRoutes";
 
 const getStudentProfile = createAsyncThunk(
   "profile/getStudentProfile",
@@ -31,8 +27,7 @@ const getStudentProfile = createAsyncThunk(
         };
       } else {
         return {
-          error:
-            response?.message || "Profile information is not available.",
+          error: response?.message || "Profile information is not available.",
           profile,
         };
       }
@@ -45,7 +40,20 @@ const getStudentProfile = createAsyncThunk(
   }
 );
 
+const addStudentProfile = createAsyncThunk(
+  "profile/addStudentProfile",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      let response = await axiosInstance.post(studentProfileAPIRoute, payload, {
+        state: getState(),
+      });
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Profile information could not be added. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
 
-export {
-  getStudentProfile,
-};
+export { getStudentProfile, addStudentProfile };

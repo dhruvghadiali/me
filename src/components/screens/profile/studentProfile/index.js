@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
 import { Edit2, Check, X } from "lucide-react";
 
 import _ from "lodash";
@@ -19,7 +20,6 @@ import {
   GENDERS,
   BOOLEANS,
   BLOOD_GROUPS,
-  ALLERGIES,
   ME_INPUT_COMPONENT_VARIANTS,
   ME_SELECT_COMPONENT_VARIANTS,
   ME_CHECKBOX_COMPONENT_VARIANTS,
@@ -29,34 +29,11 @@ import {
 
 const StudentProfileComponent = () => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const { profile } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
 
   const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      dateOfBirth: "",
-      gender: "",
-      bloodGroup: "",
-      aadhaarNumber: "",
-      nationality: "",
-      phoneNumber: "",
-      email: "",
-      medicalInfo: {
-        hasHearingIssue: false,
-        hearingIssueDetails: "",
-        hasVisionIssue: false,
-        visionIssueDetails: "",
-        hasPhysicalIssue: false,
-        physicalIssueDetails: "",
-        hasMentalIssue: false,
-        mentalIssueDetails: "",
-        hasAllergies: false,
-        allergies: _.map(ALLERGIES, (label) => ({
-          label,
-          isSelected: false,
-        })),
-      },
-    },
+    initialValues: profile.studentProfile,
     validationSchema: studentValidationSchema,
     validateOnChange: true,
     validateOnBlur: true,
@@ -65,6 +42,8 @@ const StudentProfileComponent = () => {
       // Handle form submission
       console.log("Form submitted");
       console.log("Submitted Values:", values);
+      if (values.id) {
+      }
     },
   });
 
@@ -81,10 +60,36 @@ const StudentProfileComponent = () => {
     handleSubmit,
   } = formik;
 
-
   const handleCloseEditMode = () => {
+    console.log("Submitted Values:", values);
     setTouched({});
     setIsEditMode(false);
+  };
+
+  const handleEditMode = async () => {
+    setIsEditMode(true);
+
+    if (values.id) {
+      // Validate form first before entering edit mode
+      try {
+        await studentValidationSchema.validate(values, { abortEarly: false });
+      } catch (validationError) {
+        // Form has errors, display them
+        const formErrors = {};
+        const formTouched = {};
+
+        if (validationError.inner && Array.isArray(validationError.inner)) {
+          validationError.inner.forEach((error) => {
+            formErrors[error.path] = error.message;
+            formTouched[error.path] = true;
+          });
+        }
+
+        formik.setErrors(formErrors);
+        formik.setTouched(formTouched);
+        console.log("Form validation errors:", formErrors);
+      }
+    }
   };
 
   return (
@@ -97,7 +102,7 @@ const StudentProfileComponent = () => {
             <button
               type="button"
               onClick={() =>
-                isEditMode ? handleCloseEditMode() : setIsEditMode(true)
+                isEditMode ? handleCloseEditMode() : handleEditMode()
               }
               className="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors"
               title={isEditMode ? "Cancel" : "Edit"}
@@ -324,9 +329,9 @@ const StudentProfileComponent = () => {
                     ? errors.bloodGroup
                     : ""
                 }
-                options={_.map(BLOOD_GROUPS, (label, value) => ({
-                  label,
-                  value,
+                options={_.map(BLOOD_GROUPS, (label) => ({
+                  label: label,
+                  value: label,
                 }))}
                 onBlur={() => setFieldTouched("bloodGroup", true)}
                 onChange={(value) => setFieldValue("bloodGroup", value)}
@@ -384,9 +389,9 @@ const StudentProfileComponent = () => {
                     : ME_RADIO_BUTTON_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={errors.gender && touched.gender ? errors.gender : ""}
-                radioGroupItems={_.map(GENDERS, (label, value) => ({
-                  label,
-                  value,
+                radioGroupItems={_.map(GENDERS, (label) => ({
+                  label: label,
+                  value: label,
                 }))}
                 onBlur={() => setFieldTouched("gender", true)}
                 onChange={(value) => setFieldValue("gender", value)}
@@ -428,9 +433,9 @@ const StudentProfileComponent = () => {
                     ? errors.medicalInfo?.hasHearingIssue
                     : ""
                 }
-                radioGroupItems={_.map(BOOLEANS, (value, label) => ({
-                  label,
-                  value,
+                radioGroupItems={_.map(BOOLEANS, (label, value) => ({
+                  label: value,
+                  value: label,
                 }))}
                 onBlur={() =>
                   setFieldTouched("medicalInfo.hasHearingIssue", true)
@@ -515,9 +520,9 @@ const StudentProfileComponent = () => {
                     ? errors.medicalInfo?.hasVisionIssue
                     : ""
                 }
-                radioGroupItems={_.map(BOOLEANS, (value, label) => ({
-                  label,
-                  value,
+                radioGroupItems={_.map(BOOLEANS, (label, value) => ({
+                  label: value,
+                  value: label,
                 }))}
                 onBlur={() =>
                   setFieldTouched("medicalInfo.hasVisionIssue", true)
@@ -602,9 +607,9 @@ const StudentProfileComponent = () => {
                     ? errors.medicalInfo?.hasPhysicalIssue
                     : ""
                 }
-                radioGroupItems={_.map(BOOLEANS, (value, label) => ({
-                  label,
-                  value,
+                radioGroupItems={_.map(BOOLEANS, (label, value) => ({
+                  label: value,
+                  value: label,
                 }))}
                 onBlur={() =>
                   setFieldTouched("medicalInfo.hasPhysicalIssue", true)

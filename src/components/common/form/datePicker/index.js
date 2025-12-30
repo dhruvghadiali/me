@@ -121,6 +121,7 @@ const MEDatePicker = (props) => {
             mode="single"
             captionLayout="dropdown"
             disabled={disabledDays}
+            month={selected || (useDefaultAsSelected ? defDate : undefined)}
             selected={selected || (useDefaultAsSelected ? defDate : undefined)}
             onSelect={(date) => {
               setPlaceholderTextColor(
