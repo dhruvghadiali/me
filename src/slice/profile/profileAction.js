@@ -48,7 +48,7 @@ const addStudentProfile = createAsyncThunk(
         state: getState(),
       });
       
-      if(isAPIServedSuccessfully()){
+      if(isAPIServedSuccessfully(response)){
         // Refresh profile after successful addition
         await dispatch(getStudentProfile());
         return {};
