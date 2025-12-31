@@ -9,6 +9,8 @@ import { GENDERS, ALLERGIES, BLOOD_GROUPS } from "@MEHelpers/enums";
  */
 const formatStudentProfileData = (profile) => {
   let studentData = profile?.student || {};
+  let fatherData = profile?.father || {};
+  let motherData = profile?.mother || {};
 
   return {
     studentProfile: {
@@ -115,8 +117,63 @@ const formatStudentProfileData = (profile) => {
         return momentDate.isValid() ? momentDate.toISOString() : "";
       })(),
     },
-    fatherProfile: {},
-    motherProfile: {},
+    fatherProfile: {
+      id: _.get(fatherData, "id", ""),
+      firstName: _.get(fatherData, "first_name", ""),
+      lastName: _.get(fatherData, "last_name", ""),
+      phoneNumber: _.get(fatherData, "phone_number", ""),
+      email: _.get(fatherData, "email", ""),
+      aadhaarNumber: _.get(fatherData, "aadhaar_number", ""),
+      occupation: _.upperFirst(_.get(fatherData, "occupation", "")),
+      education: _.upperFirst(_.get(fatherData, "education", "")),
+      annualIncome: _.get(fatherData, "annual_income", ""),
+      isAlive: [
+        {
+          label: "Is Alive",
+          isSelected: _.get(fatherData, "alive.status", true),
+        },
+      ],
+      date_of_death: (() => {
+        const dateStr = _.get(fatherData, "alive.date_of_death", "");
+        if (!dateStr) return "";
+
+        // Check if it's an ISO string or DD MMMM YYYY format
+        const momentDate = moment(dateStr, "DD MMMM YYYY");
+        return momentDate.isValid() ? momentDate.toISOString() : "";
+      })(),
+      caring_child_by: _.get(fatherData, "alive.caring_child_by", ""),
+      updatedAt: (() => {
+        const dateStr = _.get(fatherData, "updated_at", "");
+        if (!dateStr) return "";
+
+        // Check if it's an ISO string or DD/MM/YYYY format
+        const momentDate = dateStr.includes("T")
+          ? moment(dateStr) // ISO format
+          : moment(dateStr, "DD MMMM YYYY hh:mm A"); // DD MMMM YYYY format
+        return momentDate.isValid() ? momentDate.toISOString() : "";
+      })(),
+    },
+    motherProfile: {
+      id: _.get(motherData, "id", ""),
+      firstName: _.get(motherData, "first_name", ""),
+      lastName: _.get(motherData, "last_name", ""),
+      phoneNumber: _.get(motherData, "phone_number", ""),
+      email: _.get(motherData, "email", ""),
+      aadhaarNumber: _.get(motherData, "aadhaar_number", ""),
+      occupation: _.get(motherData, "occupation", ""),
+      education: _.get(motherData, "education", ""),
+      annual_income: _.get(motherData, "annual_income", ""),
+      isAlive: _.get(motherData, "alive.status", true),
+      date_of_death: (() => {
+        const dateStr = _.get(motherData, "alive.date_of_death", "");
+        if (!dateStr) return "";
+
+        // Check if it's an ISO string or DD MMMM YYYY format
+        const momentDate = moment(dateStr, "DD MMMM YYYY");
+        return momentDate.isValid() ? momentDate.toISOString() : "";
+      })(),
+      caring_child_by: _.get(motherData, "alive.caring_child_by", ""),
+    },
     siblingProfiles: [],
     addressProfile: {},
     emergencyContactProfile: {},

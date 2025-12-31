@@ -3,6 +3,7 @@ export const signUpAPIRoute = "/signup";
 export const schoolAPIRoute = "/school";
 export const schoolsAPIRoute = "/schools";
 export const studentProfileAPIRoute = "/profile";
+export const parentProfileAPIRoute = "/profile/parent";
 export const signUpSendOTPAPIRoute = "/signup/send-otp";
 export const forgottenPasswordAPIRoute = "/forgotten-password";
 export const admissionApplicationAPIRoute = "/admission-applications";

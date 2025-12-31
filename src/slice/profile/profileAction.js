@@ -6,7 +6,10 @@ import {
   apiResponseHaveData,
   isAPIServedSuccessfully,
 } from "@MEUtils/axiosInstance";
-import { studentProfileAPIRoute } from "@MEUtils/apiRoutes";
+import {
+  parentProfileAPIRoute,
+  studentProfileAPIRoute,
+} from "@MEUtils/apiRoutes";
 
 const getStudentProfile = createAsyncThunk(
   "profile/getStudentProfile",
@@ -68,6 +71,34 @@ const addStudentProfile = createAsyncThunk(
   }
 );
 
+const addFatherProfile = createAsyncThunk(
+  "profile/addFatherProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      let response = await axiosInstance.post(parentProfileAPIRoute, payload, {
+        state: getState(),
+      });
+
+      if (isAPIServedSuccessfully(response)) {
+        // Refresh profile after successful addition
+        await dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Father profile information could not be added. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Father profile information could not be added. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 const updatedStudentProfile = createAsyncThunk(
   "profile/updatedStudentProfile",
   async (payload, { getState, rejectWithValue, dispatch }) => {
@@ -101,4 +132,43 @@ const updatedStudentProfile = createAsyncThunk(
   }
 );
 
-export { getStudentProfile, addStudentProfile, updatedStudentProfile };
+const updatedFatherProfile = createAsyncThunk(
+  "profile/updatedFatherProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { id, data } = payload;
+      let response = await axiosInstance.put(
+        `${parentProfileAPIRoute}/${id}`,
+        data,
+        {
+          state: getState(),
+        }
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        // Refresh profile after successful update
+        await dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Father profile information could not be updated. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Father profile information could not be updated. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
+export {
+  addFatherProfile,
+  getStudentProfile,
+  addStudentProfile,
+  updatedFatherProfile,
+  updatedStudentProfile,
+};

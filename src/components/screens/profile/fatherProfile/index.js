@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+
 import { useFormik } from "formik";
 import { Edit2, Check, X } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -12,8 +14,16 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MECheckbox from "@MECommonComponents/form/checkbox";
 import MECombobox from "@MECommonComponents/form/combobox";
 import MEDatePicker from "@MECommonComponents/form/datePicker";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import ProfileErrorMessageComponent from "@MEScreenComponents/profile/errorMessage";
+import LastUpdatedAtInfoComponent from "@MEScreenComponents/profile/lastUpdatedAtInfo";
 
 import { phoneRegExp } from "@MEUtils/regexp";
+import { createFatherProfilePayload } from "@MEUtils/apiPayload";
+import {
+  addFatherProfile,
+  updatedFatherProfile,
+} from "@MERedux/profile/profileAction";
 import {
   ME_INPUT_COMPONENT_VARIANTS,
   ME_SELECT_COMPONENT_VARIANTS,
@@ -29,6 +39,8 @@ const OCCUPATIONS = {
   AGRICULTURE: "Agriculture",
   LABOR: "Labor",
   RETIRED: "Retired",
+  GOVERNMENT_JOB: "Government Job",
+  CORPORATE_JOB: "Corporate Job",
   OTHER: "Other",
 };
 
@@ -76,21 +88,15 @@ const BOOLEANS = {
 };
 
 const FatherProfileComponent = () => {
+  const dispatch = useDispatch();
+
   const [isEditMode, setIsEditMode] = useState(false);
+  const { profile, fatherProfileFormLoader, fatherProfileFormError } =
+    useSelector((state) => state.profile);
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      aadhaarNumber: "",
-      occupation: "",
-      education: "",
-      annualIncome: "",
-      isAlive: [{ label: "Is Alive", isSelected: true }],
-      dateOfDeath: "",
-      caringChildBy: "",
+      ...profile.fatherProfile,
       sameAddressAsStudent: [
         { label: "Same address as student", isSelected: true },
       ],
@@ -110,6 +116,17 @@ const FatherProfileComponent = () => {
     onSubmit: (values) => {
       console.log("Father Form submitted");
       console.log("Submitted Values:", values);
+
+      if (values.id) {
+        dispatch(
+          updatedFatherProfile({
+            id: values.id,
+            data: createFatherProfilePayload(values),
+          })
+        );
+      } else {
+        dispatch(addFatherProfile(createFatherProfilePayload(values)));
+      }
     },
   });
 
@@ -131,17 +148,51 @@ const FatherProfileComponent = () => {
     setIsEditMode(false);
   };
 
+  const handleEditMode = async () => {
+    setIsEditMode(true);
+
+    if (values.id) {
+      // Validate form first before entering edit mode
+      try {
+        await fatherValidationSchema.validate(values, { abortEarly: false });
+      } catch (validationError) {
+        // Form has errors, display them
+        const formErrors = {};
+        const formTouched = {};
+
+        if (validationError.inner && Array.isArray(validationError.inner)) {
+          validationError.inner.forEach((error) => {
+            formErrors[error.path] = error.message;
+            formTouched[error.path] = true;
+          });
+        }
+
+        formik.setErrors(formErrors);
+        formik.setTouched(formTouched);
+      }
+    }
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
+      {fatherProfileFormError && (
+        <ProfileErrorMessageComponent message={fatherProfileFormError} />
+      )}
+
       <form onSubmit={handleSubmit}>
         <div>
           {/* Header with Edit Button */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-primary">Father Profile</h2>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-2xl font-bold text-primary">
+                Father Profile
+              </h2>
+              <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} />
+            </div>
             <button
               type="button"
               onClick={() =>
-                isEditMode ? handleCloseEditMode() : setIsEditMode(true)
+                isEditMode ? handleCloseEditMode() : handleEditMode()
               }
               className="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors"
               title={isEditMode ? "Cancel" : "Edit"}
@@ -338,9 +389,9 @@ const FatherProfileComponent = () => {
                     ? errors.occupation
                     : ""
                 }
-                options={_.map(OCCUPATIONS, (label, value) => ({
-                  label,
-                  value,
+                options={_.map(OCCUPATIONS, (label) => ({
+                  label: label,
+                  value: label,
                 }))}
                 onBlur={() => setFieldTouched("occupation", true)}
                 onChange={(value) => setFieldValue("occupation", value)}
@@ -370,9 +421,9 @@ const FatherProfileComponent = () => {
                 message={
                   errors.education && touched.education ? errors.education : ""
                 }
-                options={_.map(EDUCATION, (label, value) => ({
-                  label,
-                  value,
+                options={_.map(EDUCATION, (label) => ({
+                  label: label,
+                  value: label,
                 }))}
                 onBlur={() => setFieldTouched("education", true)}
                 onChange={(value) => setFieldValue("education", value)}
@@ -437,7 +488,7 @@ const FatherProfileComponent = () => {
               onChange={(values) => setFieldValue("isAlive", values)}
             />
 
-            {!values.isAlive[0].isSelected && (
+            {!values.isAlive && !values.isAlive[0].isSelected && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <MEDatePicker
                   label={"Date of Death"}
@@ -790,10 +841,14 @@ const FatherProfileComponent = () => {
             <div className="flex gap-4 mt-8">
               <MEButton
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || fatherProfileFormLoader}
                 className="flex items-center gap-2"
               >
-                <Check className="w-4 h-4" />
+                {fatherProfileFormLoader ? (
+                  <MELoaderIcon />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
                 Save Changes
               </MEButton>
               <MEButton

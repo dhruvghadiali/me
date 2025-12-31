@@ -33,6 +33,7 @@ import MEDatePicker from "@MECommonComponents/form/datePicker";
 import MERadioButton from "@MECommonComponents/form/radioButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import ProfileErrorMessageComponent from "@MEScreenComponents/profile/errorMessage";
+import LastUpdatedAtInfoComponent from "@MEScreenComponents/profile/lastUpdatedAtInfo";
 import StudentProfileMedicalInformFormCardComponent from "@MEScreenComponents/profile/studentProfile/studentProfileMedicalInformFormCard";
 
 const StudentProfileComponent = () => {
@@ -104,7 +105,6 @@ const StudentProfileComponent = () => {
 
         formik.setErrors(formErrors);
         formik.setTouched(formTouched);
-        console.log("Form validation errors:", formErrors);
       }
     }
   };
@@ -119,12 +119,10 @@ const StudentProfileComponent = () => {
           {/* Header with Edit Button */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col gap-1">
-              <h2 className="text-2xl font-bold text-primary">Student Profile</h2>
-              {values.updatedAt && (
-                <p className="text-sm text-primary/500 font-medium">
-                  Last Updated: <span className="text-primary/700">{moment().format("DD MMMM YYYY, hh:mm A")}</span>
-                </p>
-              )}
+              <h2 className="text-2xl font-bold text-primary">
+                Student Profile
+              </h2>
+              <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} />
             </div>
             <button
               type="button"

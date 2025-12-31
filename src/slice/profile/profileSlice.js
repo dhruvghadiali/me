@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
+  addFatherProfile,
   getStudentProfile,
   addStudentProfile,
+  updatedFatherProfile,
   updatedStudentProfile,
 } from "@MERedux/profile/profileAction";
 
@@ -16,6 +18,8 @@ export const profileSlice = createSlice({
     profileScreenLoader: false,
     studentProfileFormLoader: false,
     studentProfileFormError: "",
+    fatherProfileFormLoader: false,
+    fatherProfileFormError: "",
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -57,7 +61,32 @@ export const profileSlice = createSlice({
       .addCase(updatedStudentProfile.rejected, (state, action) => {
         state.studentProfileFormLoader = false;
         state.studentProfileFormError = action.payload.error;
+      })
+      .addCase(addFatherProfile.pending, (state, _) => {
+        state.fatherProfileFormLoader = true;
+        state.fatherProfileFormError = "";
+      })
+      .addCase(addFatherProfile.fulfilled, (state, action) => {
+        state.fatherProfileFormLoader = false;
+        state.fatherProfileFormError = action.payload.error || "";
+      })
+      .addCase(addFatherProfile.rejected, (state, action) => {
+        state.fatherProfileFormLoader = false;
+        state.fatherProfileFormError = action.payload.error;
+      })
+      .addCase(updatedFatherProfile.pending, (state, _) => {
+        state.fatherProfileFormLoader = true;
+        state.fatherProfileFormError = "";
+      })
+      .addCase(updatedFatherProfile.fulfilled, (state, action) => {
+        state.fatherProfileFormLoader = false;
+        state.fatherProfileFormError = action.payload.error || "";
+      })
+      .addCase(updatedFatherProfile.rejected, (state, action) => {
+        state.fatherProfileFormLoader = false;
+        state.fatherProfileFormError = action.payload.error;
       });
+
   },
 });
 
