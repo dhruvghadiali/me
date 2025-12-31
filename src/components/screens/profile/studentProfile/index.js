@@ -10,7 +10,10 @@ import moment from "moment";
 
 import { phoneRegExp } from "@MEUtils/regexp";
 import { createStudentProfilePayload } from "@MEUtils/apiPayload";
-import { addStudentProfile } from "@MERedux/profile/profileAction";
+import {
+  addStudentProfile,
+  updatedStudentProfile,
+} from "@MERedux/profile/profileAction";
 import {
   GENDERS,
   BOOLEANS,
@@ -49,6 +52,12 @@ const StudentProfileComponent = () => {
       console.log("Form submitted");
       console.log("Submitted Values:", values);
       if (values.id) {
+        dispatch(
+          updatedStudentProfile({
+            id: values.id,
+            data: createStudentProfilePayload(values),
+          })
+        );
       } else {
         dispatch(addStudentProfile(createStudentProfilePayload(values)));
       }
@@ -108,8 +117,15 @@ const StudentProfileComponent = () => {
       <form onSubmit={handleSubmit}>
         <div>
           {/* Header with Edit Button */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-primary">Student Profile</h2>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-2xl font-bold text-primary">Student Profile</h2>
+              {values.updatedAt && (
+                <p className="text-sm text-primary/500 font-medium">
+                  Last Updated: <span className="text-primary/700">{moment().format("DD MMMM YYYY, hh:mm A")}</span>
+                </p>
+              )}
+            </div>
             <button
               type="button"
               onClick={() =>

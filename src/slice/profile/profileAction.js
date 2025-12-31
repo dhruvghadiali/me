@@ -47,14 +47,16 @@ const addStudentProfile = createAsyncThunk(
       let response = await axiosInstance.post(studentProfileAPIRoute, payload, {
         state: getState(),
       });
-      
-      if(isAPIServedSuccessfully(response)){
+
+      if (isAPIServedSuccessfully(response)) {
         // Refresh profile after successful addition
         await dispatch(getStudentProfile());
         return {};
-      }else{
+      } else {
         return {
-          error: response?.message || "Student profile information could not be added. Please try again.",
+          error:
+            response?.message ||
+            "Student profile information could not be added. Please try again.",
         };
       }
     } catch (error) {
@@ -66,4 +68,37 @@ const addStudentProfile = createAsyncThunk(
   }
 );
 
-export { getStudentProfile, addStudentProfile };
+const updatedStudentProfile = createAsyncThunk(
+  "profile/updatedStudentProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { id, data } = payload;
+      let response = await axiosInstance.put(
+        `${studentProfileAPIRoute}/${id}`,
+        data,
+        {
+          state: getState(),
+        }
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        // Refresh profile after successful update
+        await dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Student profile information could not be updated. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Profile information could not be updated. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
+export { getStudentProfile, addStudentProfile, updatedStudentProfile };

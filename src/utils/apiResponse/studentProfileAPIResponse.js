@@ -10,7 +10,6 @@ import { GENDERS, ALLERGIES, BLOOD_GROUPS } from "@MEHelpers/enums";
 const formatStudentProfileData = (profile) => {
   let studentData = profile?.student || {};
 
-  console.log("Student Profile Data:", profile);
   return {
     studentProfile: {
       id: _.get(studentData, "id", ""),
@@ -19,12 +18,12 @@ const formatStudentProfileData = (profile) => {
       dateOfBirth: (() => {
         const dateStr = _.get(studentData, "date_of_birth", "");
         if (!dateStr) return "";
-        
+
         // Check if it's an ISO string or DD/MM/YYYY format
-        const momentDate = dateStr.includes("T") 
+        const momentDate = dateStr.includes("T")
           ? moment(dateStr) // ISO format
-          : moment(dateStr, "DD/MM/YYYY"); // DD/MM/YYYY format
-        
+          : moment(dateStr, "DD MMMM YYYY"); // DD/MM/YYYY format
+
         return momentDate.isValid() ? momentDate.toISOString() : "";
       })(),
       gender:
@@ -53,7 +52,11 @@ const formatStudentProfileData = (profile) => {
           "medical_info.hearing_issue_details",
           ""
         ),
-        hasVisionIssue: _.get(studentData, "medical_info.has_vision_issue", false),
+        hasVisionIssue: _.get(
+          studentData,
+          "medical_info.has_vision_issue",
+          false
+        ),
         visionIssueDetails: _.get(
           studentData,
           "medical_info.vision_issue_details",
@@ -69,7 +72,11 @@ const formatStudentProfileData = (profile) => {
           "medical_info.physical_issue_details",
           ""
         ),
-        hasMentalIssue: _.get(studentData, "medical_info.has_mental_issue", false),
+        hasMentalIssue: _.get(
+          studentData,
+          "medical_info.has_mental_issue",
+          false
+        ),
         mentalIssueDetails: _.get(
           studentData,
           "medical_info.mental_issue_details",
@@ -96,6 +103,17 @@ const formatStudentProfileData = (profile) => {
           return [...allergiesFromEnum, ...extraAllergies];
         })(),
       },
+      updatedAt: (() => {
+        const dateStr = _.get(studentData, "updated_at", "");
+        if (!dateStr) return "";
+
+        // Check if it's an ISO string or DD/MM/YYYY format
+        const momentDate = dateStr.includes("T")
+          ? moment(dateStr) // ISO format
+          : moment(dateStr, "DD MMMM YYYY hh:mm A"); // DD MMMM YYYY format
+
+        return momentDate.isValid() ? momentDate.toISOString() : "";
+      })(),
     },
     fatherProfile: {},
     motherProfile: {},

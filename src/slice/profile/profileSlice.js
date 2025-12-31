@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getStudentProfile, addStudentProfile } from "@MERedux/profile/profileAction";
+import {
+  getStudentProfile,
+  addStudentProfile,
+  updatedStudentProfile,
+} from "@MERedux/profile/profileAction";
 
 import _ from "lodash";
 
@@ -39,6 +43,18 @@ export const profileSlice = createSlice({
         state.studentProfileFormError = action.payload.error || "";
       })
       .addCase(addStudentProfile.rejected, (state, action) => {
+        state.studentProfileFormLoader = false;
+        state.studentProfileFormError = action.payload.error;
+      })
+      .addCase(updatedStudentProfile.pending, (state, _) => {
+        state.studentProfileFormLoader = true;
+        state.studentProfileFormError = "";
+      })
+      .addCase(updatedStudentProfile.fulfilled, (state, action) => {
+        state.studentProfileFormLoader = false;
+        state.studentProfileFormError = action.payload.error || "";
+      })
+      .addCase(updatedStudentProfile.rejected, (state, action) => {
         state.studentProfileFormLoader = false;
         state.studentProfileFormError = action.payload.error;
       });
