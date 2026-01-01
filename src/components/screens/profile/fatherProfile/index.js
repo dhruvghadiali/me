@@ -30,62 +30,10 @@ import {
   ME_COMBOBOX_COMPONENT_VARIANTS,
   ME_CHECKBOX_COMPONENT_VARIANTS,
   ME_DATEPICKER_COMPONENT_VARIANTS,
+  PARENT_OCCUPATIONS_IN,
+  EDUCATION_LEVELS_IN,
 } from "@MEHelpers/enums";
 
-// Mock enums - replace with actual enums from your helpers
-const OCCUPATIONS = {
-  BUSINESS: "Business",
-  SERVICE: "Service",
-  AGRICULTURE: "Agriculture",
-  LABOR: "Labor",
-  RETIRED: "Retired",
-  GOVERNMENT_JOB: "Government Job",
-  CORPORATE_JOB: "Corporate Job",
-  OTHER: "Other",
-};
-
-const EDUCATION = {
-  PRIMARY: "Primary",
-  SECONDARY: "Secondary",
-  HIGHER_SECONDARY: "Higher Secondary",
-  DIPLOMA: "Diploma",
-  GRADUATION: "Graduation",
-  POST_GRADUATION: "Post Graduation",
-};
-
-const STATES = {
-  MAHARASHTRA: "Maharashtra",
-  KARNATAKA: "Karnataka",
-  TAMIL_NADU: "Tamil Nadu",
-  GUJARAT: "Gujarat",
-  WEST_BENGAL: "West Bengal",
-};
-
-const DISTRICTS = {
-  MUMBAI: "Mumbai",
-  PUNE: "Pune",
-  NASHIK: "Nashik",
-};
-
-const CITIES = {
-  MUMBAI_CITY: "Mumbai City",
-  SUBURBAN: "Suburban",
-};
-
-const AREAS = {
-  AREA_1: "Area 1",
-  AREA_2: "Area 2",
-};
-
-const ZIPCODES = {
-  ZIP_400001: "400001",
-  ZIP_400002: "400002",
-};
-
-const BOOLEANS = {
-  YES: true,
-  NO: false,
-};
 
 const FatherProfileComponent = () => {
   const dispatch = useDispatch();
@@ -389,7 +337,7 @@ const FatherProfileComponent = () => {
                     ? errors.occupation
                     : ""
                 }
-                options={_.map(OCCUPATIONS, (label) => ({
+                options={_.map(PARENT_OCCUPATIONS_IN, (label) => ({
                   label: label,
                   value: label,
                 }))}
@@ -421,7 +369,7 @@ const FatherProfileComponent = () => {
                 message={
                   errors.education && touched.education ? errors.education : ""
                 }
-                options={_.map(EDUCATION, (label) => ({
+                options={_.map(EDUCATION_LEVELS_IN, (label) => ({
                   label: label,
                   value: label,
                 }))}

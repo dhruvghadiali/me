@@ -33,12 +33,12 @@ const formatStudentProfileData = (profile) => {
           _.values(GENDERS),
           (val) => val === _.get(studentData, "gender", "")
         ) || _.get(studentData, "gender", ""),
-      bloodGroup: _.upperFirst(
+      bloodGroup: (
         _.find(
           _.values(BLOOD_GROUPS),
           (val) => val === _.get(studentData, "blood_group", "")
         ) || _.get(studentData, "blood_group", "")
-      ),
+      ).toLowerCase(),
       aadhaarNumber: _.get(studentData, "aadhaar_number", ""),
       nationality: _.get(studentData, "nationality", ""),
       phoneNumber: _.get(studentData, "phone_number", ""),
@@ -124,8 +124,8 @@ const formatStudentProfileData = (profile) => {
       phoneNumber: _.get(fatherData, "phone_number", ""),
       email: _.get(fatherData, "email", ""),
       aadhaarNumber: _.get(fatherData, "aadhaar_number", ""),
-      occupation: _.upperFirst(_.get(fatherData, "occupation", "")),
-      education: _.upperFirst(_.get(fatherData, "education", "")),
+      occupation: _.get(fatherData, "occupation", "").toLowerCase(),
+      education: _.get(fatherData, "education", "").toLowerCase(),
       annualIncome: _.get(fatherData, "annual_income", ""),
       isAlive: [
         {

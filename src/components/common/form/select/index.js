@@ -39,7 +39,7 @@ const MESelect = (props) => {
         {label} {required && <span className="text-danger">*</span>}
       </Label>
       <div className="relative">
-        <Select value={value} onValueChange={onChange} disabled={disabled}>
+        <Select value={value.toLowerCase()} onValueChange={onChange} disabled={disabled}>
           <SelectTrigger
             disabled={disabled}
             onBlur={onBlur}
@@ -55,7 +55,7 @@ const MESelect = (props) => {
               {_.map(options, (option) => (
                 <SelectItem
                   key={option.value}
-                  value={option.value}
+                  value={option.value.toLowerCase()}
                   className="pl-2 pr-8 [&_span]:right-2 [&_span]:!left-auto"
                 >
                   {_.upperFirst(_.toLower(option.label))}

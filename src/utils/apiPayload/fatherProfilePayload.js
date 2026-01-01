@@ -43,7 +43,6 @@ const createFatherProfilePayload = (fatherData) => {
     aadhaar_number: _.get(fatherData, "aadhaarNumber", ""),
     occupation: _.get(fatherData, "occupation", ""),
     education: _.get(fatherData, "education", ""),
-    parent_type: _.get(fatherData, "parentType", ""),
     annual_income: _.get(fatherData, "annualIncome", ""),
     alive: alive,
     same_address_as_student: _.get(fatherData, "sameAddressAsStudent[0].isSelected", false),

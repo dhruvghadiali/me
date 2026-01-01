@@ -52,4 +52,43 @@ const ALLERGIES = Object.freeze({
   OTHER: "Other",
 });
 
-export { BLOOD_GROUPS, GENDERS, BOOLEANS, ALLERGIES };
+// Common occupation categories in India (normalized, lowercase)
+const PARENT_OCCUPATIONS_IN = Object.freeze({
+  GOVERNMENT_SERVICE: "government service",
+  PRIVATE_SERVICE: "private service",
+  SELF_EMPLOYED: "self employed",
+  BUSINESS: "business",
+  FARMER: "farmer",
+  LABOURER: "labourer",
+  HOMEMAKER: "homemaker",
+  RETIRED: "retired",
+  UNEMPLOYED: "unemployed",
+  STUDENT: "student",
+  TEACHER: "teacher",
+  DOCTOR: "doctor",
+  ENGINEER: "engineer",
+  DEFENSE: "defense",
+  DRIVER: "driver",
+  ARTISAN: "artisan",
+  SHOPKEEPER: "shopkeeper",
+  DAILY_WAGE_WORKER: "daily wage worker",
+  OTHER: "other",
+});
+
+// Common education levels in India (normalized, lowercase)
+const EDUCATION_LEVELS_IN = Object.freeze({
+  ILLITERATE: "illiterate",
+  PRIMARY: "primary", // Class 1-5
+  MIDDLE: "middle", // Class 6-8
+  SECONDARY: "secondary", // Class 9-10
+  HIGHER_SECONDARY: "higher secondary", // Class 11-12
+  DIPLOMA: "diploma",
+  UNDERGRADUATE: "undergraduate",
+  POSTGRADUATE: "postgraduate",
+  DOCTORATE: "doctorate",
+  PROFESSIONAL: "professional", // CA/CS/ICWA etc.
+  VOCATIONAL: "vocational",
+  OTHER: "other",
+});
+
+export { BLOOD_GROUPS, GENDERS, BOOLEANS, ALLERGIES, PARENT_OCCUPATIONS_IN, EDUCATION_LEVELS_IN };
