@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
+  getLocations,
   addFatherProfile,
   getStudentProfile,
   addStudentProfile,
@@ -20,6 +21,11 @@ export const profileSlice = createSlice({
     studentProfileFormError: "",
     fatherProfileFormLoader: false,
     fatherProfileFormError: "",
+    states: [],
+    districts: [],
+    cities: [],
+    areaNames: [],
+    zipcodes: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -85,8 +91,28 @@ export const profileSlice = createSlice({
       .addCase(updatedFatherProfile.rejected, (state, action) => {
         state.fatherProfileFormLoader = false;
         state.fatherProfileFormError = action.payload.error;
+      })
+      .addCase(getLocations.pending, (state, _) => {
+        state.states = [];
+        state.districts = [];
+        state.cities = [];
+        state.areaNames = [];
+        state.zipcodes = [];
+      })
+      .addCase(getLocations.fulfilled, (state, action) => {
+        state.states = action.payload.states;
+        state.districts = action.payload.districts;
+        state.cities = action.payload.cities;
+        state.areaNames = action.payload.areaNames;
+        state.zipcodes = action.payload.zipcodes;
+      })
+      .addCase(getLocations.rejected, (state, action) => {
+        state.states = [];
+        state.districts = [];
+        state.cities = [];
+        state.areaNames = [];
+        state.zipcodes = [];
       });
-
   },
 });
 

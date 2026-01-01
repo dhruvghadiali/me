@@ -34,6 +34,7 @@ const MECombobox = (props) => {
     onChange,
     onBlur,
     message,
+    selectedValueLabel,
     options = [],
     searchPlaceholder = "Search...",
     disabled = false,
@@ -87,7 +88,7 @@ const MECombobox = (props) => {
             className={comboboxTriggerClassNameByVariant(comboboxVariant)}
           >
             <Label className={"w-full font-normal normal-case"}>
-              {_.upperFirst(_.toLower(value))}
+              {_.upperFirst((selectedValueLabel || "").toLowerCase())}
             </Label>
             <ChevronDown />
           </MEButton>
@@ -105,13 +106,13 @@ const MECombobox = (props) => {
                 {_.map(options, (option) => (
                   <CommandItem
                     key={option.value}
-                    value={option.value}
-                    onSelect={(currentValue) => {
-                      onChange(currentValue);
+                    value={String(option?.label || "").toLowerCase()}
+                    onSelect={() => {
+                      onChange(option.value);
                       setOpen(false);
                     }}
                   >
-                    {option.label}
+                    {_.upperFirst((option?.label || ""))}
                     {value === option.value && <Check className={"ml-auto"} />}
                   </CommandItem>
                 ))}

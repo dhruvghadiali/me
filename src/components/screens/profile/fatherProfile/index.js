@@ -34,13 +34,20 @@ import {
   EDUCATION_LEVELS_IN,
 } from "@MEHelpers/enums";
 
-
 const FatherProfileComponent = () => {
   const dispatch = useDispatch();
 
   const [isEditMode, setIsEditMode] = useState(false);
-  const { profile, fatherProfileFormLoader, fatherProfileFormError } =
-    useSelector((state) => state.profile);
+  const {
+    profile,
+    fatherProfileFormLoader,
+    fatherProfileFormError,
+    states,
+    districts,
+    cities,
+    areaNames,
+    zipcodes,
+  } = useSelector((state) => state.profile);
 
   const formik = useFormik({
     initialValues: {
@@ -535,7 +542,7 @@ const FatherProfileComponent = () => {
             />
 
             {!values.sameAddressAsStudent[0].isSelected && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
                 <MEInput
                   id="homeAddress"
                   meclassname="flex"
@@ -581,6 +588,10 @@ const FatherProfileComponent = () => {
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.state}
+                  selectedValueLabel={
+                    _.find(states, { value: values.addressOverride.state })
+                      ?.label || ""
+                  }
                   searchPlaceholder={"Search State..."}
                   labelVariant={
                     errors.addressOverride?.state &&
@@ -606,14 +617,22 @@ const FatherProfileComponent = () => {
                       ? errors.addressOverride?.state
                       : ""
                   }
-                  options={_.map(STATES, (label, value) => ({
-                    label,
-                    value,
-                  }))}
+                  options={_.sortBy(
+                    _.map(states, (state) => ({
+                      label: state.label,
+                      value: state.value,
+                    })),
+                    "label",
+                    "asc"
+                  )}
                   onBlur={() => setFieldTouched("addressOverride.state", true)}
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.state", value)
-                  }
+                  onChange={(value) => {
+                    setFieldValue("addressOverride.state", value);
+                    setFieldValue("addressOverride.district", "");
+                    setFieldValue("addressOverride.city", "");
+                    setFieldValue("addressOverride.areaName", "");
+                    setFieldValue("addressOverride.zipcode", "");
+                  }}
                 />
 
                 <MECombobox
@@ -621,6 +640,11 @@ const FatherProfileComponent = () => {
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.district}
+                  selectedValueLabel={
+                    _.find(districts, {
+                      value: values.addressOverride.district,
+                    })?.label || ""
+                  }
                   searchPlaceholder={"Search District..."}
                   labelVariant={
                     errors.addressOverride?.district &&
@@ -646,16 +670,28 @@ const FatherProfileComponent = () => {
                       ? errors.addressOverride?.district
                       : ""
                   }
-                  options={_.map(DISTRICTS, (label, value) => ({
-                    label,
-                    value,
-                  }))}
+                  options={_.sortBy(
+                    _.map(
+                      _.filter(districts, {
+                        state: values.addressOverride.state,
+                      }),
+                      (district) => ({
+                        label: district.label,
+                        value: district.value,
+                      })
+                    ),
+                    "label",
+                    "asc"
+                  )}
                   onBlur={() =>
                     setFieldTouched("addressOverride.district", true)
                   }
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.district", value)
-                  }
+                  onChange={(value) => {
+                    setFieldValue("addressOverride.district", value);
+                    setFieldValue("addressOverride.city", "");
+                    setFieldValue("addressOverride.areaName", "");
+                    setFieldValue("addressOverride.zipcode", "");
+                  }}
                 />
 
                 <MECombobox
@@ -663,6 +699,11 @@ const FatherProfileComponent = () => {
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.city}
+                  selectedValueLabel={
+                    _.find(cities, {
+                      value: values.addressOverride.city,
+                    })?.label || ""
+                  }
                   searchPlaceholder={"Search City..."}
                   labelVariant={
                     errors.addressOverride?.city &&
@@ -688,14 +729,26 @@ const FatherProfileComponent = () => {
                       ? errors.addressOverride?.city
                       : ""
                   }
-                  options={_.map(CITIES, (label, value) => ({
-                    label,
-                    value,
-                  }))}
+                  options={_.sortBy(
+                    _.map(
+                      _.filter(cities, {
+                        state: values.addressOverride.state,
+                        district: values.addressOverride.district,
+                      }),
+                      (city) => ({
+                        label: city.label,
+                        value: city.value,
+                      })
+                    ),
+                    "label",
+                    "asc"
+                  )}
                   onBlur={() => setFieldTouched("addressOverride.city", true)}
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.city", value)
-                  }
+                  onChange={(value) => {
+                    setFieldValue("addressOverride.city", value);
+                    setFieldValue("addressOverride.areaName", "");
+                    setFieldValue("addressOverride.zipcode", "");
+                  }}
                 />
 
                 <MECombobox
@@ -703,6 +756,11 @@ const FatherProfileComponent = () => {
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.areaName}
+                  selectedValueLabel={
+                    _.find(areaNames, {
+                      value: values.addressOverride.areaName,
+                    })?.label || ""
+                  }
                   searchPlaceholder={"Search Area Name..."}
                   labelVariant={
                     errors.addressOverride?.areaName &&
@@ -728,16 +786,28 @@ const FatherProfileComponent = () => {
                       ? errors.addressOverride?.areaName
                       : ""
                   }
-                  options={_.map(AREAS, (label, value) => ({
-                    label,
-                    value,
-                  }))}
+                  options={_.sortBy(
+                    _.map(
+                      _.filter(areaNames, {
+                        state: values.addressOverride.state,
+                        district: values.addressOverride.district,
+                        city: values.addressOverride.city,
+                      }),
+                      (areaName) => ({
+                        label: areaName.label,
+                        value: areaName.value,
+                      })
+                    ),
+                    "label",
+                    "asc"
+                  )}
                   onBlur={() =>
                     setFieldTouched("addressOverride.areaName", true)
                   }
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.areaName", value)
-                  }
+                  onChange={(value) => {
+                    setFieldValue("addressOverride.areaName", value);
+                    setFieldValue("addressOverride.zipcode", "");
+                  }}
                 />
 
                 <MECombobox
@@ -745,6 +815,11 @@ const FatherProfileComponent = () => {
                   required={true}
                   disabled={!isEditMode}
                   value={values.addressOverride.zipcode}
+                  selectedValueLabel={
+                    _.find(zipcodes, {
+                      value: values.addressOverride.zipcode,
+                    })?.label || ""
+                  }
                   searchPlaceholder={"Search Zipcode..."}
                   labelVariant={
                     errors.addressOverride?.zipcode &&
@@ -770,10 +845,22 @@ const FatherProfileComponent = () => {
                       ? errors.addressOverride?.zipcode
                       : ""
                   }
-                  options={_.map(ZIPCODES, (label, value) => ({
-                    label,
-                    value,
-                  }))}
+                  options={_.sortBy(
+                    _.map(
+                      _.filter(zipcodes, {
+                        state: values.addressOverride.state,
+                        district: values.addressOverride.district,
+                        city: values.addressOverride.city,
+                        areaName: values.addressOverride.areaName,
+                      }),
+                      (zipcode) => ({
+                        label: zipcode.label,
+                        value: zipcode.value,
+                      })
+                    ),
+                    "label",
+                    "asc"
+                  )}
                   onBlur={() =>
                     setFieldTouched("addressOverride.zipcode", true)
                   }

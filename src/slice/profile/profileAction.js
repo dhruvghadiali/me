@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { formatStudentProfileData } from "@MEUtils/apiResponse";
+import { formatStudentProfileData, flattenLocationData } from "@MEUtils/apiResponse";
 import {
   axiosInstance,
   apiResponseHaveData,
   isAPIServedSuccessfully,
 } from "@MEUtils/axiosInstance";
 import {
+  statesAPIRoute,
   parentProfileAPIRoute,
   studentProfileAPIRoute,
 } from "@MEUtils/apiRoutes";
@@ -38,6 +39,49 @@ const getStudentProfile = createAsyncThunk(
       const errMsg =
         (error && (error.message || error.error)) ||
         "Profile information could not be retrieved. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
+const getLocations = createAsyncThunk(
+  "profile/getLocations",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      let states = [];
+      let districts = [];
+      let cities = [];
+      let areaNames = [];
+      let zipcodes = [];
+
+      let response = await axiosInstance.get(statesAPIRoute, {
+        state: getState(),
+        callPublicAPI: true,
+      });
+
+      if (apiResponseHaveData(response)) {
+        return {
+          error: "",
+          states: flattenLocationData(response.data).states,
+          districts: flattenLocationData(response.data).districts,
+          cities: flattenLocationData(response.data).cities,
+          areaNames: flattenLocationData(response.data).areaNames,
+          zipcodes: flattenLocationData(response.data).zipcodes,
+        };
+      } else {
+        return {
+          error: response?.message || "States information is not available.",
+          states,
+          districts,
+          cities,
+          areaNames,
+          zipcodes,
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Zipcodes information could not be retrieved. Please try again.";
       return rejectWithValue({ error: errMsg });
     }
   }
@@ -166,6 +210,7 @@ const updatedFatherProfile = createAsyncThunk(
 );
 
 export {
+  getLocations,
   addFatherProfile,
   getStudentProfile,
   addStudentProfile,

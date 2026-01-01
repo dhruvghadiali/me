@@ -8,7 +8,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@MEShadcnComponents/accordion";
-import { getStudentProfile } from "@MERedux/profile/profileAction";
+import { getStudentProfile, getLocations } from "@MERedux/profile/profileAction";
 
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import ProfileHeaderComponent from "@MEScreenComponents/profile/header";
@@ -24,6 +24,7 @@ const ProfileScreenComponent = () => {
   const { profileScreenLoader } = useSelector((state) => state.profile);
 
   useEffect(() => {
+    dispatch(getLocations());
     dispatch(getStudentProfile());
   }, [dispatch]);
 
