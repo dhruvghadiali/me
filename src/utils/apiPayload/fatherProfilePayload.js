@@ -7,32 +7,40 @@ import moment from "moment";
  * @returns {object} Formatted payload for API
  */
 const createFatherProfilePayload = (fatherData) => {
-  // Handle date of death conversion if alive status is false
-  const dateOfDeath = _.get(fatherData, "alive.dateOfDeath");
-  let formattedDateOfDeath = "";
-
-  if (dateOfDeath && _.get(fatherData, "alive.status") === false) {
-    if (dateOfDeath instanceof Date) {
-      formattedDateOfDeath = moment(dateOfDeath).toISOString();
-    } else if (typeof dateOfDeath === "string") {
-      const momentDate = dateOfDeath.includes("T")
-        ? moment(dateOfDeath) // ISO format
-        : moment(dateOfDeath, "DD/MM/YYYY"); // DD/MM/YYYY format
-      formattedDateOfDeath = momentDate.isValid()
-        ? momentDate.toISOString()
-        : "";
-    }
-  }
+  const isAlive =
+    fatherData && fatherData.isAlive && _.size(fatherData.isAlive) > 0
+      ? fatherData.isAlive[0].isSelected
+      : false;
 
   // Build alive object with conditional fields
-  const alive = {
-    status: _.get(fatherData, "alive.status", true),
+  let alive = {
+    status: isAlive,
   };
 
   // Add date_of_death only if alive status is false
-  if (_.get(fatherData, "alive.status") === false) {
-    alive.date_of_death = formattedDateOfDeath;
-    alive.caring_child_by = _.get(fatherData, "alive.caringChildBy", "");
+  if (isAlive === false) {
+    // Handle date of death conversion if alive status is false
+    const dateOfDeath = _.get(fatherData, "dateOfDeath");
+    let formattedDateOfDeath = "";
+
+    if (dateOfDeath) {
+      if (dateOfDeath instanceof Date) {
+        formattedDateOfDeath = moment(dateOfDeath).toISOString();
+      } else if (typeof dateOfDeath === "string") {
+        const momentDate = dateOfDeath.includes("T")
+          ? moment(dateOfDeath) // ISO format
+          : moment(dateOfDeath, "DD/MM/YYYY"); // DD/MM/YYYY format
+        formattedDateOfDeath = momentDate.isValid()
+          ? momentDate.toISOString()
+          : "";
+      }
+    }
+
+    alive = {
+      ...alive,
+      date_of_death: formattedDateOfDeath,
+      caring_child_by: _.get(fatherData, "caringChildBy", ""),
+    };
   }
 
   return {
@@ -45,9 +53,28 @@ const createFatherProfilePayload = (fatherData) => {
     education: _.get(fatherData, "education", ""),
     annual_income: _.get(fatherData, "annualIncome", ""),
     alive: alive,
-    same_address_as_student: _.get(fatherData, "sameAddressAsStudent[0].isSelected", false),
+    same_address_as_student: _.get(
+      fatherData,
+      "sameAddressAsStudent[0].isSelected",
+      false
+    ),
     parent_type: "father",
   };
 };
 
-export { createFatherProfilePayload };
+const createFatherProfileOverrideAddressPayload = (addressData) => {
+  return {
+    state: _.get(addressData, "state", ""),
+    district: _.get(addressData, "district", ""),
+    city: _.get(addressData, "city", ""),
+    area_name: _.get(addressData, "areaName", ""),
+    zipcode: _.get(addressData, "zipcode", ""),
+    address: _.get(addressData, "homeAddress", ""),
+    user_type: "FATHER",
+  };
+};
+
+export {
+  createFatherProfilePayload,
+  createFatherProfileOverrideAddressPayload,
+};

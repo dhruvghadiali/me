@@ -7,6 +7,8 @@ import {
   addStudentProfile,
   updatedFatherProfile,
   updatedStudentProfile,
+  addFatherProfileOverrideAddress,
+  updatedFatherProfileOverrideAddress,
 } from "@MERedux/profile/profileAction";
 
 import _ from "lodash";
@@ -112,7 +114,37 @@ export const profileSlice = createSlice({
         state.cities = [];
         state.areaNames = [];
         state.zipcodes = [];
-      });
+      })
+      .addCase(addFatherProfileOverrideAddress.pending, (state, _) => {
+        state.fatherProfileFormLoader = true;
+        state.fatherProfileFormError = "";
+      })
+      .addCase(addFatherProfileOverrideAddress.fulfilled, (state, action) => {
+        state.fatherProfileFormLoader = false;
+        state.fatherProfileFormError = action.payload.error || "";
+      })
+      .addCase(addFatherProfileOverrideAddress.rejected, (state, action) => {
+        state.fatherProfileFormLoader = false;
+        state.fatherProfileFormError = action.payload.error;
+      })
+      .addCase(updatedFatherProfileOverrideAddress.pending, (state, _) => {
+        state.fatherProfileFormLoader = true;
+        state.fatherProfileFormError = "";
+      })
+      .addCase(
+        updatedFatherProfileOverrideAddress.fulfilled,
+        (state, action) => {
+          state.fatherProfileFormLoader = false;
+          state.fatherProfileFormError = action.payload.error || "";
+        }
+      )
+      .addCase(
+        updatedFatherProfileOverrideAddress.rejected,
+        (state, action) => {
+          state.fatherProfileFormLoader = false;
+          state.fatherProfileFormError = action.payload.error;
+        }
+      );
   },
 });
 

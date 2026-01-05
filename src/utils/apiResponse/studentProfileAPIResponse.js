@@ -133,15 +133,33 @@ const formatStudentProfileData = (profile) => {
           isSelected: _.get(fatherData, "alive.status", true),
         },
       ],
-      date_of_death: (() => {
+      dateOfDeath: (() => {
         const dateStr = _.get(fatherData, "alive.date_of_death", "");
         if (!dateStr) return "";
 
-        // Check if it's an ISO string or DD MMMM YYYY format
-        const momentDate = moment(dateStr, "DD MMMM YYYY");
+        // Check if it's an ISO string or DD/MM/YYYY format
+        const momentDate = dateStr.includes("T")
+          ? moment(dateStr) // ISO format
+          : moment(dateStr, "DD MMMM YYYY"); // DD/MM/YYYY format
+
         return momentDate.isValid() ? momentDate.toISOString() : "";
       })(),
-      caring_child_by: _.get(fatherData, "alive.caring_child_by", ""),
+      caringChildBy: _.get(fatherData, "alive.caring_child_by", ""),
+      sameAddressAsStudent: [
+        {
+          label: "Same address as student",
+          isSelected: _.get(fatherData, "same_address_as_student", true),
+        },
+      ],
+      addressOverride: {
+        state: _.get(fatherData, "address.state.id", ""),
+        district: _.get(fatherData, "address.district.id", ""),
+        city: _.get(fatherData, "address.city.id", ""),
+        areaName: _.get(fatherData, "address.area_name.id", ""),
+        zipcode: _.get(fatherData, "address.zipcode.id", ""),
+        homeAddress: _.get(fatherData, "address.address", ""),
+        id: _.get(fatherData, "address.id", ""),
+      },
       updatedAt: (() => {
         const dateStr = _.get(fatherData, "updated_at", "");
         if (!dateStr) return "";
