@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+
 import { useFormik } from "formik";
 import { Edit2, Check, X } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -12,104 +14,107 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MECheckbox from "@MECommonComponents/form/checkbox";
 import MECombobox from "@MECommonComponents/form/combobox";
 import MEDatePicker from "@MECommonComponents/form/datePicker";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import ProfileErrorMessageComponent from "@MEScreenComponents/profile/errorMessage";
+import LastUpdatedAtInfoComponent from "@MEScreenComponents/profile/lastUpdatedAtInfo";
 
 import { phoneRegExp } from "@MEUtils/regexp";
+import {
+  createMotherProfilePayload,
+  createMotherProfileOverrideAddressPayload,
+} from "@MEUtils/apiPayload";
+import {
+  addMotherProfile,
+  getStudentProfile,
+  updatedMotherProfile,
+  addMotherProfileOverrideAddress,
+  updatedMotherProfileOverrideAddress,
+} from "@MERedux/profile/profileAction";
 import {
   ME_INPUT_COMPONENT_VARIANTS,
   ME_SELECT_COMPONENT_VARIANTS,
   ME_COMBOBOX_COMPONENT_VARIANTS,
   ME_CHECKBOX_COMPONENT_VARIANTS,
   ME_DATEPICKER_COMPONENT_VARIANTS,
+  PARENT_OCCUPATIONS_IN,
+  EDUCATION_LEVELS_IN,
 } from "@MEHelpers/enums";
 
-// Mock enums - replace with actual enums from your helpers
-const OCCUPATIONS = {
-  BUSINESS: "Business",
-  SERVICE: "Service",
-  AGRICULTURE: "Agriculture",
-  LABOR: "Labor",
-  RETIRED: "Retired",
-  OTHER: "Other",
-};
-
-const EDUCATION = {
-  PRIMARY: "Primary",
-  SECONDARY: "Secondary",
-  HIGHER_SECONDARY: "Higher Secondary",
-  DIPLOMA: "Diploma",
-  GRADUATION: "Graduation",
-  POST_GRADUATION: "Post Graduation",
-};
-
-const STATES = {
-  MAHARASHTRA: "Maharashtra",
-  KARNATAKA: "Karnataka",
-  TAMIL_NADU: "Tamil Nadu",
-  GUJARAT: "Gujarat",
-  WEST_BENGAL: "West Bengal",
-};
-
-const DISTRICTS = {
-  MUMBAI: "Mumbai",
-  PUNE: "Pune",
-  NASHIK: "Nashik",
-};
-
-const CITIES = {
-  MUMBAI_CITY: "Mumbai City",
-  SUBURBAN: "Suburban",
-};
-
-const AREAS = {
-  AREA_1: "Area 1",
-  AREA_2: "Area 2",
-};
-
-const ZIPCODES = {
-  ZIP_400001: "400001",
-  ZIP_400002: "400002",
-};
-
-const BOOLEANS = {
-  YES: true,
-  NO: false,
-};
-
 const MotherProfileComponent = () => {
+  const dispatch = useDispatch();
+
   const [isEditMode, setIsEditMode] = useState(false);
+  const {
+    profile,
+    motherProfileFormLoader,
+    motherProfileFormError,
+    states,
+    districts,
+    cities,
+    areaNames,
+    zipcodes,
+  } = useSelector((state) => state.profile);
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      aadhaarNumber: "",
-      occupation: "",
-      education: "",
-      annualIncome: "",
-      isAlive: [{ label: "Is Alive", isSelected: true }],
-      dateOfDeath: "",
-      caringChildBy: "",
-      sameAddressAsStudent: [
-        { label: "Same address as student", isSelected: true },
-      ],
-      addressOverride: {
-        state: "",
-        district: "",
-        city: "",
-        areaName: "",
-        zipcode: "",
-        homeAddress: "",
-      },
+      ...profile.motherProfile,
     },
-    validationSchema: fatherValidationSchema,
+    validationSchema: motherValidationSchema,
     validateOnChange: true,
     validateOnBlur: true,
     validateOnMount: true,
-    onSubmit: (values) => {
-      console.log("Father Form submitted");
+    onSubmit: async (values) => {
+      console.log("Mother Form submitted");
       console.log("Submitted Values:", values);
+
+      try {
+        // First action - wait for it to complete
+        let firstActionResult;
+        if (values.id) {
+          firstActionResult = await dispatch(
+            updatedMotherProfile({
+              id: values.id,
+              data: createMotherProfilePayload(values),
+            })
+          );
+        } else {
+          firstActionResult = await dispatch(
+            addMotherProfile(createMotherProfilePayload(values))
+          );
+        }
+
+        // Second action - only execute if first action succeeded (not rejected or errored)
+        if (
+          firstActionResult &&
+          !firstActionResult.error &&
+          values.sameAddressAsStudent &&
+          _.size(values.sameAddressAsStudent) > 0 &&
+          !values.sameAddressAsStudent[0].isSelected
+        ) {
+          if (values.addressOverride && values.addressOverride.id) {
+            await dispatch(
+              updatedMotherProfileOverrideAddress({
+                id: values.addressOverride.id,
+                data: createMotherProfileOverrideAddressPayload(
+                  values.addressOverride
+                ),
+              })
+            );
+          } else {
+            await dispatch(
+              addMotherProfileOverrideAddress(
+                createMotherProfileOverrideAddressPayload(
+                  values.addressOverride
+                )
+              )
+            );
+          }
+        } else {
+          dispatch(getStudentProfile());
+        }
+      } catch (error) {
+        console.error("Error submitting father profile:", error);
+      }
     },
   });
 
@@ -131,17 +136,51 @@ const MotherProfileComponent = () => {
     setIsEditMode(false);
   };
 
+  const handleEditMode = async () => {
+    setIsEditMode(true);
+
+    if (values.id) {
+      // Validate form first before entering edit mode
+      try {
+        await motherValidationSchema.validate(values, { abortEarly: false });
+      } catch (validationError) {
+        // Form has errors, display them
+        const formErrors = {};
+        const formTouched = {};
+
+        if (validationError.inner && Array.isArray(validationError.inner)) {
+          validationError.inner.forEach((error) => {
+            formErrors[error.path] = error.message;
+            formTouched[error.path] = true;
+          });
+        }
+
+        formik.setErrors(formErrors);
+        formik.setTouched(formTouched);
+      }
+    }
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
+      {motherProfileFormError && (
+        <ProfileErrorMessageComponent message={motherProfileFormError} />
+      )}
+
       <form onSubmit={handleSubmit}>
         <div>
           {/* Header with Edit Button */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-primary">Mother Profile</h2>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-2xl font-bold text-primary">
+                Mother Profile
+              </h2>
+              <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} />
+            </div>
             <button
               type="button"
               onClick={() =>
-                isEditMode ? handleCloseEditMode() : setIsEditMode(true)
+                isEditMode ? handleCloseEditMode() : handleEditMode()
               }
               className="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors"
               title={isEditMode ? "Cancel" : "Edit"}
@@ -338,9 +377,9 @@ const MotherProfileComponent = () => {
                     ? errors.occupation
                     : ""
                 }
-                options={_.map(OCCUPATIONS, (label, value) => ({
-                  label,
-                  value,
+                options={_.map(PARENT_OCCUPATIONS_IN, (label) => ({
+                  label: label,
+                  value: label,
                 }))}
                 onBlur={() => setFieldTouched("occupation", true)}
                 onChange={(value) => setFieldValue("occupation", value)}
@@ -370,9 +409,9 @@ const MotherProfileComponent = () => {
                 message={
                   errors.education && touched.education ? errors.education : ""
                 }
-                options={_.map(EDUCATION, (label, value) => ({
-                  label,
-                  value,
+                options={_.map(EDUCATION_LEVELS_IN, (label) => ({
+                  label: label,
+                  value: label,
                 }))}
                 onBlur={() => setFieldTouched("education", true)}
                 onChange={(value) => setFieldValue("education", value)}
@@ -437,71 +476,73 @@ const MotherProfileComponent = () => {
               onChange={(values) => setFieldValue("isAlive", values)}
             />
 
-            {!values.isAlive[0].isSelected && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <MEDatePicker
-                  label={"Date of Death"}
-                  placeholder={""}
-                  required={true}
-                  disabled={!isEditMode}
-                  selectedDate={values.dateOfDeath}
-                  labelVariant={
-                    errors.dateOfDeath && touched.dateOfDeath
-                      ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
-                      : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  buttonVariant={
-                    errors.dateOfDeath && touched.dateOfDeath
-                      ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
-                      : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messageVariant={
-                    errors.dateOfDeath && touched.dateOfDeath
-                      ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
-                      : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.dateOfDeath && touched.dateOfDeath
-                      ? errors.dateOfDeath
-                      : ""
-                  }
-                  onSelect={(date) => setFieldValue("dateOfDeath", date)}
-                  onBlur={() => setFieldTouched("dateOfDeath", true)}
-                />
+            {values.isAlive &&
+              _.size(values.isAlive) > 0 &&
+              !values.isAlive[0].isSelected && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+                  <MEDatePicker
+                    label={"Date of Death"}
+                    placeholder={""}
+                    required={true}
+                    disabled={!isEditMode}
+                    selectedDate={values.dateOfDeath}
+                    labelVariant={
+                      errors.dateOfDeath && touched.dateOfDeath
+                        ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
+                        : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    buttonVariant={
+                      errors.dateOfDeath && touched.dateOfDeath
+                        ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
+                        : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.dateOfDeath && touched.dateOfDeath
+                        ? ME_DATEPICKER_COMPONENT_VARIANTS.DANGER
+                        : ME_DATEPICKER_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.dateOfDeath && touched.dateOfDeath
+                        ? errors.dateOfDeath
+                        : ""
+                    }
+                    onSelect={(date) => setFieldValue("dateOfDeath", date)}
+                    onBlur={() => setFieldTouched("dateOfDeath", true)}
+                  />
 
-                <MEInput
-                  id="caringChildBy"
-                  meclassname="flex"
-                  type={"text"}
-                  label={"Caring Child By"}
-                  required={true}
-                  disabled={!isEditMode}
-                  value={values.caringChildBy}
-                  labelvariant={
-                    errors.caringChildBy && touched.caringChildBy
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  inputvariant={
-                    errors.caringChildBy && touched.caringChildBy
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messagevariant={
-                    errors.caringChildBy && touched.caringChildBy
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.caringChildBy && touched.caringChildBy
-                      ? errors.caringChildBy
-                      : ""
-                  }
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </div>
-            )}
+                  <MEInput
+                    id="caringChildBy"
+                    meclassname="flex"
+                    type={"text"}
+                    label={"Caring Child By"}
+                    required={true}
+                    disabled={!isEditMode}
+                    value={values.caringChildBy}
+                    labelvariant={
+                      errors.caringChildBy && touched.caringChildBy
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    inputvariant={
+                      errors.caringChildBy && touched.caringChildBy
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messagevariant={
+                      errors.caringChildBy && touched.caringChildBy
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.caringChildBy && touched.caringChildBy
+                        ? errors.caringChildBy
+                        : ""
+                    }
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </div>
+              )}
           </div>
 
           {/* Address Section */}
@@ -535,265 +576,356 @@ const MotherProfileComponent = () => {
               }
             />
 
-            {!values.sameAddressAsStudent[0].isSelected && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <MEInput
-                  id="homeAddress"
-                  meclassname="flex"
-                  type={"text"}
-                  label={"Home Address"}
-                  required={true}
-                  disabled={!isEditMode}
-                  value={values.addressOverride.homeAddress}
-                  labelvariant={
-                    errors.addressOverride?.homeAddress &&
-                    touched.addressOverride?.homeAddress
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  inputvariant={
-                    errors.addressOverride?.homeAddress &&
-                    touched.addressOverride?.homeAddress
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messagevariant={
-                    errors.addressOverride?.homeAddress &&
-                    touched.addressOverride?.homeAddress
-                      ? ME_INPUT_COMPONENT_VARIANTS.DANGER
-                      : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.addressOverride?.homeAddress &&
-                    touched.addressOverride?.homeAddress
-                      ? errors.addressOverride?.homeAddress
-                      : ""
-                  }
-                  onChange={(e) =>
-                    setFieldValue("addressOverride.homeAddress", e.target.value)
-                  }
-                  onBlur={() =>
-                    setFieldTouched("addressOverride.homeAddress", true)
-                  }
-                />
+            {values.sameAddressAsStudent &&
+              _.size(values.sameAddressAsStudent) > 0 &&
+              !values.sameAddressAsStudent[0].isSelected && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+                  <MEInput
+                    id="homeAddress"
+                    meclassname="flex"
+                    type={"text"}
+                    label={"Home Address"}
+                    required={true}
+                    disabled={!isEditMode}
+                    value={values.addressOverride.homeAddress}
+                    labelvariant={
+                      errors.addressOverride?.homeAddress &&
+                      touched.addressOverride?.homeAddress
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    inputvariant={
+                      errors.addressOverride?.homeAddress &&
+                      touched.addressOverride?.homeAddress
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messagevariant={
+                      errors.addressOverride?.homeAddress &&
+                      touched.addressOverride?.homeAddress
+                        ? ME_INPUT_COMPONENT_VARIANTS.DANGER
+                        : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.addressOverride?.homeAddress &&
+                      touched.addressOverride?.homeAddress
+                        ? errors.addressOverride?.homeAddress
+                        : ""
+                    }
+                    onChange={(e) =>
+                      setFieldValue(
+                        "addressOverride.homeAddress",
+                        e.target.value
+                      )
+                    }
+                    onBlur={() =>
+                      setFieldTouched("addressOverride.homeAddress", true)
+                    }
+                  />
 
-                <MECombobox
-                  label="State"
-                  required={true}
-                  disabled={!isEditMode}
-                  value={values.addressOverride.state}
-                  searchPlaceholder={"Search State..."}
-                  labelVariant={
-                    errors.addressOverride?.state &&
-                    touched.addressOverride?.state
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  comboboxVariant={
-                    errors.addressOverride?.state &&
-                    touched.addressOverride?.state
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messageVariant={
-                    errors.addressOverride?.state &&
-                    touched.addressOverride?.state
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.addressOverride?.state &&
-                    touched.addressOverride?.state
-                      ? errors.addressOverride?.state
-                      : ""
-                  }
-                  options={_.map(STATES, (label, value) => ({
-                    label,
-                    value,
-                  }))}
-                  onBlur={() => setFieldTouched("addressOverride.state", true)}
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.state", value)
-                  }
-                />
+                  <MECombobox
+                    label="State"
+                    required={true}
+                    disabled={!isEditMode}
+                    value={values.addressOverride.state}
+                    selectedValueLabel={
+                      _.find(states, { value: values.addressOverride.state })
+                        ?.label || ""
+                    }
+                    searchPlaceholder={"Search State..."}
+                    labelVariant={
+                      errors.addressOverride?.state &&
+                      touched.addressOverride?.state
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    comboboxVariant={
+                      errors.addressOverride?.state &&
+                      touched.addressOverride?.state
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.addressOverride?.state &&
+                      touched.addressOverride?.state
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.addressOverride?.state &&
+                      touched.addressOverride?.state
+                        ? errors.addressOverride?.state
+                        : ""
+                    }
+                    options={_.sortBy(
+                      _.map(states, (state) => ({
+                        label: state.label,
+                        value: state.value,
+                      })),
+                      "label",
+                      "asc"
+                    )}
+                    onBlur={() =>
+                      setFieldTouched("addressOverride.state", true)
+                    }
+                    onChange={(value) => {
+                      setFieldValue("addressOverride.state", value);
+                      setFieldValue("addressOverride.district", "");
+                      setFieldValue("addressOverride.city", "");
+                      setFieldValue("addressOverride.areaName", "");
+                      setFieldValue("addressOverride.zipcode", "");
+                    }}
+                  />
 
-                <MECombobox
-                  label="District"
-                  required={true}
-                  disabled={!isEditMode}
-                  value={values.addressOverride.district}
-                  searchPlaceholder={"Search District..."}
-                  labelVariant={
-                    errors.addressOverride?.district &&
-                    touched.addressOverride?.district
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  comboboxVariant={
-                    errors.addressOverride?.district &&
-                    touched.addressOverride?.district
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messageVariant={
-                    errors.addressOverride?.district &&
-                    touched.addressOverride?.district
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.addressOverride?.district &&
-                    touched.addressOverride?.district
-                      ? errors.addressOverride?.district
-                      : ""
-                  }
-                  options={_.map(DISTRICTS, (label, value) => ({
-                    label,
-                    value,
-                  }))}
-                  onBlur={() =>
-                    setFieldTouched("addressOverride.district", true)
-                  }
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.district", value)
-                  }
-                />
+                  <MECombobox
+                    label="District"
+                    required={true}
+                    disabled={!isEditMode}
+                    value={values.addressOverride.district}
+                    selectedValueLabel={
+                      _.find(districts, {
+                        value: values.addressOverride.district,
+                      })?.label || ""
+                    }
+                    searchPlaceholder={"Search District..."}
+                    labelVariant={
+                      errors.addressOverride?.district &&
+                      touched.addressOverride?.district
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    comboboxVariant={
+                      errors.addressOverride?.district &&
+                      touched.addressOverride?.district
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.addressOverride?.district &&
+                      touched.addressOverride?.district
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.addressOverride?.district &&
+                      touched.addressOverride?.district
+                        ? errors.addressOverride?.district
+                        : ""
+                    }
+                    options={_.sortBy(
+                      _.map(
+                        _.filter(districts, {
+                          state: values.addressOverride.state,
+                        }),
+                        (district) => ({
+                          label: district.label,
+                          value: district.value,
+                        })
+                      ),
+                      "label",
+                      "asc"
+                    )}
+                    onBlur={() =>
+                      setFieldTouched("addressOverride.district", true)
+                    }
+                    onChange={(value) => {
+                      setFieldValue("addressOverride.district", value);
+                      setFieldValue("addressOverride.city", "");
+                      setFieldValue("addressOverride.areaName", "");
+                      setFieldValue("addressOverride.zipcode", "");
+                    }}
+                  />
 
-                <MECombobox
-                  label="City"
-                  required={true}
-                  disabled={!isEditMode}
-                  value={values.addressOverride.city}
-                  searchPlaceholder={"Search City..."}
-                  labelVariant={
-                    errors.addressOverride?.city &&
-                    touched.addressOverride?.city
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  comboboxVariant={
-                    errors.addressOverride?.city &&
-                    touched.addressOverride?.city
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messageVariant={
-                    errors.addressOverride?.city &&
-                    touched.addressOverride?.city
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.addressOverride?.city &&
-                    touched.addressOverride?.city
-                      ? errors.addressOverride?.city
-                      : ""
-                  }
-                  options={_.map(CITIES, (label, value) => ({
-                    label,
-                    value,
-                  }))}
-                  onBlur={() => setFieldTouched("addressOverride.city", true)}
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.city", value)
-                  }
-                />
+                  <MECombobox
+                    label="City"
+                    required={true}
+                    disabled={!isEditMode}
+                    value={values.addressOverride.city}
+                    selectedValueLabel={
+                      _.find(cities, {
+                        value: values.addressOverride.city,
+                      })?.label || ""
+                    }
+                    searchPlaceholder={"Search City..."}
+                    labelVariant={
+                      errors.addressOverride?.city &&
+                      touched.addressOverride?.city
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    comboboxVariant={
+                      errors.addressOverride?.city &&
+                      touched.addressOverride?.city
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.addressOverride?.city &&
+                      touched.addressOverride?.city
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.addressOverride?.city &&
+                      touched.addressOverride?.city
+                        ? errors.addressOverride?.city
+                        : ""
+                    }
+                    options={_.sortBy(
+                      _.map(
+                        _.filter(cities, {
+                          state: values.addressOverride.state,
+                          district: values.addressOverride.district,
+                        }),
+                        (city) => ({
+                          label: city.label,
+                          value: city.value,
+                        })
+                      ),
+                      "label",
+                      "asc"
+                    )}
+                    onBlur={() => setFieldTouched("addressOverride.city", true)}
+                    onChange={(value) => {
+                      setFieldValue("addressOverride.city", value);
+                      setFieldValue("addressOverride.areaName", "");
+                      setFieldValue("addressOverride.zipcode", "");
+                    }}
+                  />
 
-                <MECombobox
-                  label="Area Name"
-                  required={true}
-                  disabled={!isEditMode}
-                  value={values.addressOverride.areaName}
-                  searchPlaceholder={"Search Area Name..."}
-                  labelVariant={
-                    errors.addressOverride?.areaName &&
-                    touched.addressOverride?.areaName
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  comboboxVariant={
-                    errors.addressOverride?.areaName &&
-                    touched.addressOverride?.areaName
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messageVariant={
-                    errors.addressOverride?.areaName &&
-                    touched.addressOverride?.areaName
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.addressOverride?.areaName &&
-                    touched.addressOverride?.areaName
-                      ? errors.addressOverride?.areaName
-                      : ""
-                  }
-                  options={_.map(AREAS, (label, value) => ({
-                    label,
-                    value,
-                  }))}
-                  onBlur={() =>
-                    setFieldTouched("addressOverride.areaName", true)
-                  }
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.areaName", value)
-                  }
-                />
+                  <MECombobox
+                    label="Area Name"
+                    required={true}
+                    disabled={!isEditMode}
+                    value={values.addressOverride.areaName}
+                    selectedValueLabel={
+                      _.find(areaNames, {
+                        value: values.addressOverride.areaName,
+                      })?.label || ""
+                    }
+                    searchPlaceholder={"Search Area Name..."}
+                    labelVariant={
+                      errors.addressOverride?.areaName &&
+                      touched.addressOverride?.areaName
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    comboboxVariant={
+                      errors.addressOverride?.areaName &&
+                      touched.addressOverride?.areaName
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.addressOverride?.areaName &&
+                      touched.addressOverride?.areaName
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.addressOverride?.areaName &&
+                      touched.addressOverride?.areaName
+                        ? errors.addressOverride?.areaName
+                        : ""
+                    }
+                    options={_.sortBy(
+                      _.map(
+                        _.filter(areaNames, {
+                          state: values.addressOverride.state,
+                          district: values.addressOverride.district,
+                          city: values.addressOverride.city,
+                        }),
+                        (areaName) => ({
+                          label: areaName.label,
+                          value: areaName.value,
+                        })
+                      ),
+                      "label",
+                      "asc"
+                    )}
+                    onBlur={() =>
+                      setFieldTouched("addressOverride.areaName", true)
+                    }
+                    onChange={(value) => {
+                      setFieldValue("addressOverride.areaName", value);
+                      setFieldValue("addressOverride.zipcode", "");
+                    }}
+                  />
 
-                <MECombobox
-                  label="Zipcode"
-                  required={true}
-                  disabled={!isEditMode}
-                  value={values.addressOverride.zipcode}
-                  searchPlaceholder={"Search Zipcode..."}
-                  labelVariant={
-                    errors.addressOverride?.zipcode &&
-                    touched.addressOverride?.zipcode
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  comboboxVariant={
-                    errors.addressOverride?.zipcode &&
-                    touched.addressOverride?.zipcode
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  messageVariant={
-                    errors.addressOverride?.zipcode &&
-                    touched.addressOverride?.zipcode
-                      ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
-                      : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
-                  }
-                  message={
-                    errors.addressOverride?.zipcode &&
-                    touched.addressOverride?.zipcode
-                      ? errors.addressOverride?.zipcode
-                      : ""
-                  }
-                  options={_.map(ZIPCODES, (label, value) => ({
-                    label,
-                    value,
-                  }))}
-                  onBlur={() =>
-                    setFieldTouched("addressOverride.zipcode", true)
-                  }
-                  onChange={(value) =>
-                    setFieldValue("addressOverride.zipcode", value)
-                  }
-                />
-              </div>
-            )}
+                  <MECombobox
+                    label="Zipcode"
+                    required={true}
+                    disabled={!isEditMode}
+                    value={values.addressOverride.zipcode}
+                    selectedValueLabel={
+                      _.find(zipcodes, {
+                        value: values.addressOverride.zipcode,
+                      })?.label || ""
+                    }
+                    searchPlaceholder={"Search Zipcode..."}
+                    labelVariant={
+                      errors.addressOverride?.zipcode &&
+                      touched.addressOverride?.zipcode
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    comboboxVariant={
+                      errors.addressOverride?.zipcode &&
+                      touched.addressOverride?.zipcode
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    messageVariant={
+                      errors.addressOverride?.zipcode &&
+                      touched.addressOverride?.zipcode
+                        ? ME_COMBOBOX_COMPONENT_VARIANTS.DANGER
+                        : ME_COMBOBOX_COMPONENT_VARIANTS.PRIMARY
+                    }
+                    message={
+                      errors.addressOverride?.zipcode &&
+                      touched.addressOverride?.zipcode
+                        ? errors.addressOverride?.zipcode
+                        : ""
+                    }
+                    options={_.sortBy(
+                      _.map(
+                        _.filter(zipcodes, {
+                          state: values.addressOverride.state,
+                          district: values.addressOverride.district,
+                          city: values.addressOverride.city,
+                          areaName: values.addressOverride.areaName,
+                        }),
+                        (zipcode) => ({
+                          label: zipcode.label,
+                          value: zipcode.value,
+                        })
+                      ),
+                      "label",
+                      "asc"
+                    )}
+                    onBlur={() =>
+                      setFieldTouched("addressOverride.zipcode", true)
+                    }
+                    onChange={(value) =>
+                      setFieldValue("addressOverride.zipcode", value)
+                    }
+                  />
+                </div>
+              )}
           </div>
 
           {isEditMode && (
             <div className="flex gap-4 mt-8">
               <MEButton
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || motherProfileFormLoader}
                 className="flex items-center gap-2"
               >
-                <Check className="w-4 h-4" />
+                {motherProfileFormLoader ? (
+                  <MELoaderIcon />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
                 Save Changes
               </MEButton>
               <MEButton
@@ -812,7 +944,7 @@ const MotherProfileComponent = () => {
 };
 
 // Validation Schema
-const fatherValidationSchema = Yup.object().shape({
+const motherValidationSchema = Yup.object().shape({
   firstName: Yup.string()
     .min(2, "First name must be at least 2 characters")
     .max(25, "First name must be at most 25 characters")

@@ -25,6 +25,7 @@ import {
 } from "@MEUtils/apiPayload";
 import {
   addFatherProfile,
+  getStudentProfile,
   updatedFatherProfile,
   addFatherProfileOverrideAddress,
   updatedFatherProfileOverrideAddress,
@@ -77,25 +78,39 @@ const FatherProfileComponent = () => {
             })
           );
         } else {
-          firstActionResult = await dispatch(addFatherProfile(createFatherProfilePayload(values)));
+          firstActionResult = await dispatch(
+            addFatherProfile(createFatherProfilePayload(values))
+          );
         }
 
         // Second action - only execute if first action succeeded (not rejected or errored)
-        if (firstActionResult && !firstActionResult.error) {
+        if (
+          firstActionResult &&
+          !firstActionResult.error &&
+          values.sameAddressAsStudent &&
+          _.size(values.sameAddressAsStudent) > 0 &&
+          !values.sameAddressAsStudent[0].isSelected
+        ) {
           if (values.addressOverride && values.addressOverride.id) {
             await dispatch(
               updatedFatherProfileOverrideAddress({
                 id: values.addressOverride.id,
-                data: createFatherProfileOverrideAddressPayload(values.addressOverride),
+                data: createFatherProfileOverrideAddressPayload(
+                  values.addressOverride
+                ),
               })
             );
           } else {
             await dispatch(
               addFatherProfileOverrideAddress(
-                createFatherProfileOverrideAddressPayload(values.addressOverride)
+                createFatherProfileOverrideAddressPayload(
+                  values.addressOverride
+                )
               )
             );
           }
+        } else {
+          dispatch(getStudentProfile());
         }
       } catch (error) {
         console.error("Error submitting father profile:", error);

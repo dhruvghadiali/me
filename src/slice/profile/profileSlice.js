@@ -3,12 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getLocations,
   addFatherProfile,
+  addMotherProfile,
   getStudentProfile,
   addStudentProfile,
+  updatedMotherProfile,
   updatedFatherProfile,
   updatedStudentProfile,
   addFatherProfileOverrideAddress,
+  addMotherProfileOverrideAddress,
   updatedFatherProfileOverrideAddress,
+  updatedMotherProfileOverrideAddress,
 } from "@MERedux/profile/profileAction";
 
 import _ from "lodash";
@@ -23,6 +27,8 @@ export const profileSlice = createSlice({
     studentProfileFormError: "",
     fatherProfileFormLoader: false,
     fatherProfileFormError: "",
+    motherProfileFormLoader: false,
+    motherProfileFormError: "",
     states: [],
     districts: [],
     cities: [],
@@ -143,6 +149,60 @@ export const profileSlice = createSlice({
         (state, action) => {
           state.fatherProfileFormLoader = false;
           state.fatherProfileFormError = action.payload.error;
+        }
+      )
+      .addCase(addMotherProfile.pending, (state, _) => {
+        state.motherProfileFormLoader = true;
+        state.motherProfileFormError = "";
+      })
+      .addCase(addMotherProfile.fulfilled, (state, action) => {
+        state.motherProfileFormLoader = false;
+        state.motherProfileFormError = action.payload.error || "";
+      })
+      .addCase(addMotherProfile.rejected, (state, action) => {
+        state.motherProfileFormLoader = false;
+        state.motherProfileFormError = action.payload.error;
+      })
+      .addCase(updatedMotherProfile.pending, (state, _) => {
+        state.motherProfileFormLoader = true;
+        state.motherProfileFormError = "";
+      })
+      .addCase(updatedMotherProfile.fulfilled, (state, action) => {
+        state.motherProfileFormLoader = false;
+        state.motherProfileFormError = action.payload.error || "";
+      })
+      .addCase(updatedMotherProfile.rejected, (state, action) => {
+        state.motherProfileFormLoader = false;
+        state.motherProfileFormError = action.payload.error;
+      })
+      .addCase(addMotherProfileOverrideAddress.pending, (state, _) => {
+        state.motherProfileFormLoader = true;
+        state.motherProfileFormError = "";
+      })
+      .addCase(addMotherProfileOverrideAddress.fulfilled, (state, action) => {
+        state.motherProfileFormLoader = false;
+        state.motherProfileFormError = action.payload.error || "";
+      })
+      .addCase(addMotherProfileOverrideAddress.rejected, (state, action) => {
+        state.motherProfileFormLoader = false;
+        state.motherProfileFormError = action.payload.error;
+      })
+      .addCase(updatedMotherProfileOverrideAddress.pending, (state, _) => {
+        state.motherProfileFormLoader = true;
+        state.motherProfileFormError = "";
+      })
+      .addCase(
+        updatedMotherProfileOverrideAddress.fulfilled,
+        (state, action) => {
+          state.motherProfileFormLoader = false;
+          state.motherProfileFormError = action.payload.error || "";
+        }
+      )
+      .addCase(
+        updatedMotherProfileOverrideAddress.rejected,
+        (state, action) => {
+          state.motherProfileFormLoader = false;
+          state.motherProfileFormError = action.payload.error;
         }
       );
   },

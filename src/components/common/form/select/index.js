@@ -39,7 +39,7 @@ const MESelect = (props) => {
         {label} {required && <span className="text-danger">*</span>}
       </Label>
       <div className="relative">
-        <Select value={value.toLowerCase()} onValueChange={onChange} disabled={disabled}>
+        <Select value={value?.toLowerCase()} onValueChange={onChange} disabled={disabled}>
           <SelectTrigger
             disabled={disabled}
             onBlur={onBlur}

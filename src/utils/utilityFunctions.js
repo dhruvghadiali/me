@@ -1,3 +1,4 @@
+import moment from "moment";
 import { appEnv } from "@MEUtils/enums";
 
 export const indianNumberFormate = (value) => {
@@ -72,4 +73,23 @@ export const defaultAPIErrorResponse = {
 
 export const setUpAxiosInstanceConfig = (state, dispatch) => {
   return { state: state, dispatch: dispatch };
+};
+
+/**
+ * Helper function to parse date to ISO format
+ * @param {Date|string} dateValue - Date to parse
+ * @returns {string} ISO format date or empty string
+ */
+export const parseToISODate = (dateValue, format = "DD MMMM YYYY") => {
+  if (!dateValue) return "";
+  if (dateValue instanceof Date) {
+    return moment(dateValue).toISOString();
+  }
+  if (typeof dateValue === "string") {
+    const momentDate = dateValue.includes("T")
+      ? moment(dateValue)
+      : moment(dateValue, format);
+    return momentDate.isValid() ? momentDate.toISOString() : "";
+  }
+  return "";
 };

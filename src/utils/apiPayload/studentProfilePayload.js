@@ -1,5 +1,5 @@
 import _ from "lodash";
-import moment from "moment";
+import { parseToISODate } from "@MEUtils/utilityFunctions";
 
 /**
  * Transform student profile form data to API payload format
@@ -7,20 +7,6 @@ import moment from "moment";
  * @returns {object} Formatted payload for API
  */
 const createStudentProfilePayload = (studentData) => {
-  // Handle date conversion
-  const dateOfBirth = _.get(studentData, "dateOfBirth");
-  let formattedDate = "";
-  
-  if (dateOfBirth) {
-    if (dateOfBirth instanceof Date) {
-      formattedDate = moment(dateOfBirth).toISOString();
-    } else if (typeof dateOfBirth === "string") {
-      const momentDate = dateOfBirth.includes("T") 
-        ? moment(dateOfBirth) // ISO format
-        : moment(dateOfBirth, "DD/MM/YYYY"); // DD/MM/YYYY format
-      formattedDate = momentDate.isValid() ? momentDate.toISOString() : "";
-    }
-  }
 
   // Build medical_info object conditionally
   const medicalInfo = {
@@ -77,7 +63,7 @@ const createStudentProfilePayload = (studentData) => {
   return {
     first_name: _.get(studentData, "firstName", ""),
     last_name: _.get(studentData, "lastName", ""),
-    date_of_birth: formattedDate,
+    date_of_birth: parseToISODate(_.get(studentData, "dateOfBirth")),
     gender: _.get(studentData, "gender", ""),
     blood_group: _.get(studentData, "bloodGroup", ""),
     aadhaar_number: _.get(studentData, "aadhaarNumber", ""),

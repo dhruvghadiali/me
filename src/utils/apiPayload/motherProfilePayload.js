@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { parseToISODate } from "@MEUtils/utilityFunctions";
-
 /**
  * Helper function to extract isAlive status
  * @param {array} isAliveArray - Array with isAlive status
@@ -30,29 +29,29 @@ const buildAliveObject = (isAlive, fatherData) => {
 };
 
 /**
- * Transform father profile form data to API payload format
- * @param {object} fatherData - Father profile form data
+ * Transform mother profile form data to API payload format
+ * @param {object} motherData - Mother profile form data
  * @returns {object} Formatted payload for API
  */
-const createFatherProfilePayload = (fatherData) => {
-  const isAlive = extractIsAliveStatus(fatherData?.isAlive);
+const createMotherProfilePayload = (motherData) => {
+  const isAlive = extractIsAliveStatus(motherData?.isAlive);
 
   return {
-    first_name: _.get(fatherData, "firstName", ""),
-    last_name: _.get(fatherData, "lastName", ""),
-    phone_number: _.get(fatherData, "phoneNumber", ""),
-    email: _.get(fatherData, "email", ""),
-    aadhaar_number: _.get(fatherData, "aadhaarNumber", ""),
-    occupation: _.get(fatherData, "occupation", ""),
-    education: _.get(fatherData, "education", ""),
-    annual_income: _.get(fatherData, "annualIncome", ""),
-    alive: buildAliveObject(isAlive, fatherData),
+    first_name: _.get(motherData, "firstName", ""),
+    last_name: _.get(motherData, "lastName", ""),
+    phone_number: _.get(motherData, "phoneNumber", ""),
+    email: _.get(motherData, "email", ""),
+    aadhaar_number: _.get(motherData, "aadhaarNumber", ""),
+    occupation: _.get(motherData, "occupation", ""),
+    education: _.get(motherData, "education", ""),
+    annual_income: _.get(motherData, "annualIncome", ""),
+    alive: buildAliveObject(isAlive, motherData),
     same_address_as_student: _.get(
-      fatherData,
+      motherData,
       "sameAddressAsStudent[0].isSelected",
       false
     ),
-    parent_type: "father",
+    parent_type: "mother",
   };
 };
 
@@ -61,7 +60,7 @@ const createFatherProfilePayload = (fatherData) => {
  * @param {object} addressData - Address form data
  * @returns {object} Formatted address payload for API
  */
-const createFatherProfileOverrideAddressPayload = (addressData) => {
+const createMotherProfileOverrideAddressPayload = (addressData) => {
   return {
     state: _.get(addressData, "state", ""),
     district: _.get(addressData, "district", ""),
@@ -69,11 +68,11 @@ const createFatherProfileOverrideAddressPayload = (addressData) => {
     area_name: _.get(addressData, "areaName", ""),
     zipcode: _.get(addressData, "zipcode", ""),
     address: _.get(addressData, "homeAddress", ""),
-    user_type: "FATHER",
+    user_type: "MOTHER",
   };
 };
 
 export {
-  createFatherProfilePayload,
-  createFatherProfileOverrideAddressPayload,
+  createMotherProfilePayload,
+  createMotherProfileOverrideAddressPayload,
 };
