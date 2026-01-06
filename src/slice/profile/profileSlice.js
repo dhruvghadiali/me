@@ -6,16 +6,18 @@ import {
   addMotherProfile,
   getStudentProfile,
   addStudentProfile,
+  addSiblingProfile,
   updatedMotherProfile,
   updatedFatherProfile,
   updatedStudentProfile,
+  updatedSiblingProfile,
   addFatherProfileOverrideAddress,
   addMotherProfileOverrideAddress,
   updatedFatherProfileOverrideAddress,
   updatedMotherProfileOverrideAddress,
 } from "@MERedux/profile/profileAction";
 
-import _ from "lodash";
+import _, { add } from "lodash";
 
 export const profileSlice = createSlice({
   name: "profile",
@@ -29,6 +31,8 @@ export const profileSlice = createSlice({
     fatherProfileFormError: "",
     motherProfileFormLoader: false,
     motherProfileFormError: "",
+    siblingProfileFormLoader: false,
+    siblingProfileFormError: "",
     states: [],
     districts: [],
     cities: [],
@@ -204,7 +208,19 @@ export const profileSlice = createSlice({
           state.motherProfileFormLoader = false;
           state.motherProfileFormError = action.payload.error;
         }
-      );
+      )
+      .addCase(addSiblingProfile.pending, (state, _) => {
+        state.siblingProfileFormLoader = true;
+        state.siblingProfileFormError = "";
+      })
+      .addCase(addSiblingProfile.fulfilled, (state, action) => {
+        state.siblingProfileFormLoader = false;
+        state.siblingProfileFormError = action.payload.error || "";
+      })
+      .addCase(addSiblingProfile.rejected, (state, action) => {
+        state.siblingProfileFormLoader = false;
+        state.siblingProfileFormError = action.payload.error;
+      });
   },
 });
 

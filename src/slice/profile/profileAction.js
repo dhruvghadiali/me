@@ -11,6 +11,7 @@ import {
   addressesAPIRoute,
   parentProfileAPIRoute,
   studentProfileAPIRoute,
+  siblingProfileAPIRoute,
 } from "@MEUtils/apiRoutes";
 
 const getStudentProfile = createAsyncThunk(
@@ -226,6 +227,34 @@ const addMotherProfileOverrideAddress = createAsyncThunk(
   }
 );
 
+const addSiblingProfile = createAsyncThunk(
+  "profile/addSiblingProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      let response = await axiosInstance.post(siblingProfileAPIRoute, payload, {
+        state: getState(),
+      });
+
+      if (isAPIServedSuccessfully(response)) {
+        // Refresh profile after successful addition
+        await dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Sibling profile information could not be added. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Sibling profile information could not be added. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 const updatedStudentProfile = createAsyncThunk(
   "profile/updatedStudentProfile",
   async (payload, { getState, rejectWithValue, dispatch }) => {
@@ -385,15 +414,49 @@ const updatedMotherProfileOverrideAddress = createAsyncThunk(
   }
 );
 
+const updatedSiblingProfile = createAsyncThunk(
+  "profile/updatedSiblingProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { id, data } = payload;
+      let response = await axiosInstance.put(
+        `${siblingProfileAPIRoute}/${id}`,
+        data,
+        {
+          state: getState(),
+        }
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Sibling profile information could not be updated. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Sibling profile information could not be updated. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 export {
   getLocations,
   addFatherProfile,
   addMotherProfile,
   getStudentProfile,
   addStudentProfile,
+  addSiblingProfile,
   updatedMotherProfile,
   updatedFatherProfile,
   updatedStudentProfile,
+  updatedSiblingProfile,
   addFatherProfileOverrideAddress,
   addMotherProfileOverrideAddress,
   updatedFatherProfileOverrideAddress,

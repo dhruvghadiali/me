@@ -110,6 +110,36 @@ const formatParentProfile = (parentData) => ({
 });
 
 /**
+ * Helper function to format sibling profile
+ * @param {object} siblingData - Sibling data object
+ * @returns {object} Formatted sibling profile
+ */
+const formatSiblingProfile = (siblingData) => {
+  const sameSchool = _.get(siblingData, "same_school", false);
+  
+  const siblingProfile = {
+    id: _.get(siblingData, "id", ""),
+    firstName: _.get(siblingData, "first_name", ""),
+    lastName: _.get(siblingData, "last_name", ""),
+    gender: findEnumValue(_.get(siblingData, "gender", ""), GENDERS),
+    dateOfBirth: parseToISODate(_.get(siblingData, "date_of_birth", "")),
+    studyingInClass: _.get(siblingData, "studying_in_class", ""),
+    sameSchool: [{ isSelected: sameSchool, label: "Same school as student" }],
+    updatedAt: parseToISODate(_.get(siblingData, "updated_at", "")),
+  };
+
+  if (sameSchool) {
+    siblingProfile.schoolName = _.get(siblingData, "school_name", "");
+    siblingProfile.admissionNumber = "";
+  } else {
+    siblingProfile.admissionNumber = _.get(siblingData, "admission_number", "");
+    siblingProfile.schoolName = "";
+  }
+
+  return siblingProfile;
+};
+
+/**
  * Transform API response to format with label and value fields using lodash
  * @param {object} profile - Object of student profile from API
  * @returns {object} Formatted student profile object
@@ -118,11 +148,13 @@ const formatStudentProfileData = (profile) => {
   const studentData = profile?.student || {};
   const fatherData = profile?.father || {};
   const motherData = profile?.mother || {};
+  const siblingData = profile?.siblings && _.isArray(profile.siblings) && _.size(profile.siblings) > 0 ? profile.siblings : [{}];
 
   return {
     studentProfile: formatStudentProfile(studentData),
     fatherProfile: formatParentProfile(fatherData),
     motherProfile: formatParentProfile(motherData),
+    siblingProfile: _.map(siblingData, (sibling) => formatSiblingProfile(sibling)),
   };
 };
 
