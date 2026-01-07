@@ -22,9 +22,7 @@ import {
   addSiblingProfile,
   updatedSiblingProfile,
 } from "@MERedux/profile/profileAction";
-import {
-  createSiblingProfilePayload,
-} from "@MEUtils/apiPayload";
+import { createSiblingProfilePayload } from "@MEUtils/apiPayload";
 import {
   GENDERS,
   ME_INPUT_COMPONENT_VARIANTS,
@@ -34,28 +32,16 @@ import {
   ME_RADIO_BUTTON_COMPONENT_VARIANTS,
 } from "@MEHelpers/enums";
 
-// Class enumeration for studying in class
-const CLASSES = {
-  CLASS_1: "Class 1",
-  CLASS_2: "Class 2",
-  CLASS_3: "Class 3",
-  CLASS_4: "Class 4",
-  CLASS_5: "Class 5",
-  CLASS_6: "Class 6",
-  CLASS_7: "Class 7",
-  CLASS_8: "Class 8",
-  CLASS_9: "Class 9",
-  CLASS_10: "Class 10",
-  CLASS_11: "Class 11",
-  CLASS_12: "Class 12",
-};
-
 const SiblingProfileComponent = () => {
   const dispatch = useDispatch();
 
   const [isEditMode, setIsEditMode] = useState(false);
-  const { profile, siblingProfileFormLoader, siblingProfileFormError } =
-    useSelector((state) => state.profile);
+  const {
+    profile,
+    siblingProfileFormLoader,
+    siblingProfileFormError,
+    academicClasses,
+  } = useSelector((state) => state.profile);
 
   const formik = useFormik({
     initialValues: {
@@ -66,13 +52,21 @@ const SiblingProfileComponent = () => {
     validateOnBlur: true,
     validateOnMount: true,
     onSubmit: (values) => {
-      let formData = values && _.isArray(values.siblings) && _.size(values.siblings) > 0 ? values.siblings[0] : {};
+      let formData =
+        values && _.isArray(values.siblings) && _.size(values.siblings) > 0
+          ? values.siblings[0]
+          : {};
       console.log("Sibling Profile Form submitted");
       console.log("Submitted Values:", createSiblingProfilePayload(formData));
 
-      if(formData.id){
+      if (formData.id) {
         // Update existing sibling profile
-        dispatch(updatedSiblingProfile(formData.id, createSiblingProfilePayload(formData)));
+        dispatch(
+          updatedSiblingProfile({
+            id: formData.id,
+            data: createSiblingProfilePayload(formData),
+          })
+        );
       } else {
         // Add new sibling profile
         dispatch(addSiblingProfile(createSiblingProfilePayload(formData)));
@@ -368,9 +362,9 @@ const SiblingProfileComponent = () => {
                         ? errors.siblings[siblingIndex].studyingInClass
                         : ""
                     }
-                    options={_.map(CLASSES, (label, value) => ({
-                      label,
-                      value,
+                    options={_.map(academicClasses, (academicClass) => ({
+                      label: academicClass.label,
+                      value: academicClass.value,
                     }))}
                     onBlur={() =>
                       setFieldTouched(
@@ -414,9 +408,9 @@ const SiblingProfileComponent = () => {
                         ? errors.siblings[siblingIndex].gender
                         : ""
                     }
-                    radioGroupItems={_.map(GENDERS, (label, value) => ({
-                      label,
-                      value,
+                    radioGroupItems={_.map(GENDERS, (gender) => ({
+                      label: gender,
+                      value: gender,
                     }))}
                     onBlur={() =>
                       setFieldTouched(`siblings.${siblingIndex}.gender`, true)

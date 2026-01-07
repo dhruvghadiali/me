@@ -18,13 +18,13 @@ const extractSameSchoolStatus = (sameSchool) => {
  */
 const buildSchoolInfo = (sameSchool, siblingData) => {
   const schoolInfo = {};
-  
+
   if (sameSchool) {
-    schoolInfo.school_name = _.get(siblingData, "schoolName", "");
-  } else {
     schoolInfo.admission_number = _.get(siblingData, "admissionNumber", "");
+  } else {
+    schoolInfo.school_name = _.get(siblingData, "schoolName", "");
   }
-  
+
   return schoolInfo;
 };
 
@@ -34,7 +34,11 @@ const buildSchoolInfo = (sameSchool, siblingData) => {
  * @returns {object} Formatted payload for API
  */
 const createSiblingProfilePayload = (siblingData) => {
-  const sameSchool = extractSameSchoolStatus(_.get(siblingData, "sameSchool", false));
+  const sameSchool = extractSameSchoolStatus(
+    _.size(_.get(siblingData, "sameSchool")) > 0
+      ? _.get(siblingData, "sameSchool[0].isSelected", false)
+      : false
+  );
 
   return {
     first_name: _.get(siblingData, "firstName", ""),
@@ -58,7 +62,4 @@ const createSiblingsPayload = (siblings) => {
     : [];
 };
 
-export {
-  createSiblingProfilePayload,
-  createSiblingsPayload,
-};
+export { createSiblingProfilePayload, createSiblingsPayload };

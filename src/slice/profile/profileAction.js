@@ -1,6 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { formatStudentProfileData, flattenLocationData } from "@MEUtils/apiResponse";
+import {
+  formatStudentProfileData,
+  flattenLocationData,
+  formateAcademicClassesAPIResponse,
+} from "@MEUtils/apiResponse";
 import {
   axiosInstance,
   apiResponseHaveData,
@@ -12,6 +16,7 @@ import {
   parentProfileAPIRoute,
   studentProfileAPIRoute,
   siblingProfileAPIRoute,
+  academicClassesAPIRoute,
 } from "@MEUtils/apiRoutes";
 
 const getStudentProfile = createAsyncThunk(
@@ -84,6 +89,39 @@ const getLocations = createAsyncThunk(
       const errMsg =
         (error && (error.message || error.error)) ||
         "Zipcodes information could not be retrieved. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
+const getAcademicClasses = createAsyncThunk(
+  "profile/getAcademicClasses",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      let academicClasses = [];
+
+      let response = await axiosInstance.get(academicClassesAPIRoute, {
+        state: getState(),
+        callPublicAPI: true,
+      });
+
+      if (apiResponseHaveData(response)) {
+        return {
+          error: "",
+          academicClasses: formateAcademicClassesAPIResponse(response.data),
+        };
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Academic classes information is not available.",
+          academicClasses,
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Academic classes information could not be retrieved. Please try again.";
       return rejectWithValue({ error: errMsg });
     }
   }
@@ -453,6 +491,7 @@ export {
   getStudentProfile,
   addStudentProfile,
   addSiblingProfile,
+  getAcademicClasses,
   updatedMotherProfile,
   updatedFatherProfile,
   updatedStudentProfile,

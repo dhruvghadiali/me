@@ -7,6 +7,7 @@ import {
   getStudentProfile,
   addStudentProfile,
   addSiblingProfile,
+  getAcademicClasses,
   updatedMotherProfile,
   updatedFatherProfile,
   updatedStudentProfile,
@@ -38,6 +39,7 @@ export const profileSlice = createSlice({
     cities: [],
     areaNames: [],
     zipcodes: [],
+    academicClasses: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -220,6 +222,27 @@ export const profileSlice = createSlice({
       .addCase(addSiblingProfile.rejected, (state, action) => {
         state.siblingProfileFormLoader = false;
         state.siblingProfileFormError = action.payload.error;
+      })
+      .addCase(updatedSiblingProfile.pending, (state, _) => {
+        state.siblingProfileFormLoader = true;
+        state.siblingProfileFormError = "";
+      })
+      .addCase(updatedSiblingProfile.fulfilled, (state, action) => {
+        state.siblingProfileFormLoader = false;
+        state.siblingProfileFormError = action.payload.error || "";
+      })
+      .addCase(updatedSiblingProfile.rejected, (state, action) => {
+        state.siblingProfileFormLoader = false;
+        state.siblingProfileFormError = action.payload.error;
+      })
+      .addCase(getAcademicClasses.pending, (state, _) => {
+        state.academicClasses = [];
+      })
+      .addCase(getAcademicClasses.fulfilled, (state, action) => {
+        state.academicClasses = action.payload.academicClasses;
+      })
+      .addCase(getAcademicClasses.rejected, (state, action) => {
+        state.academicClasses = [];
       });
   },
 });

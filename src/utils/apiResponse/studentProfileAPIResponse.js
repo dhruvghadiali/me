@@ -38,13 +38,33 @@ const formatAllergies = (profileAllergies) => {
  */
 const formatMedicalInfo = (studentData) => ({
   hasHearingIssue: _.get(studentData, "medical_info.has_hearing_issue", false),
-  hearingIssueDetails: _.get(studentData, "medical_info.hearing_issue_details", ""),
+  hearingIssueDetails: _.get(
+    studentData,
+    "medical_info.hearing_issue_details",
+    ""
+  ),
   hasVisionIssue: _.get(studentData, "medical_info.has_vision_issue", false),
-  visionIssueDetails: _.get(studentData, "medical_info.vision_issue_details", ""),
-  hasPhysicalIssue: _.get(studentData, "medical_info.has_physical_issue", false),
-  physicalIssueDetails: _.get(studentData, "medical_info.physical_issue_details", ""),
+  visionIssueDetails: _.get(
+    studentData,
+    "medical_info.vision_issue_details",
+    ""
+  ),
+  hasPhysicalIssue: _.get(
+    studentData,
+    "medical_info.has_physical_issue",
+    false
+  ),
+  physicalIssueDetails: _.get(
+    studentData,
+    "medical_info.physical_issue_details",
+    ""
+  ),
   hasMentalIssue: _.get(studentData, "medical_info.has_mental_issue", false),
-  mentalIssueDetails: _.get(studentData, "medical_info.mental_issue_details", ""),
+  mentalIssueDetails: _.get(
+    studentData,
+    "medical_info.mental_issue_details",
+    ""
+  ),
   hasAllergies: _.get(studentData, "medical_info.has_allergies", false),
   allergies: formatAllergies(_.get(studentData, "medical_info.allergies")),
 });
@@ -60,7 +80,10 @@ const formatStudentProfile = (studentData) => ({
   lastName: _.get(studentData, "last_name", ""),
   dateOfBirth: parseToISODate(_.get(studentData, "date_of_birth", "")),
   gender: findEnumValue(_.get(studentData, "gender", ""), GENDERS),
-  bloodGroup: findEnumValue(_.get(studentData, "blood_group", ""), BLOOD_GROUPS).toLowerCase(),
+  bloodGroup: findEnumValue(
+    _.get(studentData, "blood_group", ""),
+    BLOOD_GROUPS
+  ).toLowerCase(),
   aadhaarNumber: _.get(studentData, "aadhaar_number", ""),
   nationality: _.get(studentData, "nationality", ""),
   phoneNumber: _.get(studentData, "phone_number", ""),
@@ -99,11 +122,16 @@ const formatParentProfile = (parentData) => ({
   occupation: _.get(parentData, "occupation", "").toLowerCase(),
   education: _.get(parentData, "education", "").toLowerCase(),
   annualIncome: _.get(parentData, "annual_income", ""),
-  isAlive: [{ label: "Is Alive", isSelected: _.get(parentData, "alive.status", true) }],
+  isAlive: [
+    { label: "Is Alive", isSelected: _.get(parentData, "alive.status", true) },
+  ],
   dateOfDeath: parseToISODate(_.get(parentData, "alive.date_of_death", "")),
   caringChildBy: _.get(parentData, "alive.caring_child_by", ""),
   sameAddressAsStudent: [
-    { label: "Same address as student", isSelected: _.get(parentData, "same_address_as_student", true) },
+    {
+      label: "Same address as student",
+      isSelected: _.get(parentData, "same_address_as_student", true),
+    },
   ],
   addressOverride: formatAddress(_.get(parentData, "address")),
   updatedAt: parseToISODate(_.get(parentData, "updated_at", "")),
@@ -116,7 +144,7 @@ const formatParentProfile = (parentData) => ({
  */
 const formatSiblingProfile = (siblingData) => {
   const sameSchool = _.get(siblingData, "same_school", false);
-  
+
   const siblingProfile = {
     id: _.get(siblingData, "id", ""),
     firstName: _.get(siblingData, "first_name", ""),
@@ -129,11 +157,11 @@ const formatSiblingProfile = (siblingData) => {
   };
 
   if (sameSchool) {
-    siblingProfile.schoolName = _.get(siblingData, "school_name", "");
-    siblingProfile.admissionNumber = "";
-  } else {
     siblingProfile.admissionNumber = _.get(siblingData, "admission_number", "");
     siblingProfile.schoolName = "";
+  } else {
+    siblingProfile.schoolName = _.get(siblingData, "school_name", "");
+    siblingProfile.admissionNumber = "";
   }
 
   return siblingProfile;
@@ -148,13 +176,20 @@ const formatStudentProfileData = (profile) => {
   const studentData = profile?.student || {};
   const fatherData = profile?.father || {};
   const motherData = profile?.mother || {};
-  const siblingData = profile?.siblings && _.isArray(profile.siblings) && _.size(profile.siblings) > 0 ? profile.siblings : [{}];
+  const siblingData =
+    profile?.siblings &&
+    _.isArray(profile.siblings) &&
+    _.size(profile.siblings) > 0
+      ? profile.siblings
+      : [{}];
 
   return {
     studentProfile: formatStudentProfile(studentData),
     fatherProfile: formatParentProfile(fatherData),
     motherProfile: formatParentProfile(motherData),
-    siblingProfile: _.map(siblingData, (sibling) => formatSiblingProfile(sibling)),
+    siblingProfile: _.map(siblingData, (sibling) =>
+      formatSiblingProfile(sibling)
+    ),
   };
 };
 
