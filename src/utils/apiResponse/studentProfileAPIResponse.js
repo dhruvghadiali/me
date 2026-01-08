@@ -105,6 +105,7 @@ const formatAddress = (addressData = {}) => ({
   zipcode: _.get(addressData, "zipcode.id", ""),
   homeAddress: _.get(addressData, "address", ""),
   id: _.get(addressData, "id", ""),
+  updatedAt: parseToISODate(_.get(addressData, "updated_at", "")),
 });
 
 /**
@@ -182,6 +183,7 @@ const formatStudentProfileData = (profile) => {
     _.size(profile.siblings) > 0
       ? profile.siblings
       : [{}];
+  const addressData = profile?.address || {};
 
   return {
     studentProfile: formatStudentProfile(studentData),
@@ -190,6 +192,7 @@ const formatStudentProfileData = (profile) => {
     siblingProfile: _.map(siblingData, (sibling) =>
       formatSiblingProfile(sibling)
     ),
+    addressProfile: formatAddress(addressData)
   };
 };
 

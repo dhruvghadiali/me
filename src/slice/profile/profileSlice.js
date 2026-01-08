@@ -7,11 +7,13 @@ import {
   getStudentProfile,
   addStudentProfile,
   addSiblingProfile,
+  addAddressProfile,
   getAcademicClasses,
   updatedMotherProfile,
   updatedFatherProfile,
   updatedStudentProfile,
   updatedSiblingProfile,
+  updatedAddressProfile,
   addFatherProfileOverrideAddress,
   addMotherProfileOverrideAddress,
   updatedFatherProfileOverrideAddress,
@@ -34,6 +36,8 @@ export const profileSlice = createSlice({
     motherProfileFormError: "",
     siblingProfileFormLoader: false,
     siblingProfileFormError: "",
+    addressProfileFormLoader: false,
+    addressProfileFormError: "",
     states: [],
     districts: [],
     cities: [],
@@ -243,6 +247,30 @@ export const profileSlice = createSlice({
       })
       .addCase(getAcademicClasses.rejected, (state, action) => {
         state.academicClasses = [];
+      })
+      .addCase(addAddressProfile.pending, (state, _) => {
+        state.addressProfileFormLoader = true;
+        state.addressProfileFormError = "";
+      })
+      .addCase(addAddressProfile.fulfilled, (state, action) => {
+        state.addressProfileFormLoader = false;
+        state.addressProfileFormError = action.payload.error || "";
+      })
+      .addCase(addAddressProfile.rejected, (state, action) => {
+        state.addressProfileFormLoader = false;
+        state.addressProfileFormError = action.payload.error;
+      })
+      .addCase(updatedAddressProfile.pending, (state, _) => {
+        state.addressProfileFormLoader = true;
+        state.addressProfileFormError = "";
+      })  
+      .addCase(updatedAddressProfile.fulfilled, (state, action) => {
+        state.addressProfileFormLoader = false;
+        state.addressProfileFormError = action.payload.error || "";
+      })
+      .addCase(updatedAddressProfile.rejected, (state, action) => {
+        state.addressProfileFormLoader = false;
+        state.addressProfileFormError = action.payload.error;
       });
   },
 });

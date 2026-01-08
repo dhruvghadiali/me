@@ -1,3 +1,4 @@
+export * from "@MEUtils/apiPayload/addressPayload";
 export * from "@MEUtils/apiPayload/fatherProfilePayload";
 export * from "@MEUtils/apiPayload/motherProfilePayload";
 export * from "@MEUtils/apiPayload/authenticationPayload";

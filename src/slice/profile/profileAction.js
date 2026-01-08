@@ -16,6 +16,7 @@ import {
   parentProfileAPIRoute,
   studentProfileAPIRoute,
   siblingProfileAPIRoute,
+  addressProfileAPIRoute,
   academicClassesAPIRoute,
 } from "@MEUtils/apiRoutes";
 
@@ -293,6 +294,34 @@ const addSiblingProfile = createAsyncThunk(
   }
 );
 
+const addAddressProfile = createAsyncThunk(
+  "profile/addAddressProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      let response = await axiosInstance.post(addressProfileAPIRoute, payload, {
+        state: getState(),
+      });
+
+      if (isAPIServedSuccessfully(response)) {
+        // Refresh profile after successful addition
+        await dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Address profile information could not be added. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Address profile information could not be added. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 const updatedStudentProfile = createAsyncThunk(
   "profile/updatedStudentProfile",
   async (payload, { getState, rejectWithValue, dispatch }) => {
@@ -484,6 +513,38 @@ const updatedSiblingProfile = createAsyncThunk(
   }
 );
 
+const updatedAddressProfile = createAsyncThunk(
+  "profile/updatedAddressProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { id, data } = payload;
+      let response = await axiosInstance.put(
+        `${addressProfileAPIRoute}/${id}`,
+        data,
+        {
+          state: getState(),
+        }
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Address profile information could not be updated. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Address profile information could not be updated. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 export {
   getLocations,
   addFatherProfile,
@@ -491,11 +552,13 @@ export {
   getStudentProfile,
   addStudentProfile,
   addSiblingProfile,
+  addAddressProfile,
   getAcademicClasses,
   updatedMotherProfile,
   updatedFatherProfile,
   updatedStudentProfile,
   updatedSiblingProfile,
+  updatedAddressProfile,
   addFatherProfileOverrideAddress,
   addMotherProfileOverrideAddress,
   updatedFatherProfileOverrideAddress,

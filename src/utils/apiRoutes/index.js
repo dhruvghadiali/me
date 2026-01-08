@@ -8,6 +8,7 @@ export const addressesAPIRoute = "/profile/addresses";
 export const parentProfileAPIRoute = "/profile/parent";
 export const signUpSendOTPAPIRoute = "/signup/send-otp";
 export const siblingProfileAPIRoute = "/profile/sibling";
+export const addressProfileAPIRoute = "/profile/address";
 export const academicClassesAPIRoute = "/academic-classes";
 export const forgottenPasswordAPIRoute = "/forgotten-password";
 export const admissionApplicationAPIRoute = "/admission-applications";

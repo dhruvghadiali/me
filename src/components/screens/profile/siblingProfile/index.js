@@ -126,7 +126,6 @@ const SiblingProfileComponent = () => {
     }
   };
 
-  console.log("Sibling Profile - Form Values:", errors);
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
       {siblingProfileFormError && (
@@ -141,7 +140,13 @@ const SiblingProfileComponent = () => {
               <h2 className="text-2xl font-bold text-primary">
                 Sibling Profile
               </h2>
-              <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} />
+              <LastUpdatedAtInfoComponent
+                updatedAt={
+                  values && values.siblings && _.size(values.siblings) > 0
+                    ? values.siblings[0].updatedAt
+                    : null
+                }
+              />
             </div>
             <button
               type="button"
