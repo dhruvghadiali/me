@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, { update } from "lodash";
 
 import { parseToISODate } from "@MEUtils/utilityFunctions";
 import { GENDERS, ALLERGIES, BLOOD_GROUPS } from "@MEHelpers/enums";
@@ -169,6 +169,22 @@ const formatSiblingProfile = (siblingData) => {
 };
 
 /**
+ * Helper function to format emergency contact profile
+ * @param {object} emergencyContactData - Emergency contact data object
+ * @returns {object} Formatted emergency contact profile
+ */
+const formatEmergencyContact = (emergencyContactData) => ({
+  id: _.get(emergencyContactData, "id", ""),
+  name: _.get(emergencyContactData, "name", ""),
+  relation: _.get(emergencyContactData, "relation", ""),
+  phoneNumber: _.get(emergencyContactData, "phone_number", ""),
+  alternatePhoneNumber: _.get(emergencyContactData, "alternate_phone", ""),
+  email: _.get(emergencyContactData, "email", ""),
+  address: _.get(emergencyContactData, "address", ""),
+  updatedAt: parseToISODate(_.get(emergencyContactData, "updated_at", "")),
+});
+
+/**
  * Transform API response to format with label and value fields using lodash
  * @param {object} profile - Object of student profile from API
  * @returns {object} Formatted student profile object
@@ -184,6 +200,9 @@ const formatStudentProfileData = (profile) => {
       ? profile.siblings
       : [{}];
   const addressData = profile?.address || {};
+  const emergencyContactData = profile?.emergency_contacts && _.isArray(profile.emergency_contacts) && _.size(profile.emergency_contacts) > 0
+    ? profile.emergency_contacts[0]
+    : {};
 
   return {
     studentProfile: formatStudentProfile(studentData),
@@ -192,7 +211,8 @@ const formatStudentProfileData = (profile) => {
     siblingProfile: _.map(siblingData, (sibling) =>
       formatSiblingProfile(sibling)
     ),
-    addressProfile: formatAddress(addressData)
+    addressProfile: formatAddress(addressData),
+    emergencyContactProfile: formatEmergencyContact(emergencyContactData),
   };
 };
 

@@ -14,6 +14,7 @@ export const forgottenPasswordAPIRoute = "/forgotten-password";
 export const admissionApplicationAPIRoute = "/admission-applications";
 export const signUpOTPVerificationAPIRoute = "/signup/otp-verification";
 export const schoolAcademicClassesAPIRoute = "/schools/academic-classes";
+export const emergencyContactProfileAPIRoute = "/profile/emergency-contact";
 export const forgottenPasswordSendOTPAPIRoute = "/forgotten-password/send-otp";
 export const forgottenPasswordChangePasswordAPIRoute = "/forgotten-password/change-password";
 export const forgottenPasswordOTPVerificationAPIRoute = "/forgotten-password/otp-verification"; 

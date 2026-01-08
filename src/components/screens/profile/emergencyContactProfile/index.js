@@ -1,40 +1,43 @@
 import React, { useState } from "react";
+
 import { useFormik } from "formik";
 import { Edit2, X, Check } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
+import _ from "lodash";
 import * as Yup from "yup";
 
 import MESelect from "@/components/common/form/select";
 import MEInput from "@MECommonComponents/input/meInput";
 import MEButton from "@MECommonComponents/button/meButton";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import ProfileErrorMessageComponent from "@MEScreenComponents/profile/errorMessage";
+import LastUpdatedAtInfoComponent from "@MEScreenComponents/profile/lastUpdatedAtInfo";
+
 import { phoneRegExp } from "@MEUtils/regexp";
+import { createEmergencyContactProfilePayload } from "@MEUtils/apiPayload";
 import {
+  addEmergencyContactProfile,
+  updatedEmergencyContactProfile,
+} from "@MERedux/profile/profileAction";
+import {
+  EMERGENCY_CONTACT_RELATIONS,
   ME_INPUT_COMPONENT_VARIANTS,
   ME_SELECT_COMPONENT_VARIANTS,
 } from "@MEHelpers/enums";
 
-// Relation options
-const RELATIONS = [
-  { label: "Sibling", value: "sibling" },
-  { label: "Grandparent", value: "grandparent" },
-  { label: "Uncle/Aunt", value: "uncle_aunt" },
-  { label: "Cousin", value: "cousin" },
-  { label: "Friend", value: "friend" },
-  { label: "Other", value: "other" },
-];
-
 const EmergencyContactProfileComponent = () => {
+  const dispatch = useDispatch();
+
   const [isEditMode, setIsEditMode] = useState(false);
+  const {
+    profile,
+    emergencyContactProfileFormLoader,
+    emergencyContactProfileFormError,
+  } = useSelector((state) => state.profile);
 
   const formik = useFormik({
-    initialValues: {
-      name: "",
-      relation: "",
-      phoneNumber: "",
-      alternatePhoneNumber: "",
-      email: "",
-      address: "",
-    },
+    initialValues: { ...profile.emergencyContactProfile },
     validationSchema: emergencyContactValidationSchema,
     validateOnChange: true,
     validateOnBlur: true,
@@ -42,6 +45,16 @@ const EmergencyContactProfileComponent = () => {
     onSubmit: (values) => {
       console.log("Form submitted");
       console.log("Submitted Values:", values);
+
+      if (values.id) {
+        const payload = createEmergencyContactProfilePayload(values);
+        dispatch(
+          updatedEmergencyContactProfile({ id: values.id, data: payload })
+        );
+      } else {
+        const payload = createEmergencyContactProfilePayload(values);
+        dispatch(addEmergencyContactProfile(payload));
+      }
     },
   });
 
@@ -63,19 +76,55 @@ const EmergencyContactProfileComponent = () => {
     setIsEditMode(false);
   };
 
+  const handleEditMode = async () => {
+    setIsEditMode(true);
+
+    if (values.id) {
+      // Validate form first before entering edit mode
+      try {
+        await emergencyContactValidationSchema.validate(values, {
+          abortEarly: false,
+        });
+      } catch (validationError) {
+        // Form has errors, display them
+        const formErrors = {};
+        const formTouched = {};
+
+        if (validationError.inner && Array.isArray(validationError.inner)) {
+          validationError.inner.forEach((error) => {
+            formErrors[error.path] = error.message;
+            formTouched[error.path] = true;
+          });
+        }
+
+        formik.setErrors(formErrors);
+        formik.setTouched(formTouched);
+      }
+    }
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
+      {emergencyContactProfileFormError && (
+        <ProfileErrorMessageComponent
+          message={emergencyContactProfileFormError}
+        />
+      )}
+
       <form onSubmit={handleSubmit}>
         <div>
           {/* Header with Edit Button */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-primary">
-              Emergency Contact Profile
-            </h2>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-2xl font-bold text-primary">
+                Emergency Contact Profile
+              </h2>
+              <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} />
+            </div>
             <button
               type="button"
               onClick={() =>
-                isEditMode ? handleCloseEditMode() : setIsEditMode(true)
+                isEditMode ? handleCloseEditMode() : handleEditMode()
               }
               className="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors"
               title={isEditMode ? "Cancel" : "Edit"}
@@ -125,24 +174,22 @@ const EmergencyContactProfileComponent = () => {
 
               {/* Relation */}
               <MESelect
-                id="relation"
                 label="Relation"
                 required={true}
                 disabled={!isEditMode}
                 value={values.relation}
                 selectLabel="Select Relation"
-                options={RELATIONS}
-                labelvariant={
+                selectVariant={
                   errors.relation && touched.relation
                     ? ME_SELECT_COMPONENT_VARIANTS.DANGER
                     : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
                 }
-                selectvariant={
+                labelVariant={
                   errors.relation && touched.relation
                     ? ME_SELECT_COMPONENT_VARIANTS.DANGER
                     : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
                 }
-                messagevariant={
+                messageVariant={
                   errors.relation && touched.relation
                     ? ME_SELECT_COMPONENT_VARIANTS.DANGER
                     : ME_SELECT_COMPONENT_VARIANTS.PRIMARY
@@ -150,10 +197,12 @@ const EmergencyContactProfileComponent = () => {
                 message={
                   errors.relation && touched.relation ? errors.relation : ""
                 }
-                onChange={(value) => {
-                  setFieldValue("relation", value);
-                }}
+                options={_.map(EMERGENCY_CONTACT_RELATIONS, (label) => ({
+                  label: label,
+                  value: label,
+                }))}
                 onBlur={() => setFieldTouched("relation", true)}
+                onChange={(value) => setFieldValue("relation", value)}
               />
 
               {/* Phone Number */}
@@ -288,10 +337,14 @@ const EmergencyContactProfileComponent = () => {
             <div className="flex gap-4 mt-8">
               <MEButton
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || emergencyContactProfileFormLoader}
                 className="flex items-center gap-2"
               >
-                <Check className="w-4 h-4" />
+                {emergencyContactProfileFormLoader ? (
+                  <MELoaderIcon className="w-5 h-5 text-white" />
+                ) : (
+                  <Check className="w-5 h-5" />
+                )}
                 Save Changes
               </MEButton>
               <MEButton

@@ -91,4 +91,22 @@ const EDUCATION_LEVELS_IN = Object.freeze({
   OTHER: "other",
 });
 
-export { BLOOD_GROUPS, GENDERS, BOOLEANS, ALLERGIES, PARENT_OCCUPATIONS_IN, EDUCATION_LEVELS_IN };
+/**
+ * Student-related enumerations
+ */
+
+const EMERGENCY_CONTACT_RELATIONS = Object.freeze({
+  GUARDIAN: "guardian",
+  BROTHER: "brother",
+  SISTER: "sister",
+  GRANDFATHER: "grandfather",
+  GRANDMOTHER: "grandmother",
+  UNCLE: "uncle",
+  AUNT: "aunt",
+  COUSIN: "cousin",
+  FRIEND: "friend",
+  NEIGHBOR: "neighbor",
+  OTHER: "other",
+});
+
+export { BLOOD_GROUPS, GENDERS, BOOLEANS, ALLERGIES, PARENT_OCCUPATIONS_IN, EDUCATION_LEVELS_IN, EMERGENCY_CONTACT_RELATIONS };

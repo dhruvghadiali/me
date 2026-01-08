@@ -14,6 +14,8 @@ import {
   updatedStudentProfile,
   updatedSiblingProfile,
   updatedAddressProfile,
+  addEmergencyContactProfile,
+  updatedEmergencyContactProfile,
   addFatherProfileOverrideAddress,
   addMotherProfileOverrideAddress,
   updatedFatherProfileOverrideAddress,
@@ -38,6 +40,8 @@ export const profileSlice = createSlice({
     siblingProfileFormError: "",
     addressProfileFormLoader: false,
     addressProfileFormError: "",
+    emergencyContactProfileFormLoader: false,
+    emergencyContactProfileFormError: "",
     states: [],
     districts: [],
     cities: [],
@@ -263,7 +267,7 @@ export const profileSlice = createSlice({
       .addCase(updatedAddressProfile.pending, (state, _) => {
         state.addressProfileFormLoader = true;
         state.addressProfileFormError = "";
-      })  
+      })
       .addCase(updatedAddressProfile.fulfilled, (state, action) => {
         state.addressProfileFormLoader = false;
         state.addressProfileFormError = action.payload.error || "";
@@ -271,6 +275,30 @@ export const profileSlice = createSlice({
       .addCase(updatedAddressProfile.rejected, (state, action) => {
         state.addressProfileFormLoader = false;
         state.addressProfileFormError = action.payload.error;
+      })
+      .addCase(addEmergencyContactProfile.pending, (state, _) => {
+        state.emergencyContactProfileFormLoader = true;
+        state.emergencyContactProfileFormError = "";
+      })
+      .addCase(addEmergencyContactProfile.fulfilled, (state, action) => {
+        state.emergencyContactProfileFormLoader = false;
+        state.emergencyContactProfileFormError = action.payload.error || "";
+      })
+      .addCase(addEmergencyContactProfile.rejected, (state, action) => {
+        state.emergencyContactProfileFormLoader = false;
+        state.emergencyContactProfileFormError = action.payload.error;
+      })
+      .addCase(updatedEmergencyContactProfile.pending, (state, _) => {
+        state.emergencyContactProfileFormLoader = true;
+        state.emergencyContactProfileFormError = "";
+      })
+      .addCase(updatedEmergencyContactProfile.fulfilled, (state, action) => {
+        state.emergencyContactProfileFormLoader = false;
+        state.emergencyContactProfileFormError = action.payload.error || "";
+      })
+      .addCase(updatedEmergencyContactProfile.rejected, (state, action) => {
+        state.emergencyContactProfileFormLoader = false;
+        state.emergencyContactProfileFormError = action.payload.error;
       });
   },
 });

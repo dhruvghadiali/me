@@ -18,6 +18,7 @@ import {
   siblingProfileAPIRoute,
   addressProfileAPIRoute,
   academicClassesAPIRoute,
+  emergencyContactProfileAPIRoute,
 } from "@MEUtils/apiRoutes";
 
 const getStudentProfile = createAsyncThunk(
@@ -322,6 +323,34 @@ const addAddressProfile = createAsyncThunk(
   }
 );
 
+const addEmergencyContactProfile = createAsyncThunk(
+  "profile/addEmergencyContactProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      let response = await axiosInstance.post(emergencyContactProfileAPIRoute, payload, {
+        state: getState(),
+      });
+
+      if (isAPIServedSuccessfully(response)) {
+        // Refresh profile after successful addition
+        await dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Emergency contact profile information could not be added. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Emergency contact profile information could not be added. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 const updatedStudentProfile = createAsyncThunk(
   "profile/updatedStudentProfile",
   async (payload, { getState, rejectWithValue, dispatch }) => {
@@ -545,6 +574,38 @@ const updatedAddressProfile = createAsyncThunk(
   }
 );
 
+const updatedEmergencyContactProfile = createAsyncThunk(
+  "profile/updatedEmergencyContactProfile",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { id, data } = payload;
+      let response = await axiosInstance.put(
+        `${emergencyContactProfileAPIRoute}/${id}`,
+        data,
+        {
+          state: getState(),
+        }
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getStudentProfile());
+        return {};
+      } else {
+        return {
+          error:
+            response?.message ||
+            "Emergency contact profile information could not be updated. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Emergency contact profile information could not be updated. Please try again.";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
+
 export {
   getLocations,
   addFatherProfile,
@@ -559,6 +620,8 @@ export {
   updatedStudentProfile,
   updatedSiblingProfile,
   updatedAddressProfile,
+  addEmergencyContactProfile,
+  updatedEmergencyContactProfile,
   addFatherProfileOverrideAddress,
   addMotherProfileOverrideAddress,
   updatedFatherProfileOverrideAddress,
