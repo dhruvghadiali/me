@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { User, Users, MapPin, Mars, Venus, Siren } from "lucide-react";
+
+import _ from "lodash";
 
 import {
   Accordion,
@@ -13,6 +16,20 @@ import {
   getStudentProfile,
   getAcademicClasses,
 } from "@MERedux/profile/profileAction";
+import {
+  profileAccordionItemsTitleForAddress,
+  profileAccordionItemsSubtitleForAddress,
+  profileAccordionItemsTitleForFatherProfile,
+  profileAccordionItemsTitleForMotherProfile,
+  profileAccordionItemsTitleForStudentProfile,
+  profileAccordionItemsTitleForSiblingsProfile,
+  profileAccordionItemsTitleForEmergencyContact,
+  profileAccordionItemsSubtitleForFatherProfile,
+  profileAccordionItemsSubtitleForMotherProfile,
+  profileAccordionItemsSubtitleForStudentProfile,
+  profileAccordionItemsSubtitleForSiblingsProfile,
+  profileAccordionItemsSubtitleForEmergencyContact,
+} from "@MELocalization/languages/en";
 
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import ProfileHeaderComponent from "@MEScreenComponents/profile/header";
@@ -25,6 +42,7 @@ import EmergencyContactProfileComponent from "@MEScreenComponents/profile/emerge
 
 const ProfileScreenComponent = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { profileScreenLoader } = useSelector((state) => state.profile);
 
   useEffect(() => {
@@ -36,43 +54,91 @@ const ProfileScreenComponent = () => {
   const accordionItems = [
     {
       id: "student",
-      title: "Student Profile",
-      sub: "Personal information and academic details",
+      title: _.startCase(
+        t("profileAccordionItemsTitleForStudentProfile", {
+          defaultValue: profileAccordionItemsTitleForStudentProfile,
+        })
+      ),
+      sub: _.upperFirst(
+        t("profileAccordionItemsSubtitleForStudentProfile", {
+          defaultValue: profileAccordionItemsSubtitleForStudentProfile,
+        })
+      ),
       icon: <User className="w-5 h-5" />,
       content: <StudentProfileComponent />,
     },
     {
       id: "father",
-      title: "Father Profile",
-      sub: "Father's contact and occupation details",
+      title: _.startCase(
+        t("profileAccordionItemsTitleForFatherProfile", {
+          defaultValue: profileAccordionItemsTitleForFatherProfile,
+        })
+      ),
+      sub: _.upperFirst(
+        t("profileAccordionItemsSubtitleForFatherProfile", {
+          defaultValue: profileAccordionItemsSubtitleForFatherProfile,
+        })
+      ),
       icon: <Mars className="w-5 h-5" />,
       content: <FatherProfileComponent />,
     },
     {
       id: "mother",
-      title: "Mother Profile",
-      sub: "Mother's contact and occupation details",
+      title: _.startCase(
+        t("profileAccordionItemsTitleForMotherProfile", {
+          defaultValue: profileAccordionItemsTitleForMotherProfile,
+        })
+      ),
+      sub: _.upperFirst(
+        t("profileAccordionItemsSubtitleForMotherProfile", {
+          defaultValue: profileAccordionItemsSubtitleForMotherProfile,
+        })
+      ),
       icon: <Venus className="w-5 h-5" />,
       content: <MotherProfileComponent />,
     },
     {
       id: "siblings",
-      title: "Siblings Profile",
-      sub: "Information about your siblings",
+      title: _.startCase(
+        t("profileAccordionItemsTitleForSiblingsProfile", {
+          defaultValue: profileAccordionItemsTitleForSiblingsProfile,
+        })
+      ),
+      sub: _.upperFirst(
+        t("profileAccordionItemsSubtitleForSiblingsProfile", {
+          defaultValue: profileAccordionItemsSubtitleForSiblingsProfile,
+        })
+      ),
       icon: <Users className="w-5 h-5" />,
       content: <SiblingProfileComponent />,
     },
     {
       id: "address",
-      title: "Address",
-      sub: "Residential address and location details",
+      title: _.startCase(
+        t("profileAccordionItemsTitleForAddress", {
+          defaultValue: profileAccordionItemsTitleForAddress,
+        })
+      ),
+      sub: _.upperFirst(
+        t("profileAccordionItemsSubtitleForAddress", {
+          defaultValue: profileAccordionItemsSubtitleForAddress,
+        })
+      ),
       icon: <MapPin className="w-5 h-5" />,
       content: <AddressProfileComponent />,
     },
     {
       id: "emergency",
-      title: "Emergency Contact",
-      sub: "Emergency contact information and relationship",
+      title: _.startCase(
+        t("profileAccordionItemsTitleForEmergencyContact", {
+          defaultValue: profileAccordionItemsTitleForEmergencyContact,
+        })
+      ),
+      sub: _.upperFirst(
+        t("profileAccordionItemsSubtitleForEmergencyContact", {
+          defaultValue: profileAccordionItemsSubtitleForEmergencyContact,
+        })
+      ),
       icon: <Siren className="w-5 h-5" />,
       content: <EmergencyContactProfileComponent />,
     },
