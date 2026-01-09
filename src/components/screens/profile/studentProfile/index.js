@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { useFormik } from "formik";
 import { Edit2, Check, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 import _ from "lodash";
@@ -10,6 +11,37 @@ import moment from "moment";
 
 import { phoneRegExp } from "@MEUtils/regexp";
 import { createStudentProfilePayload } from "@MEUtils/apiPayload";
+import {
+  studentProfileFormTitle,
+  studentProfileFormEmailLabel,
+  studentProfileFormGenderLabel,
+  studentProfileFormLastNameLabel,
+  studentProfileFormFirstNameLabel,
+  studentProfileFormBloodGroupLabel,
+  studentProfileFormPhoneNumberLabel,
+  studentProfileFormDateOfBirthLabel,
+  studentProfileFormNationalityLabel,
+  studentProfileFormMentalIssueLabel,
+  studentProfileFormVisionIssueLabel,
+  studentProfileFormAllergyInfoLabel,
+  profileScreenFormSubmitButtonLabel,
+  profileScreenFormCancelButtonLabel,
+  studentProfileFormHearingIssueLabel,
+  studentProfileFormAadhaarNumberLabel,
+  studentProfileFormPhysicalIssueLabel,
+  studentProfileFormBasicInfoSectionTitle,
+  studentProfileFormMentalIssueDetailLabel,
+  studentProfileFormVisionIssueDetailLabel,
+  studentProfileFormAllergyInfoPlaceholder,
+  studentProfileFormMedicalInfoSectionTitle,
+  studentProfileFormHearingIssueDetailLabel,
+  studentProfileFormPhysicalIssueDetailLabel,
+  studentProfileFormBloodGroupSelectPlaceholder,
+  studentProfileFormVisionIssueDetailPlaceholder,
+  studentProfileFormMentalIssueDetailPlaceholder,
+  studentProfileFormHearingIssueDetailPlaceholder,
+  studentProfileFormPhysicalIssueDetailPlaceholder,
+} from "@MELocalization/languages/en";
 import {
   addStudentProfile,
   updatedStudentProfile,
@@ -38,9 +70,12 @@ import StudentProfileMedicalInformFormCardComponent from "@MEScreenComponents/pr
 
 const StudentProfileComponent = () => {
   const [isEditMode, setIsEditMode] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { t } = useTranslation();
   const { profile, studentProfileFormLoader, studentProfileFormError } =
     useSelector((state) => state.profile);
-  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: profile.studentProfile,
@@ -50,8 +85,6 @@ const StudentProfileComponent = () => {
     validateOnMount: true,
     onSubmit: (values) => {
       // Handle form submission
-      console.log("Form submitted");
-      console.log("Submitted Values:", values);
       if (values.id) {
         dispatch(
           updatedStudentProfile({
@@ -79,7 +112,6 @@ const StudentProfileComponent = () => {
   } = formik;
 
   const handleCloseEditMode = () => {
-    console.log("Submitted Values:", values);
     setTouched({});
     setIsEditMode(false);
   };
@@ -120,9 +152,13 @@ const StudentProfileComponent = () => {
           <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col gap-1">
               <h2 className="text-2xl font-bold text-primary">
-                Student Profile
+                {_.startCase(
+                  t("studentProfileFormTitle", {
+                    defaultValue: studentProfileFormTitle,
+                  })
+                )}
               </h2>
-              <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} />
+              <LastUpdatedAtInfoComponent updatedAt={values?.updatedAt || ""} />
             </div>
             <button
               type="button"
@@ -143,14 +179,22 @@ const StudentProfileComponent = () => {
           {/* Basic Information Section */}
           <div className="mt-3">
             <h3 className="text-base font-semibold mb-4 text-primary">
-              Basic Information
+              {_.upperFirst(
+                t("studentProfileFormBasicInfoSectionTitle", {
+                  defaultValue: studentProfileFormBasicInfoSectionTitle,
+                })
+              )}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <MEInput
                 id="firstName"
                 meclassname="flex"
                 type={"text"}
-                label={"First Name"}
+                label={_.upperFirst(
+                  t("studentProfileFormFirstNameLabel", {
+                    defaultValue: studentProfileFormFirstNameLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.firstName}
@@ -180,7 +224,11 @@ const StudentProfileComponent = () => {
                 id="lastName"
                 meclassname="flex"
                 type={"text"}
-                label={"Last Name"}
+                label={_.upperFirst(
+                  t("studentProfileFormLastNameLabel", {
+                    defaultValue: studentProfileFormLastNameLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.lastName}
@@ -207,7 +255,11 @@ const StudentProfileComponent = () => {
               />
 
               <MEDatePicker
-                label={"Date of Birth"}
+                label={_.upperFirst(
+                  t("studentProfileFormDateOfBirthLabel", {
+                    defaultValue: studentProfileFormDateOfBirthLabel,
+                  })
+                )}
                 placeholder={""}
                 required={true}
                 disabled={!isEditMode}
@@ -240,7 +292,11 @@ const StudentProfileComponent = () => {
                 id="aadhaarNumber"
                 meclassname="flex"
                 type={"text"}
-                label={"Aadhaar Number"}
+                label={_.upperFirst(
+                  t("studentProfileFormAadhaarNumberLabel", {
+                    defaultValue: studentProfileFormAadhaarNumberLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.aadhaarNumber}
@@ -272,7 +328,11 @@ const StudentProfileComponent = () => {
                 id="phoneNumber"
                 meclassname="flex"
                 type={"text"}
-                label={"Register Phone Number"}
+                label={_.upperFirst(
+                  t("studentProfileFormPhoneNumberLabel", {
+                    defaultValue: studentProfileFormPhoneNumberLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.phoneNumber}
@@ -304,7 +364,11 @@ const StudentProfileComponent = () => {
                 id="email"
                 meclassname="flex"
                 type={"text"}
-                label={"Register Email"}
+                label={_.upperFirst(
+                  t("studentProfileFormEmailLabel", {
+                    defaultValue: studentProfileFormEmailLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.email}
@@ -329,11 +393,19 @@ const StudentProfileComponent = () => {
               />
 
               <MESelect
-                label="Blood Group"
+                label={_.upperFirst(
+                  t("studentProfileFormBloodGroupLabel", {
+                    defaultValue: studentProfileFormBloodGroupLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.bloodGroup}
-                selectLabel="Blood Groups"
+                selectLabel={_.upperFirst(
+                  t("studentProfileFormBloodGroupSelectPlaceholder", {
+                    defaultValue: studentProfileFormBloodGroupSelectPlaceholder,
+                  })
+                )}
                 selectVariant={
                   errors.bloodGroup && touched.bloodGroup
                     ? ME_SELECT_COMPONENT_VARIANTS.DANGER
@@ -366,7 +438,11 @@ const StudentProfileComponent = () => {
                 id="nationality"
                 meclassname="flex"
                 type={"text"}
-                label={"Nationality"}
+                label={_.upperFirst(
+                  t("studentProfileFormNationalityLabel", {
+                    defaultValue: studentProfileFormNationalityLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.nationality}
@@ -395,7 +471,11 @@ const StudentProfileComponent = () => {
               />
 
               <MERadioButton
-                label="Gender"
+                label={_.upperFirst(
+                  t("studentProfileFormGenderLabel", {
+                    defaultValue: studentProfileFormGenderLabel,
+                  })
+                )}
                 value={values.gender}
                 disabled={!isEditMode}
                 labelVariant={
@@ -426,12 +506,20 @@ const StudentProfileComponent = () => {
 
           <div className="mt-3">
             <h3 className="text-base font-semibold mb-4 text-primary">
-              Medical Information
+              {_.upperFirst(
+                t("studentProfileFormMedicalInfoSectionTitle", {
+                  defaultValue: studentProfileFormMedicalInfoSectionTitle,
+                })
+              )}
             </h3>
 
             <StudentProfileMedicalInformFormCardComponent>
               <MERadioButton
-                label="Hearing Issue"
+                label={_.upperFirst(
+                  t("studentProfileFormHearingIssueLabel", {
+                    defaultValue: studentProfileFormHearingIssueLabel,
+                  })
+                )}
                 value={values.medicalInfo.hasHearingIssue}
                 disabled={!isEditMode}
                 labelVariant={
@@ -475,8 +563,17 @@ const StudentProfileComponent = () => {
                   id="hearingIssueDetails"
                   meclassname="flex"
                   type={"text"}
-                  label={"Hearing Issue Details"}
-                  placeholder="Describe hearing issue"
+                  label={_.upperFirst(
+                    t("studentProfileFormHearingIssueDetailLabel", {
+                      defaultValue: studentProfileFormHearingIssueDetailLabel,
+                    })
+                  )}
+                  placeholder={_.upperFirst(
+                    t("studentProfileFormHearingIssueDetailPlaceholder", {
+                      defaultValue:
+                        studentProfileFormHearingIssueDetailPlaceholder,
+                    })
+                  )}
                   disabled={!isEditMode}
                   value={values.medicalInfo.hearingIssueDetails}
                   labelvariant={
@@ -518,7 +615,11 @@ const StudentProfileComponent = () => {
 
             <StudentProfileMedicalInformFormCardComponent>
               <MERadioButton
-                label="Vision Issue"
+                label={_.upperFirst(
+                  t("studentProfileFormVisionIssueLabel", {
+                    defaultValue: studentProfileFormVisionIssueLabel,
+                  })
+                )}
                 value={values.medicalInfo.hasVisionIssue}
                 disabled={!isEditMode}
                 labelVariant={
@@ -562,8 +663,17 @@ const StudentProfileComponent = () => {
                   id="visionIssueDetails"
                   meclassname="flex"
                   type={"text"}
-                  label={"Vision Issue Details"}
-                  placeholder="Describe vision issue"
+                  label={_.upperFirst(
+                    t("studentProfileFormVisionIssueDetailLabel", {
+                      defaultValue: studentProfileFormVisionIssueDetailLabel,
+                    })
+                  )}
+                  placeholder={_.upperFirst(
+                    t("studentProfileFormVisionIssueDetailPlaceholder", {
+                      defaultValue:
+                        studentProfileFormVisionIssueDetailPlaceholder,
+                    })
+                  )}
                   disabled={!isEditMode}
                   value={values.medicalInfo.visionIssueDetails}
                   labelvariant={
@@ -605,7 +715,11 @@ const StudentProfileComponent = () => {
 
             <StudentProfileMedicalInformFormCardComponent>
               <MERadioButton
-                label="Physical Issue"
+                label={_.upperFirst(
+                  t("studentProfileFormPhysicalIssueLabel", {
+                    defaultValue: studentProfileFormPhysicalIssueLabel,
+                  })
+                )}
                 value={values.medicalInfo.hasPhysicalIssue}
                 disabled={!isEditMode}
                 labelVariant={
@@ -649,8 +763,17 @@ const StudentProfileComponent = () => {
                   id="physicalIssueDetails"
                   meclassname="flex"
                   type={"text"}
-                  label={"Physical Issue Details"}
-                  placeholder="Describe physical issue"
+                  label={_.upperFirst(
+                    t("studentProfileFormPhysicalIssueDetailLabel", {
+                      defaultValue: studentProfileFormPhysicalIssueDetailLabel,
+                    })
+                  )}
+                  placeholder={_.upperFirst(
+                    t("studentProfileFormPhysicalIssueDetailPlaceholder", {
+                      defaultValue:
+                        studentProfileFormPhysicalIssueDetailPlaceholder,
+                    })
+                  )}
                   disabled={!isEditMode}
                   value={values.medicalInfo.physicalIssueDetails}
                   labelvariant={
@@ -692,7 +815,11 @@ const StudentProfileComponent = () => {
 
             <StudentProfileMedicalInformFormCardComponent>
               <MERadioButton
-                label="Mental Issue"
+                label={_.upperFirst(
+                  t("studentProfileFormMentalIssueLabel", {
+                    defaultValue: studentProfileFormMentalIssueLabel,
+                  })
+                )}
                 value={values.medicalInfo.hasMentalIssue}
                 disabled={!isEditMode}
                 labelVariant={
@@ -736,8 +863,17 @@ const StudentProfileComponent = () => {
                   id="mentalIssueDetails"
                   meclassname="flex"
                   type={"text"}
-                  label={"Mental Issue Details"}
-                  placeholder="Describe mental issue"
+                  label={_.upperFirst(
+                    t("studentProfileFormMentalIssueDetailLabel", {
+                      defaultValue: studentProfileFormMentalIssueDetailLabel,
+                    })
+                  )}
+                  placeholder={_.upperFirst(
+                    t("studentProfileFormMentalIssueDetailPlaceholder", {
+                      defaultValue:
+                        studentProfileFormMentalIssueDetailPlaceholder,
+                    })
+                  )}
                   disabled={!isEditMode}
                   value={values.medicalInfo.mentalIssueDetails}
                   labelvariant={
@@ -779,7 +915,11 @@ const StudentProfileComponent = () => {
 
             <StudentProfileMedicalInformFormCardComponent>
               <MERadioButton
-                label="Do you have any allergies?"
+                label={_.upperFirst(
+                  t("studentProfileFormAllergyInfoLabel", {
+                    defaultValue: studentProfileFormAllergyInfoLabel,
+                  })
+                )}
                 value={values.medicalInfo.hasAllergies}
                 disabled={!isEditMode}
                 labelVariant={
@@ -818,7 +958,11 @@ const StudentProfileComponent = () => {
 
               {values.medicalInfo.hasAllergies && (
                 <MECheckbox
-                  label="Select Allergies"
+                  label={_.upperFirst(
+                    t("studentProfileFormAllergyInfoPlaceholder", {
+                      defaultValue: studentProfileFormAllergyInfoPlaceholder,
+                    })
+                  )}
                   disabled={!isEditMode}
                   labelVariant={
                     errors.medicalInfo?.allergies &&
@@ -865,14 +1009,22 @@ const StudentProfileComponent = () => {
                 ) : (
                   <Check className="w-4 h-4" />
                 )}
-                Save Changes
+                {_.upperFirst(
+                  t("profileScreenFormSubmitButtonLabel", {
+                    defaultValue: profileScreenFormSubmitButtonLabel,
+                  })
+                )}
               </MEButton>
               <MEButton
                 type="button"
                 onClick={handleCloseEditMode}
                 variant="outline"
               >
-                Cancel
+                {_.upperFirst(
+                  t("profileScreenFormCancelButtonLabel", {
+                    defaultValue: profileScreenFormCancelButtonLabel,
+                  })
+                )}
               </MEButton>
             </div>
           )}

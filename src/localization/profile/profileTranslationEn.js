@@ -13,10 +13,14 @@ const profileAccordionItemsSubtitleForFatherProfile = `father's contact and occu
 const profileAccordionItemsSubtitleForMotherProfile = `mother's contact and occupation details`;
 const profileAccordionItemsSubtitleForStudentProfile = `personal information and academic details`;
 const profileAccordionItemsSubtitleForEmergencyContact = `emergency contact information and relationship`;
+const profileScreenLastUpdatedAtInfoTitle = "last updated at";
+const profileScreenFormSubmitButtonLabel = "save changes";
+const profileScreenFormCancelButtonLabel = "cancel";
 
 export {
   profileScreenTitle,
   profileScreenSubtitle,
+  profileScreenLastUpdatedAtInfoTitle,
   profileAccordionItemsTitleForAddress,
   profileAccordionItemsSubtitleForAddress,
   profileAccordionItemsTitleForFatherProfile,
@@ -29,4 +33,6 @@ export {
   profileAccordionItemsSubtitleForStudentProfile,
   profileAccordionItemsSubtitleForSiblingsProfile,
   profileAccordionItemsSubtitleForEmergencyContact,
+  profileScreenFormSubmitButtonLabel,
+  profileScreenFormCancelButtonLabel,
 };
