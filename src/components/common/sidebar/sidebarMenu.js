@@ -4,10 +4,17 @@ import {
   User,
   Settings,
   School,
-  House
+  House,
 } from "lucide-react";
+import {
+  root,
+  school,
+  profile,
+  settings,
+  dashboard,
+  admissionForm,
+} from "@MEUtils/pageRoutes";
 import { SIDEBAR_MENU } from "@MEHelpers/enums";
-import { admissionForm, school, root, dashboard, profile } from "@MEUtils/pageRoutes";
 
 export const sidebarMenu = [
   {
@@ -32,7 +39,7 @@ export const sidebarMenu = [
   },
   {
     title: SIDEBAR_MENU.SETTINGS,
-    url: dashboard,
+    url: settings,
     icon: Settings,
   },
 ];

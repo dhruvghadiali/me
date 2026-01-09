@@ -10,6 +10,7 @@ import {
   admissionForm,
   forgottenPassword,
   profile,
+  settings,
 } from "@MEPageRoutes";
 import { ThemeProvider } from "@MEContexts/themeProvider";
 
@@ -22,6 +23,7 @@ import ProfilePage from "@MEPages/profilePage";
 import DashboardPage from "@MEPages/dashboard";
 import NotFoundPage from "@MEPages/NotFoundPage";
 import AdmissionFormPage from "@MEPages/admissionFormPage";
+import SettingsPage from "@MEPages/settingsPage";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";
 import AuthChecker from "@MECommonComponents//hoc/authChecker";
 import ForgottenPasswordPage from "@MEPages/forgottenPasswordPage";
@@ -115,6 +117,16 @@ function App() {
                 <ProtectedRoute>
                   <MESidebar>
                     <ProfilePage />
+                  </MESidebar>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={settings}
+              element={
+                <ProtectedRoute>
+                  <MESidebar>
+                    <SettingsPage />
                   </MESidebar>
                 </ProtectedRoute>
               }
