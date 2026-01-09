@@ -1,3 +1,6 @@
+
+const profileScreenTitle = "student profile";
+const profileScreenSubtitle = "complete information about you and your family";
 const profileAccordionItemsTitleForAddress = "address";
 const profileAccordionItemsTitleForFatherProfile = "father profile";
 const profileAccordionItemsTitleForMotherProfile = "mother profile";
@@ -12,6 +15,8 @@ const profileAccordionItemsSubtitleForStudentProfile = `personal information and
 const profileAccordionItemsSubtitleForEmergencyContact = `emergency contact information and relationship`;
 
 export {
+  profileScreenTitle,
+  profileScreenSubtitle,
   profileAccordionItemsTitleForAddress,
   profileAccordionItemsSubtitleForAddress,
   profileAccordionItemsTitleForFatherProfile,

@@ -1,16 +1,31 @@
+import { useTranslation } from "react-i18next";
+
+import _ from "lodash";
+
 import ScreenHeaderComponent from "@MECommonComponents/typography/screenHeader";
 import ScreenSubtitleComponent from "@MECommonComponents/typography/screenSubtitle";
 
+import {
+  profileScreenTitle,
+  profileScreenSubtitle,
+} from "@MELocalization/languages/en";
+
 const ProfileHeaderComponent = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 xl:mb-14">
         <ScreenHeaderComponent
-          headerText="Student Profile"
+          headerText={_.startCase(
+            t("profileScreenTitle", { defaultValue: profileScreenTitle })
+          )}
           className="text-left"
         />
         <ScreenSubtitleComponent
-          subTitleText="Complete information about you and your family"
+          subTitleText={_.startCase(
+            t("profileScreenSubtitle", { defaultValue: profileScreenSubtitle })
+          )}
           className="text-left"
         />
       </div>
