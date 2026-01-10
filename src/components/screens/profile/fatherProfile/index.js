@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { useFormik } from "formik";
 import { Edit2, Check, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 import _ from "lodash";
@@ -18,7 +19,7 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import ProfileErrorMessageComponent from "@MEScreenComponents/profile/errorMessage";
 import LastUpdatedAtInfoComponent from "@MEScreenComponents/profile/lastUpdatedAtInfo";
 
-import { phoneRegExp } from "@MEUtils/regexp";
+import { phoneRegExp, aadhaarNumberRegExp } from "@MEUtils/regexp";
 import {
   createFatherProfilePayload,
   createFatherProfileOverrideAddressPayload,
@@ -39,8 +40,92 @@ import {
   PARENT_OCCUPATIONS_IN,
   EDUCATION_LEVELS_IN,
 } from "@MEHelpers/enums";
+import {
+  fatherProfileFormTitle,
+  fatherProfileFormEmailLabel,
+  fatherProfileFormLastNameLabel,
+  fatherProfileFormEducationLabel,
+  fatherProfileFormFirstNameLabel,
+  fatherProfileFormOccupationLabel,
+  fatherProfileFormPhoneNumberLabel,
+  fatherProfileFormAnnualIncomeLabel,
+  fatherProfileFormAadhaarNumberLabel,
+  fatherProfileFormCaringChildByLabel,
+  fatherProfileFormFatherDeathDateLabel,
+  fatherProfileFormBasicInfoSectionTitle,
+  fatherProfileFormEducationSelectPlaceholder,
+  fatherProfileFormOccupationSelectPlaceholder,
+  profileScreenCityLabel,
+  profileScreenStateLabel,
+  profileScreenAddressLabel,
+  profileScreenZipcodeLabel,
+  profileScreenDistrictLabel,
+  profileScreenAreaNameLabel,
+  profileScreenHomeAddressLabel,
+  profileScreenCitySelectPlaceholder,
+  profileScreenStateSelectPlaceholder,
+  profileScreenZipcodeSelectPlaceholder,
+  profileScreenDistrictSelectPlaceholder,
+  profileScreenAreaNameSelectPlaceholder,
+  profileScreenFormSubmitButtonLabel,
+  profileScreenFormCancelButtonLabel,
+} from "@MELocalization/languages/en";
+import {
+  firstNameMaxChar,
+  firstNameMinChar,
+  lastNameMaxChar,
+  lastNameMinChar,
+  emailMaxChar,
+  emailMinChar,
+  phoneNumberChar,
+  aadhaarNumberChar,
+  addressMaxChar,
+  addressMinChar,
+  fatherFormAnnualIncomeMaxNum,
+  fatherFormAnnualIncomeMinNum,
+  fatherFormCaringChildByMaxChar,
+  fatherFormCaringChildByMinChar,
+} from "@MEHelpers/formValidationConst";
+import {
+  firstNameRequired,
+  firstNameMinLength,
+  firstNameMaxLength,
+  lastNameRequired,
+  lastNameMinLength,
+  lastNameMaxLength,
+  aadhaarNumberLength,
+  aadhaarNumberInvalid,
+  aadhaarNumberRequired,
+  emailMaxLength,
+  emailMinLength,
+  emailInvalid,
+  emailRequired,
+  phoneNumberLength,
+  phoneNumberInvalid,
+  phoneNumberRequired,
+  citySelectionRequired,
+  stateSelectionRequired,
+  zipcodeSelectionRequired,
+  districtSelectionRequired,
+  areaNameSelectionRequired,
+  addressRequired,
+  addressMaxLength,
+  addressMinLength,
+  fatherFormFatherEducationRequired,
+  fatherFormFatherOccupationRequired,
+  fatherFormAnnualIncomeRequired,
+  fatherFormAnnualIncomeMaxNumber,
+  fatherFormAnnualIncomeMinNumber,
+  fatherFormAnnualIncomeMustBePositive,
+  fatherFormFatherDeathOfDateInvalid,
+  fatherFormFatherDeathOfDateRequired,
+  fatherFormCaringChildByRequired,
+  fatherFormCaringChildByMaxLength,
+  fatherFormCaringChildByMinLength,
+} from "@MEHelpers/formValidationMessage";
 
 const FatherProfileComponent = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [isEditMode, setIsEditMode] = useState(false);
@@ -170,7 +255,11 @@ const FatherProfileComponent = () => {
           <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col gap-1">
               <h2 className="text-2xl font-bold text-primary">
-                Father Profile
+                {_.startCase(
+                  t("fatherProfileFormTitle", {
+                    defaultValue: fatherProfileFormTitle,
+                  })
+                )}
               </h2>
               <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} />
             </div>
@@ -193,14 +282,22 @@ const FatherProfileComponent = () => {
           {/* Basic Information Section */}
           <div className="mt-3">
             <h3 className="text-base font-semibold mb-4 text-primary">
-              Basic Information
+              {_.upperFirst(
+                t("fatherProfileFormBasicInfoSectionTitle", {
+                  defaultValue: fatherProfileFormBasicInfoSectionTitle,
+                })
+              )}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <MEInput
                 id="firstName"
                 meclassname="flex"
                 type={"text"}
-                label={"First Name"}
+                label={_.upperFirst(
+                  t("fatherProfileFormFirstNameLabel", {
+                    defaultValue: fatherProfileFormFirstNameLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.firstName}
@@ -230,7 +327,11 @@ const FatherProfileComponent = () => {
                 id="lastName"
                 meclassname="flex"
                 type={"text"}
-                label={"Last Name"}
+                label={_.upperFirst(
+                  t("fatherProfileFormLastNameLabel", {
+                    defaultValue: fatherProfileFormLastNameLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.lastName}
@@ -260,7 +361,11 @@ const FatherProfileComponent = () => {
                 id="phoneNumber"
                 meclassname="flex"
                 type={"text"}
-                label={"Phone Number"}
+                label={_.upperFirst(
+                  t("fatherProfileFormPhoneNumberLabel", {
+                    defaultValue: fatherProfileFormPhoneNumberLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.phoneNumber}
@@ -292,7 +397,11 @@ const FatherProfileComponent = () => {
                 id="email"
                 meclassname="flex"
                 type={"text"}
-                label={"Email"}
+                label={_.upperFirst(
+                  t("fatherProfileFormEmailLabel", {
+                    defaultValue: fatherProfileFormEmailLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.email}
@@ -320,7 +429,11 @@ const FatherProfileComponent = () => {
                 id="aadhaarNumber"
                 meclassname="flex"
                 type={"text"}
-                label={"Aadhaar Number"}
+                label={_.upperFirst(
+                  t("fatherProfileFormAadhaarNumberLabel", {
+                    defaultValue: fatherProfileFormAadhaarNumberLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.aadhaarNumber}
@@ -349,11 +462,19 @@ const FatherProfileComponent = () => {
               />
 
               <MESelect
-                label="Occupation"
+                label={_.upperFirst(
+                  t("fatherProfileFormOccupationLabel", {
+                    defaultValue: fatherProfileFormOccupationLabel,
+                  })
+                )}
+                selectLabel={_.upperFirst(
+                  t("fatherProfileFormOccupationSelectPlaceholder", {
+                    defaultValue: fatherProfileFormOccupationSelectPlaceholder,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.occupation}
-                selectLabel="Select Occupation"
                 selectVariant={
                   errors.occupation && touched.occupation
                     ? ME_SELECT_COMPONENT_VARIANTS.DANGER
@@ -383,11 +504,19 @@ const FatherProfileComponent = () => {
               />
 
               <MESelect
-                label="Education"
+                label={_.upperFirst(
+                  t("fatherProfileFormEducationLabel", {
+                    defaultValue: fatherProfileFormEducationLabel,
+                  })
+                )}
+                selectLabel={_.upperFirst(
+                  t("fatherProfileFormEducationSelectPlaceholder", {
+                    defaultValue: fatherProfileFormEducationSelectPlaceholder,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.education}
-                selectLabel="Select Education"
                 selectVariant={
                   errors.education && touched.education
                     ? ME_SELECT_COMPONENT_VARIANTS.DANGER
@@ -418,7 +547,11 @@ const FatherProfileComponent = () => {
                 id="annualIncome"
                 meclassname="flex"
                 type={"number"}
-                label={"Annual Income"}
+                label={_.upperFirst(
+                  t("fatherProfileFormAnnualIncomeLabel", {
+                    defaultValue: fatherProfileFormAnnualIncomeLabel,
+                  })
+                )}
                 required={true}
                 disabled={!isEditMode}
                 value={values.annualIncome}
@@ -478,7 +611,11 @@ const FatherProfileComponent = () => {
               !values.isAlive[0].isSelected && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
                   <MEDatePicker
-                    label={"Date of Death"}
+                    label={_.upperFirst(
+                      t("fatherProfileFormFatherDeathDateLabel", {
+                        defaultValue: fatherProfileFormFatherDeathDateLabel,
+                      })
+                    )}
                     placeholder={""}
                     required={true}
                     disabled={!isEditMode}
@@ -511,7 +648,11 @@ const FatherProfileComponent = () => {
                     id="caringChildBy"
                     meclassname="flex"
                     type={"text"}
-                    label={"Caring Child By"}
+                    label={_.upperFirst(
+                      t("fatherProfileFormCaringChildByLabel", {
+                        defaultValue: fatherProfileFormCaringChildByLabel,
+                      })
+                    )}
                     required={true}
                     disabled={!isEditMode}
                     value={values.caringChildBy}
@@ -545,8 +686,11 @@ const FatherProfileComponent = () => {
           {/* Address Section */}
           <div className="mt-5">
             <MECheckbox
-              label="Address"
-              disabled={!isEditMode}
+              label={_.upperFirst(
+                t("profileScreenAddressLabel", {
+                  defaultValue: profileScreenAddressLabel,
+                })
+              )}
               labelVariant={
                 errors.sameAddressAsStudent && touched.sameAddressAsStudent
                   ? ME_CHECKBOX_COMPONENT_VARIANTS.DANGER
@@ -581,7 +725,11 @@ const FatherProfileComponent = () => {
                     id="homeAddress"
                     meclassname="flex"
                     type={"text"}
-                    label={"Home Address"}
+                    label={_.upperFirst(
+                      t("profileScreenHomeAddressLabel", {
+                        defaultValue: profileScreenHomeAddressLabel,
+                      })
+                    )}
                     required={true}
                     disabled={!isEditMode}
                     value={values.addressOverride.homeAddress}
@@ -621,7 +769,11 @@ const FatherProfileComponent = () => {
                   />
 
                   <MECombobox
-                    label="State"
+                    label={_.upperFirst(
+                      t("profileScreenStateLabel", {
+                        defaultValue: profileScreenStateLabel,
+                      })
+                    )}
                     required={true}
                     disabled={!isEditMode}
                     value={values.addressOverride.state}
@@ -629,7 +781,11 @@ const FatherProfileComponent = () => {
                       _.find(states, { value: values.addressOverride.state })
                         ?.label || ""
                     }
-                    searchPlaceholder={"Search State..."}
+                    searchPlaceholder={_.upperFirst(
+                      t("profileScreenStateSelectPlaceholder", {
+                        defaultValue: profileScreenStateSelectPlaceholder,
+                      })
+                    )}
                     labelVariant={
                       errors.addressOverride?.state &&
                       touched.addressOverride?.state
@@ -675,7 +831,11 @@ const FatherProfileComponent = () => {
                   />
 
                   <MECombobox
-                    label="District"
+                    label={_.upperFirst(
+                      t("profileScreenDistrictLabel", {
+                        defaultValue: profileScreenDistrictLabel,
+                      })
+                    )}
                     required={true}
                     disabled={!isEditMode}
                     value={values.addressOverride.district}
@@ -684,7 +844,11 @@ const FatherProfileComponent = () => {
                         value: values.addressOverride.district,
                       })?.label || ""
                     }
-                    searchPlaceholder={"Search District..."}
+                    searchPlaceholder={_.upperFirst(
+                      t("profileScreenDistrictSelectPlaceholder", {
+                        defaultValue: profileScreenDistrictSelectPlaceholder,
+                      })
+                    )}
                     labelVariant={
                       errors.addressOverride?.district &&
                       touched.addressOverride?.district
@@ -734,7 +898,11 @@ const FatherProfileComponent = () => {
                   />
 
                   <MECombobox
-                    label="City"
+                    label={_.upperFirst(
+                      t("profileScreenCityLabel", {
+                        defaultValue: profileScreenCityLabel,
+                      })
+                    )}
                     required={true}
                     disabled={!isEditMode}
                     value={values.addressOverride.city}
@@ -743,7 +911,11 @@ const FatherProfileComponent = () => {
                         value: values.addressOverride.city,
                       })?.label || ""
                     }
-                    searchPlaceholder={"Search City..."}
+                    searchPlaceholder={_.upperFirst(
+                      t("profileScreenCitySelectPlaceholder", {
+                        defaultValue: profileScreenCitySelectPlaceholder,
+                      })
+                    )}
                     labelVariant={
                       errors.addressOverride?.city &&
                       touched.addressOverride?.city
@@ -791,7 +963,11 @@ const FatherProfileComponent = () => {
                   />
 
                   <MECombobox
-                    label="Area Name"
+                    label={_.upperFirst(
+                      t("profileScreenAreaNameLabel", {
+                        defaultValue: profileScreenAreaNameLabel,
+                      })
+                    )}
                     required={true}
                     disabled={!isEditMode}
                     value={values.addressOverride.areaName}
@@ -800,7 +976,11 @@ const FatherProfileComponent = () => {
                         value: values.addressOverride.areaName,
                       })?.label || ""
                     }
-                    searchPlaceholder={"Search Area Name..."}
+                    searchPlaceholder={_.upperFirst(
+                      t("profileScreenAreaNameSelectPlaceholder", {
+                        defaultValue: profileScreenAreaNameSelectPlaceholder,
+                      })
+                    )}
                     labelVariant={
                       errors.addressOverride?.areaName &&
                       touched.addressOverride?.areaName
@@ -850,7 +1030,11 @@ const FatherProfileComponent = () => {
                   />
 
                   <MECombobox
-                    label="Zipcode"
+                    label={_.upperFirst(
+                      t("profileScreenZipcodeLabel", {
+                        defaultValue: profileScreenZipcodeLabel,
+                      })
+                    )}
                     required={true}
                     disabled={!isEditMode}
                     value={values.addressOverride.zipcode}
@@ -859,7 +1043,11 @@ const FatherProfileComponent = () => {
                         value: values.addressOverride.zipcode,
                       })?.label || ""
                     }
-                    searchPlaceholder={"Search Zipcode..."}
+                    searchPlaceholder={_.upperFirst(
+                      t("profileScreenZipcodeSelectPlaceholder", {
+                        defaultValue: profileScreenZipcodeSelectPlaceholder,
+                      })
+                    )}
                     labelVariant={
                       errors.addressOverride?.zipcode &&
                       touched.addressOverride?.zipcode
@@ -923,14 +1111,22 @@ const FatherProfileComponent = () => {
                 ) : (
                   <Check className="w-4 h-4" />
                 )}
-                Save Changes
+                {_.upperFirst(
+                  t("profileScreenFormSubmitButtonLabel", {
+                    defaultValue: profileScreenFormSubmitButtonLabel,
+                  })
+                )}
               </MEButton>
               <MEButton
                 type="button"
                 onClick={handleCloseEditMode}
                 variant="outline"
               >
-                Cancel
+                {_.upperFirst(
+                  t("profileScreenFormCancelButtonLabel", {
+                    defaultValue: profileScreenFormCancelButtonLabel,
+                  })
+                )}
               </MEButton>
             </div>
           )}
@@ -943,29 +1139,33 @@ const FatherProfileComponent = () => {
 // Validation Schema
 const fatherValidationSchema = Yup.object().shape({
   firstName: Yup.string()
-    .min(2, "First name must be at least 2 characters")
-    .max(25, "First name must be at most 25 characters")
-    .required("First name is required"),
+    .min(firstNameMinChar, firstNameMinLength)
+    .max(firstNameMaxChar, firstNameMaxLength)
+    .required(firstNameRequired),
   lastName: Yup.string()
-    .min(2, "Last name must be at least 2 characters")
-    .max(25, "Last name must be at most 25 characters")
-    .required("Last name is required"),
+    .min(lastNameMinChar, lastNameMinLength)
+    .max(lastNameMaxChar, lastNameMaxLength)
+    .required(lastNameRequired),
   phoneNumber: Yup.string()
-    .matches(phoneRegExp, "Invalid phone number")
-    .length(10, "Phone number must be 10 digits")
-    .required("Phone number is required"),
+    .matches(phoneRegExp, phoneNumberInvalid)
+    .length(phoneNumberChar, phoneNumberLength)
+    .required(phoneNumberRequired),
   email: Yup.string()
-    .max(100, "Email must be at most 100 characters")
-    .email("Invalid email format")
-    .required("Email is required"),
+    .max(emailMaxChar, emailMaxLength)
+    .min(emailMinChar, emailMinLength)
+    .email(emailInvalid)
+    .required(emailRequired),
   aadhaarNumber: Yup.string()
-    .matches(/^\d{12}$/, "Aadhaar must be 12 digits")
-    .required("Aadhaar number is required"),
-  occupation: Yup.string().required("Occupation is required"),
-  education: Yup.string().required("Education is required"),
+    .matches(aadhaarNumberRegExp, aadhaarNumberInvalid)
+    .length(aadhaarNumberChar, aadhaarNumberLength)
+    .required(aadhaarNumberRequired),
+  occupation: Yup.string().required(fatherFormFatherOccupationRequired),
+  education: Yup.string().required(fatherFormFatherEducationRequired),
   annualIncome: Yup.number()
-    .positive("Annual income must be a positive number")
-    .required("Annual income is required"),
+    .positive(fatherFormAnnualIncomeMustBePositive)
+    .required(fatherFormAnnualIncomeRequired)
+    .max(fatherFormAnnualIncomeMaxNum, fatherFormAnnualIncomeMaxNumber)
+    .min(fatherFormAnnualIncomeMinNum, fatherFormAnnualIncomeMinNumber),
   isAlive: Yup.array().of(
     Yup.object().shape({
       isSelected: Yup.boolean(),
@@ -976,16 +1176,16 @@ const fatherValidationSchema = Yup.object().shape({
     is: (isAlive) => Array.isArray(isAlive) && !isAlive[0]?.isSelected,
     then: (schema) =>
       schema
-        .required("Date of death is required")
-        .max(moment().endOf("day"), "Date of death cannot be in the future"),
+        .required(fatherFormFatherDeathOfDateRequired)
+        .max(moment().endOf("day"), fatherFormFatherDeathOfDateInvalid),
   }),
   caringChildBy: Yup.string().when("isAlive", {
     is: (isAlive) => Array.isArray(isAlive) && !isAlive[0]?.isSelected,
     then: (schema) =>
       schema
-        .min(2, "Caring child by must be at least 2 characters")
-        .max(50, "Caring child by must be at most 50 characters")
-        .required("Please provide caring child by information"),
+        .min(fatherFormCaringChildByMinChar, fatherFormCaringChildByMinLength)
+        .max(fatherFormCaringChildByMaxChar, fatherFormCaringChildByMaxLength)
+        .required(fatherFormCaringChildByRequired),
   }),
   sameAddressAsStudent: Yup.array().of(
     Yup.object().shape({
@@ -999,15 +1199,15 @@ const fatherValidationSchema = Yup.object().shape({
       !sameAddressAsStudent[0]?.isSelected,
     then: (schema) =>
       schema.shape({
-        state: Yup.string().required("State is required"),
-        district: Yup.string().required("District is required"),
-        city: Yup.string().required("City is required"),
-        areaName: Yup.string().required("Area name is required"),
-        zipcode: Yup.string().required("Zipcode is required"),
+        state: Yup.string().required(stateSelectionRequired),
+        district: Yup.string().required(districtSelectionRequired),
+        city: Yup.string().required(citySelectionRequired),
+        areaName: Yup.string().required(areaNameSelectionRequired),
+        zipcode: Yup.string().required(zipcodeSelectionRequired),
         homeAddress: Yup.string()
-          .min(5, "Home address must be at least 5 characters")
-          .max(200, "Home address must be at most 200 characters")
-          .required("Home address is required"),
+          .min(addressMinChar, addressMinLength)
+          .max(addressMaxChar, addressMaxLength)
+          .required(addressRequired),
       }),
   }),
 });

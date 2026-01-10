@@ -38,6 +38,7 @@ const getStudentProfile = createAsyncThunk(
           profile,
         };
       } else {
+        profile = formatStudentProfileData({});
         return {
           error: response?.message || "Profile information is not available.",
           profile,
@@ -47,7 +48,10 @@ const getStudentProfile = createAsyncThunk(
       const errMsg =
         (error && (error.message || error.error)) ||
         "Profile information could not be retrieved. Please try again.";
-      return rejectWithValue({ error: errMsg });
+      return rejectWithValue({
+        error: errMsg,
+        profile: formatStudentProfileData({}),
+      });
     }
   }
 );
@@ -326,9 +330,13 @@ const addEmergencyContactProfile = createAsyncThunk(
   "profile/addEmergencyContactProfile",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
-      let response = await axiosInstance.post(emergencyContactProfileAPIRoute, payload, {
-        state: getState(),
-      });
+      let response = await axiosInstance.post(
+        emergencyContactProfileAPIRoute,
+        payload,
+        {
+          state: getState(),
+        }
+      );
 
       if (isAPIServedSuccessfully(response)) {
         // Refresh profile after successful addition

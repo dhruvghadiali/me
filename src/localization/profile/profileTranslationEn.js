@@ -16,6 +16,18 @@ const profileAccordionItemsSubtitleForEmergencyContact = `emergency contact info
 const profileScreenLastUpdatedAtInfoTitle = "last updated at";
 const profileScreenFormSubmitButtonLabel = "save changes";
 const profileScreenFormCancelButtonLabel = "cancel";
+const profileScreenCityLabel = "city";
+const profileScreenStateLabel = "state";
+const profileScreenAddressLabel = "address";
+const profileScreenZipcodeLabel = "zipcode";
+const profileScreenDistrictLabel = "district";
+const profileScreenAreaNameLabel = "area name";
+const profileScreenHomeAddressLabel = "home address";
+const profileScreenCitySelectPlaceholder = "search city ...";
+const profileScreenStateSelectPlaceholder = "search state ...";
+const profileScreenZipcodeSelectPlaceholder = "search zipcode ...";
+const profileScreenDistrictSelectPlaceholder = "search district ...";
+const profileScreenAreaNameSelectPlaceholder = "search area name ...";
 
 export {
   profileScreenTitle,
@@ -35,4 +47,16 @@ export {
   profileAccordionItemsSubtitleForEmergencyContact,
   profileScreenFormSubmitButtonLabel,
   profileScreenFormCancelButtonLabel,
+  profileScreenCityLabel,
+  profileScreenStateLabel,
+  profileScreenZipcodeLabel,
+  profileScreenAddressLabel,
+  profileScreenDistrictLabel,
+  profileScreenAreaNameLabel,
+  profileScreenHomeAddressLabel,
+  profileScreenCitySelectPlaceholder,
+  profileScreenStateSelectPlaceholder,
+  profileScreenZipcodeSelectPlaceholder,
+  profileScreenDistrictSelectPlaceholder,
+  profileScreenAreaNameSelectPlaceholder,
 };

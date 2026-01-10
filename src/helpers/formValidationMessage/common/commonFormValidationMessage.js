@@ -13,6 +13,8 @@ import {
   usernameMinChar,
   passwordMaxChar,
   passwordMinChar,
+  addressMinChar,
+  addressMaxChar,
 } from "@MEHelpers/formValidationConst";
 
 const firstNameRequired = "First name is required";
@@ -42,6 +44,14 @@ const usernameMaxLength = `Username must be at most ${usernameMaxChar} character
 const passwordRequired = "Password is required";
 const passwordMinLength = `Password must be at least ${passwordMinChar} characters`;
 const passwordMaxLength = `Password must be at most ${passwordMaxChar} characters`;
+const citySelectionRequired = "city selection is required";
+const stateSelectionRequired = "state selection is required";
+const zipcodeSelectionRequired = "zipcode selection is required";
+const districtSelectionRequired = "district selection is required";
+const areaNameSelectionRequired = "area name selection is required";
+const addressRequired = "address is required";
+const addressMaxLength = `address must be at most ${addressMaxChar} characters`;
+const addressMinLength = `address must be at least ${addressMinChar} characters`;
 
 export {
     firstNameRequired,
@@ -71,4 +81,12 @@ export {
     passwordRequired,
     passwordMinLength,
     passwordMaxLength,
+    citySelectionRequired,
+    stateSelectionRequired,
+    zipcodeSelectionRequired,
+    districtSelectionRequired,
+    areaNameSelectionRequired,
+    addressRequired,
+    addressMaxLength,
+    addressMinLength,
 }

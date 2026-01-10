@@ -62,7 +62,7 @@ export const profileSlice = createSlice({
         state.profileScreenError = action.payload.error;
       })
       .addCase(getStudentProfile.rejected, (state, action) => {
-        state.profile = {};
+        state.profile = action.payload.profile;
         state.profileScreenLoader = false;
         state.profileScreenError = action.payload.error;
       })
