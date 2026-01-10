@@ -1,8 +1,14 @@
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 
 import _ from "lodash";
 
 import { getSettingsAccordionItems } from "@MEScreenComponents/settings/accordionConfig";
+import {
+  resetUpdatePasswordState,
+  resetUpdateUsernameState,
+} from "@MERedux/settings/settingsSlice";
 import {
   Accordion,
   AccordionItem,
@@ -13,7 +19,13 @@ import {
 import SettingHeaderComponent from "@MEScreenComponents/settings/header";
 
 const SettingsScreenComponent = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    dispatch(resetUpdateUsernameState());
+    dispatch(resetUpdatePasswordState());
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-background">

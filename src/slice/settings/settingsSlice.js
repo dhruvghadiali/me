@@ -19,7 +19,15 @@ export const settingsSlice = createSlice({
   reducers: {
     toggleAlertDialog: (state, action) => {
       state.displayAlertDialog = action.payload;
-    }
+    },
+    resetUpdateUsernameState: (state, _) => {
+      state.updateUsernameLoader = false;
+      state.updateUsernameError = "";
+    },
+    resetUpdatePasswordState: (state, _) => {
+      state.updatePasswordLoader = false;
+      state.updatePasswordError = "";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,7 +60,9 @@ export const settingsSlice = createSlice({
 });
 
 export const {
-  toggleAlertDialog
+  toggleAlertDialog,
+  resetUpdateUsernameState,
+  resetUpdatePasswordState,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;
