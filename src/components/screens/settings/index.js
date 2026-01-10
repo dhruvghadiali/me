@@ -1,33 +1,19 @@
-import React from "react";
-import { Lock, User as UserIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
+import _ from "lodash";
+
+import { getSettingsAccordionItems } from "@MEScreenComponents/settings/accordionConfig";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@MEShadcnComponents/accordion";
+
 import SettingHeaderComponent from "@MEScreenComponents/settings/header";
-import UpdateUsernameComponent from "@MEScreenComponents/settings/updateUsername";
-import UpdatePasswordComponent from "@MEScreenComponents/settings/updatePassword";
 
 const SettingsScreenComponent = () => {
-  const accordionItems = [
-    {
-      id: "username",
-      title: "Update Username",
-      sub: "Change your account username",
-      icon: <UserIcon className="w-5 h-5" />,
-      content: <UpdateUsernameComponent />,
-    },
-    {
-      id: "password",
-      title: "Update Password",
-      sub: "Change your account password",
-      icon: <Lock className="w-5 h-5" />,
-      content: <UpdatePasswordComponent />,
-    },
-  ];
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-background">
@@ -35,7 +21,7 @@ const SettingsScreenComponent = () => {
       <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-10 max-w-4xl mx-auto">
         <Accordion type="single" collapsible>
           <div className="w-full space-y-2">
-            {accordionItems.map((item) => (
+            {_.map(getSettingsAccordionItems(t), (item) => (
               <div key={item.id} className="py-2">
                 <AccordionItem
                   value={item.id}
