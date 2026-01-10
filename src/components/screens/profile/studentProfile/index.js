@@ -9,8 +9,78 @@ import _ from "lodash";
 import * as Yup from "yup";
 import moment from "moment";
 
-import { phoneRegExp } from "@MEUtils/regexp";
 import { createStudentProfilePayload } from "@MEUtils/apiPayload";
+import { phoneRegExp, aadhaarNumberRegExp } from "@MEUtils/regexp";
+import {
+  addStudentProfile,
+  updatedStudentProfile,
+} from "@MERedux/profile/profileAction";
+import {
+  GENDERS,
+  BOOLEANS,
+  BLOOD_GROUPS,
+  ME_INPUT_COMPONENT_VARIANTS,
+  ME_SELECT_COMPONENT_VARIANTS,
+  ME_CHECKBOX_COMPONENT_VARIANTS,
+  ME_DATEPICKER_COMPONENT_VARIANTS,
+  ME_RADIO_BUTTON_COMPONENT_VARIANTS,
+} from "@MEHelpers/enums";
+import {
+  firstNameMaxChar,
+  firstNameMinChar,
+  lastNameMaxChar,
+  lastNameMinChar,
+  emailMaxChar,
+  emailMinChar,
+  phoneNumberChar,
+  dateOfBirthMaxAge,
+  dateOfBirthMinAge,
+  aadhaarNumberChar,
+  nationalityMaxChar,
+  nationalityMinChar,
+  medicalIssueDetailsMaxChar,
+  medicalIssueDetailsMinChar,
+} from "@MEHelpers/formValidationConst";
+import {
+  firstNameRequired,
+  firstNameMinLength,
+  firstNameMaxLength,
+  lastNameRequired,
+  lastNameMinLength,
+  lastNameMaxLength,
+  dateOfBirthInvalid,
+  dateOfBirthIsRequired,
+  dateOfBirthMinAgeLimit,
+  dateOfBirthMaxAgeLimit,
+  aadhaarNumberLength,
+  aadhaarNumberInvalid,
+  aadhaarNumberRequired,
+  emailMaxLength,
+  emailMinLength,
+  emailInvalid,
+  emailRequired,
+  phoneNumberLength,
+  phoneNumberInvalid,
+  phoneNumberRequired,
+  genderRequired,
+  bloodGroupRequired,
+  nationalityRequired,
+  nationalityMaxLength,
+  nationalityMinLength,
+  visionIssueDetailsRequired,
+  visionIssueDetailsMaxLength,
+  visionIssueDetailsMinLength,
+  hearingIssueDetailsRequired,
+  hearingIssueDetailsMaxLength,
+  hearingIssueDetailsMinLength,
+  physicalIssueDetailsRequired,
+  physicalIssueDetailsMaxLength,
+  physicalIssueDetailsMinLength,
+  mentalIssueDetailsRequired,
+  mentalIssueDetailsMaxLength,
+  mentalIssueDetailsMinLength,
+  allergiesDetailsMinLength,
+} from "@MEHelpers/formValidationMessage";
 import {
   studentProfileFormTitle,
   studentProfileFormEmailLabel,
@@ -42,20 +112,6 @@ import {
   studentProfileFormHearingIssueDetailPlaceholder,
   studentProfileFormPhysicalIssueDetailPlaceholder,
 } from "@MELocalization/languages/en";
-import {
-  addStudentProfile,
-  updatedStudentProfile,
-} from "@MERedux/profile/profileAction";
-import {
-  GENDERS,
-  BOOLEANS,
-  BLOOD_GROUPS,
-  ME_INPUT_COMPONENT_VARIANTS,
-  ME_SELECT_COMPONENT_VARIANTS,
-  ME_CHECKBOX_COMPONENT_VARIANTS,
-  ME_DATEPICKER_COMPONENT_VARIANTS,
-  ME_RADIO_BUTTON_COMPONENT_VARIANTS,
-} from "@MEHelpers/enums";
 
 import MESelect from "@/components/common/form/select";
 import MEInput from "@MECommonComponents/input/meInput";
@@ -1037,78 +1093,79 @@ const StudentProfileComponent = () => {
 // Validation Schema
 const studentValidationSchema = Yup.object().shape({
   firstName: Yup.string()
-    .min(2, "First name must be at least 2 characters")
-    .max(25, "First name must be at most 25 characters")
-    .required("First name is required"),
+    .min(firstNameMinChar, firstNameMinLength)
+    .max(firstNameMaxChar, firstNameMaxLength)
+    .required(firstNameRequired),
   lastName: Yup.string()
-    .min(2, "Last name must be at least 2 characters")
-    .max(25, "Last name must be at most 25 characters")
-    .required("Last name is required"),
+    .min(lastNameMinChar, lastNameMinLength)
+    .max(lastNameMaxChar, lastNameMaxLength)
+    .required(lastNameRequired),
   dateOfBirth: Yup.date()
-    .required("Date of birth is required")
-    .typeError("Date of birth must be a valid date")
-    .max(
-      moment().startOf("day"),
-      "Date of birth cannot be today or in the future"
-    )
+    .required(dateOfBirthIsRequired)
+    .typeError(dateOfBirthInvalid)
     .min(
-      moment().subtract(25, "years").endOf("day"),
-      "You must be at least 3 years old"
+      moment().subtract(dateOfBirthMinAge, "years").endOf("day"),
+      dateOfBirthMinAgeLimit
     )
     .max(
-      moment().subtract(3, "years").startOf("day"),
-      "You must be at most 25 years old"
+      moment().subtract(dateOfBirthMaxAge, "years").startOf("day"),
+      dateOfBirthMaxAgeLimit
     ),
   aadhaarNumber: Yup.string()
-    .matches(/^\d{12}$/, "Aadhaar must be 12 digits")
-    .required("Aadhaar number is required"),
+    .matches(aadhaarNumberRegExp, aadhaarNumberInvalid)
+    .length(aadhaarNumberChar, aadhaarNumberLength)
+    .required(aadhaarNumberRequired),
   email: Yup.string()
-    .max(100, "Email must be at most 100 characters")
-    .email("Invalid email format")
-    .required("Email is required"),
+    .max(emailMaxChar, emailMaxLength)
+    .min(emailMinChar, emailMinLength)
+    .email(emailInvalid)
+    .required(emailRequired),
   phoneNumber: Yup.string()
-    .matches(phoneRegExp, "Invalid phone number")
-    .length(10, "Phone number must be 10 digits")
-    .required("Phone number is required"),
-  gender: Yup.string().required("Gender is required"),
-  bloodGroup: Yup.string().required("Blood group is required"),
-  nationality: Yup.string().required("Nationality is required"),
+    .matches(phoneRegExp, phoneNumberInvalid)
+    .length(phoneNumberChar, phoneNumberLength)
+    .required(phoneNumberRequired),
+  gender: Yup.string().required(genderRequired),
+  bloodGroup: Yup.string().required(bloodGroupRequired),
+  nationality: Yup.string()
+    .required(nationalityRequired)
+    .min(nationalityMinChar, nationalityMinLength)
+    .max(nationalityMaxChar, nationalityMaxLength),
   medicalInfo: Yup.object().shape({
     hasHearingIssue: Yup.boolean(),
     hearingIssueDetails: Yup.string().when("hasHearingIssue", {
       is: true,
       then: (schema) =>
         schema
-          .min(10, "Hearing issue details must be at least 10 characters")
-          .max(200, "Hearing issue details must be at most 200 characters")
-          .required("Please provide hearing issue details"),
+          .min(medicalIssueDetailsMinChar, hearingIssueDetailsMinLength)
+          .max(medicalIssueDetailsMaxChar, hearingIssueDetailsMaxLength)
+          .required(hearingIssueDetailsRequired),
     }),
     hasVisionIssue: Yup.boolean(),
     visionIssueDetails: Yup.string().when("hasVisionIssue", {
       is: true,
       then: (schema) =>
         schema
-          .min(10, "Vision issue details must be at least 10 characters")
-          .max(200, "Vision issue details must be at most 200 characters")
-          .required("Please provide vision issue details"),
+          .min(medicalIssueDetailsMinChar, visionIssueDetailsMinLength)
+          .max(medicalIssueDetailsMaxChar, visionIssueDetailsMaxLength)
+          .required(visionIssueDetailsRequired),
     }),
     hasPhysicalIssue: Yup.boolean(),
     physicalIssueDetails: Yup.string().when("hasPhysicalIssue", {
       is: true,
       then: (schema) =>
         schema
-          .min(10, "Physical issue details must be at least 10 characters")
-          .max(200, "Physical issue details must be at most 200 characters")
-          .required("Please provide physical issue details"),
+          .min(medicalIssueDetailsMinChar, physicalIssueDetailsMinLength)
+          .max(medicalIssueDetailsMaxChar, physicalIssueDetailsMaxLength)
+          .required(physicalIssueDetailsRequired),
     }),
     hasMentalIssue: Yup.boolean(),
     mentalIssueDetails: Yup.string().when("hasMentalIssue", {
       is: true,
       then: (schema) =>
         schema
-          .min(10, "Mental issue details must be at least 10 characters")
-          .max(200, "Mental issue details must be at most 200 characters")
-          .required("Please provide mental issue details"),
+          .min(medicalIssueDetailsMinChar, mentalIssueDetailsMinLength)
+          .max(medicalIssueDetailsMaxChar, mentalIssueDetailsMaxLength)
+          .required(mentalIssueDetailsRequired),
     }),
     hasAllergies: Yup.boolean(),
     allergies: Yup.array().when("hasAllergies", {
@@ -1116,7 +1173,7 @@ const studentValidationSchema = Yup.object().shape({
       then: (schema) =>
         schema.test(
           "at-least-one-selected",
-          "Please select at least one allergy",
+          allergiesDetailsMinLength,
           (allergies) => {
             return (
               Array.isArray(allergies) && allergies.some((a) => a.isSelected)
