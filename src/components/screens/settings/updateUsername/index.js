@@ -1,23 +1,45 @@
 import { useFormik } from "formik";
 import { Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import _ from "lodash";
 import * as Yup from "yup";
 
 import { ME_INPUT_COMPONENT_VARIANTS } from "@MEHelpers/enums";
+import {
+  usernameMaxChar,
+  usernameMinChar,
+  passwordMinChar,
+  passwordMaxChar,
+} from "@MEHelpers/formValidationConst";
+import {
+  usernameRequired,
+  usernameMaxLength,
+  usernameMinLength,
+  passwordRequired,
+  passwordMaxLength,
+  passwordMinLength,
+} from "@MEHelpers/formValidationMessage";
+import {
+  updateUsernameFormTitle,
+  updateUsernameFormSubtitle,
+  updateUsernameFormUsernameLabel,
+  updateUsernameFormPasswordLabel,
+} from "@MELocalization/languages/en";
 
 import MEInput from "@MECommonComponents/input/meInput";
 import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 // import ProfileErrorMessageComponent from "@MEScreenComponents/profile/errorMessage";
-import LastUpdatedAtInfoComponent from "@MEScreenComponents/settings/lastUpdatedAtInfo";
+// import LastUpdatedAtInfoComponent from "@MEScreenComponents/settings/lastUpdatedAtInfo";
 
 const UpdatedUsernameComponent = () => {
+  const { t } = useTranslation();
+
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
-      updatedAt: new Date().toISOString(),
     },
     validationSchema: updatedUsernameValidationSchema,
     validateOnChange: true,
@@ -37,15 +59,8 @@ const UpdatedUsernameComponent = () => {
     isValid,
     handleChange,
     handleBlur,
-    setTouched,
     handleSubmit,
   } = formik;
-
-  const handleCloseEditMode = () => {
-    console.log("Submitted Values:", values);
-    setTouched({});
-    setIsEditMode(false);
-  };
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
@@ -58,23 +73,35 @@ const UpdatedUsernameComponent = () => {
           <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col gap-1">
               <h2 className="text-2xl font-bold text-primary">
-                Update Username
+                {_.startCase(
+                  t("updateUsernameFormTitle", {
+                    defaultValue: updateUsernameFormTitle,
+                  })
+                )}
               </h2>
-              <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} />
+              {/* <LastUpdatedAtInfoComponent updatedAt={values.updatedAt} /> */}
             </div>
           </div>
 
           {/* Basic Information Section */}
           <div className="mt-3">
             <h3 className="text-base font-semibold mb-4 text-primary">
-              Change your account username
+              {_.upperFirst(
+                t("updateUsernameFormSubtitle", {
+                  defaultValue: updateUsernameFormSubtitle,
+                })
+              )}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
               <MEInput
                 id="username"
                 meclassname="flex"
                 type={"text"}
-                label={"Username"}
+                label={_.upperFirst(
+                  t("updateUsernameFormUsernameLabel", {
+                    defaultValue: updateUsernameFormUsernameLabel,
+                  })
+                )}
                 required={true}
                 value={values.username}
                 labelvariant={
@@ -103,7 +130,11 @@ const UpdatedUsernameComponent = () => {
                 id="password"
                 meclassname="flex"
                 type={"password"}
-                label={"Password"}
+                label={_.upperFirst(
+                  t("updateUsernameFormPasswordLabel", {
+                    defaultValue: updateUsernameFormPasswordLabel,
+                  })
+                )}
                 required={true}
                 value={values.password}
                 labelvariant={
@@ -122,9 +153,7 @@ const UpdatedUsernameComponent = () => {
                     : ME_INPUT_COMPONENT_VARIANTS.PRIMARY
                 }
                 message={
-                  errors.password && touched.password
-                    ? errors.newPassword
-                    : ""
+                  errors.password && touched.password ? errors.password : ""
                 }
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -145,13 +174,6 @@ const UpdatedUsernameComponent = () => {
               {/* )} */}
               Save Changes
             </MEButton>
-            <MEButton
-              type="button"
-              onClick={handleCloseEditMode}
-              variant="outline"
-            >
-              Cancel
-            </MEButton>
           </div>
         </div>
       </form>
@@ -162,13 +184,13 @@ const UpdatedUsernameComponent = () => {
 // Validation Schema
 const updatedUsernameValidationSchema = Yup.object().shape({
   username: Yup.string()
-    .min(2, "username must be at least 2 characters")
-    .max(25, "Username must be at most 25 characters")
-    .required("Username is required"),
+    .min(usernameMinChar, usernameMinLength)
+    .max(usernameMaxChar, usernameMaxLength)
+    .required(usernameRequired),
   password: Yup.string()
-    .min(2, "password must be at least 2 characters")
-    .max(25, "Password must be at most 25 characters")
-    .required("Password is required"),
+    .min(passwordMinChar, passwordMinLength)
+    .max(passwordMaxChar, passwordMaxLength)
+    .required(passwordRequired),
 });
 
 export default UpdatedUsernameComponent;

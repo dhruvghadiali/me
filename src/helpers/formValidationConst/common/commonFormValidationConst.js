@@ -10,6 +10,10 @@ const phoneNumberChar = 10;
 const aadhaarNumberChar = 12;
 const nationalityMinChar = 2;
 const nationalityMaxChar = 50;
+const usernameMaxChar = 100;
+const usernameMinChar = 5;
+const passwordMinChar = 5;
+const passwordMaxChar = 50;
 
 export {
   firstNameMinChar,
@@ -24,4 +28,8 @@ export {
   aadhaarNumberChar,
   nationalityMaxChar,
   nationalityMinChar,
+  usernameMaxChar,
+  usernameMinChar,
+  passwordMinChar,
+  passwordMaxChar,
 };

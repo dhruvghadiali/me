@@ -9,6 +9,10 @@ import {
   aadhaarNumberChar,
   nationalityMaxChar,
   nationalityMinChar,
+  usernameMaxChar,
+  usernameMinChar,
+  passwordMaxChar,
+  passwordMinChar,
 } from "@MEHelpers/formValidationConst";
 
 const firstNameRequired = "First name is required";
@@ -32,6 +36,12 @@ const bloodGroupRequired = "Blood group is required";
 const nationalityRequired = "nationality is required";
 const nationalityMaxLength = `Nationality must be at most ${nationalityMaxChar} characters`;
 const nationalityMinLength = `Nationality must be at least ${nationalityMinChar} characters`;
+const usernameRequired = "Username is required";
+const usernameMinLength = `Username must be at least ${usernameMinChar} characters`;
+const usernameMaxLength = `Username must be at most ${usernameMaxChar} characters`;
+const passwordRequired = "Password is required";
+const passwordMinLength = `Password must be at least ${passwordMinChar} characters`;
+const passwordMaxLength = `Password must be at most ${passwordMaxChar} characters`;
 
 export {
     firstNameRequired,
@@ -54,5 +64,11 @@ export {
     bloodGroupRequired,
     nationalityRequired,
     nationalityMaxLength,
-    nationalityMinLength
+    nationalityMinLength,
+    usernameRequired,
+    usernameMinLength,
+    usernameMaxLength,
+    passwordRequired,
+    passwordMinLength,
+    passwordMaxLength,
 }

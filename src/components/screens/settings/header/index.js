@@ -23,7 +23,7 @@ const SettingHeaderComponent = () => {
           className="text-left"
         />
         <ScreenSubtitleComponent
-          subTitleText={_.startCase(
+          subTitleText={_.upperFirst(
             t("settingsScreenSubtitle", {
               defaultValue: settingsScreenSubtitle,
             })

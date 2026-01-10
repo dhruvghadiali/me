@@ -23,7 +23,7 @@ const ProfileHeaderComponent = () => {
           className="text-left"
         />
         <ScreenSubtitleComponent
-          subTitleText={_.startCase(
+          subTitleText={_.upperFirst(
             t("profileScreenSubtitle", { defaultValue: profileScreenSubtitle })
           )}
           className="text-left"
