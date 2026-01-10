@@ -48,9 +48,6 @@ const AddressProfileComponent = () => {
     validateOnBlur: true,
     validateOnMount: true,
     onSubmit: (values) => {
-      console.log("Address Profile Form submitted");
-      console.log("Submitted Values:", values);
-
       if (values.id) {
         // Update existing address profile
         const payload = createAddressProfilePayload(values);

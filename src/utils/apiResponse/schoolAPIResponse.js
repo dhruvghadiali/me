@@ -15,7 +15,6 @@ const transformFacilitiesData = (facilitiesArray) => {
     return _.get(item, "facility.facility_type._id");
   });
 
-  console.log("transformFacilitiesData -> groupedByType", groupedByType);
   // Transform into desired structure
   return _.map(groupedByType, (facilities, facilityTypeId) => {
     const firstFacility = facilities[0];
@@ -149,7 +148,6 @@ const schoolSummaryAPIResponse = (response) => {
 const schoolDetailsAPIResponse = (response) => {
   if (response && response.data && _.size(response.data) > 0) {
     const school = response.data[0];
-    console.log("schoolDetailsAPIResponse -> school", school);
     return {
       id: school.id,
       name: school.name,

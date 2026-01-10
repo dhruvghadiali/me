@@ -18,10 +18,6 @@ export const getAuthData = () => {
           const payload = JSON.parse(atob(tokenParts[1]));
           const expirationTime = payload.exp ? moment.unix(payload.exp) : null;
 
-          console.log("Token expiration time:", expirationTime ? expirationTime.format('DD-MM-YYYY HH:mm:ss') : 'N/A');
-          console.log("Current time:", moment().format('DD-MM-YYYY HH:mm:ss'));
-          console.log("Time until expiration:", expirationTime ? expirationTime.diff(moment(), 'minutes') + ' minutes' : 'N/A');
-
           if (expirationTime && moment().isSameOrAfter(expirationTime)) {
             console.warn("Token has expired");
             clearAuthData();

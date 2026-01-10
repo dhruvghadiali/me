@@ -43,9 +43,6 @@ const EmergencyContactProfileComponent = () => {
     validateOnBlur: true,
     validateOnMount: true,
     onSubmit: (values) => {
-      console.log("Form submitted");
-      console.log("Submitted Values:", values);
-
       if (values.id) {
         const payload = createEmergencyContactProfilePayload(values);
         dispatch(

@@ -43,7 +43,6 @@ const UpdatedPasswordComponent = () => {
   } = formik;
 
   const handleCloseEditMode = () => {
-    console.log("Submitted Values:", values);
     setTouched({});
     setIsEditMode(false);
   };

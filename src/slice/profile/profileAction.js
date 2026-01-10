@@ -33,7 +33,6 @@ const getStudentProfile = createAsyncThunk(
       if (apiResponseHaveData(response)) {
         profile = formatStudentProfileData(response.data[0]);
 
-        console.log("Formatted Student Profile:", profile);
         return {
           error: "",
           profile,

@@ -56,8 +56,6 @@ const SiblingProfileComponent = () => {
         values && _.isArray(values.siblings) && _.size(values.siblings) > 0
           ? values.siblings[0]
           : {};
-      console.log("Sibling Profile Form submitted");
-      console.log("Submitted Values:", createSiblingProfilePayload(formData));
 
       if (formData.id) {
         // Update existing sibling profile

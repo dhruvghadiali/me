@@ -100,7 +100,6 @@ const addAdmissionApplication = createAsyncThunk(
         };
       }
     } catch (error) {
-      console.log("error in adding admission application", error);
       const errMsg =
         (error && (error.message || error.error)) ||
         "Adding admission application failed. Please try again.";
@@ -132,7 +131,6 @@ const updateAdmissionApplicationStatus = createAsyncThunk(
         };
       }
     } catch (error) {
-      console.log("error in updating admission application status", error);
       const errMsg =
         (error && (error.message || error.error)) ||
         "Updating admission application status failed. Please try again.";

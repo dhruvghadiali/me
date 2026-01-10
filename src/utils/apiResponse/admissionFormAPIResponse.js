@@ -96,7 +96,6 @@ const formatSchoolAcademicClassesData = (schools) => {
  * @returns {Array} Formatted admissions array
  */
 const formatSchoolAdmissionsData = (admissions) => {
-  console.log("admissions data", admissions);
   return _.map(admissions, (admission) => {
     return {
       id: admission?.id || "",

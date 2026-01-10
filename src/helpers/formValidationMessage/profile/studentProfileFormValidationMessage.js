@@ -37,4 +37,8 @@ export {
   mentalIssueDetailsMaxLength,
   mentalIssueDetailsMinLength,
   allergiesDetailsMinLength,
+  hearingIssueDetailsRequired,
+  visionIssueDetailsRequired,
+  physicalIssueDetailsRequired,
+  mentalIssueDetailsRequired,
 };

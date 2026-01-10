@@ -64,9 +64,6 @@ const MotherProfileComponent = () => {
     validateOnBlur: true,
     validateOnMount: true,
     onSubmit: async (values) => {
-      console.log("Mother Form submitted");
-      console.log("Submitted Values:", values);
-
       try {
         // First action - wait for it to complete
         let firstActionResult;

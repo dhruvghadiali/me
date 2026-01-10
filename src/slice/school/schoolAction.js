@@ -49,7 +49,6 @@ const getSchool = createAsyncThunk(
         school: schoolDetailsAPIResponse(response),
       };
     } catch (error) {
-      console.log("Authentication State in getSchools: 2", error);
       return rejectWithValue({
         error: defaultAPIErrorResponse.message,
         school: {},
