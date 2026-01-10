@@ -11,6 +11,8 @@ import {
 } from "@MELocalization/languages/en";
 
 const SettingHeaderComponent = () => {
+  const { t } = useTranslation();
+  
   return (
     <>
       <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 xl:mb-14">
