@@ -19,6 +19,7 @@ import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogFooter 
 } from "@/components/ui/alert-dialog";
 import {
   usernameMaxChar,
@@ -100,16 +101,16 @@ const UpdatedUsernameComponent = () => {
         open={displayAlertDialog}
         onOpenChange={(open) => dispatch(toggleAlertDialog(open))}
       >
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-md">
           <AlertDialogHeader>
-            <AlertDialogTitle>
+            <AlertDialogTitle className="text-base sm:text-lg font-bold">
               {_.startCase(
                 t("updateUsernameAlertDialogTitle", {
                   defaultValue: updateUsernameAlertDialogTitle,
                 })
               )}
             </AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="text-sm text-muted-foreground mt-2">
               {_.upperFirst(
                 t("updateUsernameAlertDialogMessage", {
                   defaultValue: updateUsernameAlertDialogMessage,
@@ -117,10 +118,20 @@ const UpdatedUsernameComponent = () => {
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="flex gap-4">
+          <AlertDialogFooter className="gap-2 sm:gap-3">
+            <AlertDialogCancel
+              onClick={handleCancelLogout}
+              className="w-full sm:w-auto"
+            >
+              {_.upperCase(
+                t("updateUsernameAlertDialogCancelButtonLabel", {
+                  defaultValue: updateUsernameAlertDialogCancelButtonLabel,
+                })
+              )}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmLogout}
-              className="bg-danger hover:bg-danger/90 focus:ring-danger/50"
+              className="w-full sm:w-auto"
             >
               {_.upperCase(
                 t("updateUsernameAlertDialogConfirmButtonLabel", {
@@ -128,14 +139,7 @@ const UpdatedUsernameComponent = () => {
                 })
               )}
             </AlertDialogAction>
-            <AlertDialogCancel onClick={handleCancelLogout}>
-              {_.upperCase(
-                t("updateUsernameAlertDialogCancelButtonLabel", {
-                  defaultValue: updateUsernameAlertDialogCancelButtonLabel,
-                })
-              )}
-            </AlertDialogCancel>
-          </div>
+          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
