@@ -6,6 +6,7 @@ import signUpSlice from "@MERedux/signUp/signUpSlice";
 import schoolSlice from "@MERedux/school/schoolSlice";
 import profileSlice from "@MERedux/profile/profileSlice";
 import loggerMiddleware from "@MERedux/middleware/logger";
+import settingsSlice from "@MERedux/settings/settingsSlice";
 import admissionFormSlice from "@MERedux/admissionForm/admissionFormSlice";
 import forgottenPasswordSlice from "@MERedux/forgottenPassword/forgottenPasswordSlice";
 
@@ -16,6 +17,7 @@ export default configureStore({
     signUp: signUpSlice,
     school: schoolSlice,
     profile: profileSlice,
+    settings: settingsSlice,
     admissionForm: admissionFormSlice,
     forgottenPassword: forgottenPasswordSlice,
   },

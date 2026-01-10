@@ -22,7 +22,7 @@ import {
   updatedMotherProfileOverrideAddress,
 } from "@MERedux/profile/profileAction";
 
-import _, { add } from "lodash";
+import _ from "lodash";
 
 export const profileSlice = createSlice({
   name: "profile",

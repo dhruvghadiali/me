@@ -9,6 +9,8 @@ export const parentProfileAPIRoute = "/profile/parent";
 export const signUpSendOTPAPIRoute = "/signup/send-otp";
 export const siblingProfileAPIRoute = "/profile/sibling";
 export const addressProfileAPIRoute = "/profile/address";
+export const updateUsernameAPIRoute = "/update-username";
+export const updatePasswordAPIRoute = "/update-password";
 export const academicClassesAPIRoute = "/academic-classes";
 export const forgottenPasswordAPIRoute = "/forgotten-password";
 export const admissionApplicationAPIRoute = "/admission-applications";
@@ -18,3 +20,4 @@ export const emergencyContactProfileAPIRoute = "/profile/emergency-contact";
 export const forgottenPasswordSendOTPAPIRoute = "/forgotten-password/send-otp";
 export const forgottenPasswordChangePasswordAPIRoute = "/forgotten-password/change-password";
 export const forgottenPasswordOTPVerificationAPIRoute = "/forgotten-password/otp-verification"; 
+

@@ -1,11 +1,25 @@
+import React from "react";
 import { useFormik } from "formik";
 import { Check } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import _ from "lodash";
 import * as Yup from "yup";
 
 import { ME_INPUT_COMPONENT_VARIANTS } from "@MEHelpers/enums";
+import { createUpdateUsernamePayload } from "@MEUtils/apiPayload";
+import { updatedUsername } from "@MERedux/settings/settingsAction";
+import { toggleAlertDialog } from "@MERedux/settings/settingsSlice";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   usernameMaxChar,
   usernameMinChar,
@@ -25,16 +39,24 @@ import {
   updateUsernameFormSubtitle,
   updateUsernameFormUsernameLabel,
   updateUsernameFormPasswordLabel,
+  updateUsernameAlertDialogTitle,
+  updateUsernameAlertDialogMessage,
+  updateUsernameAlertDialogConfirmButtonLabel,
+  updateUsernameAlertDialogCancelButtonLabel,
 } from "@MELocalization/languages/en";
 
 import MEInput from "@MECommonComponents/input/meInput";
 import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
-// import ProfileErrorMessageComponent from "@MEScreenComponents/profile/errorMessage";
+import SettingsErrorMessageComponent from "@MEScreenComponents/settings/errorMessage";
 // import LastUpdatedAtInfoComponent from "@MEScreenComponents/settings/lastUpdatedAtInfo";
 
 const UpdatedUsernameComponent = () => {
+  const dispatch = useDispatch();
+
   const { t } = useTranslation();
+  const { updateUsernameLoader, updateUsernameError, displayAlertDialog } =
+    useSelector((state) => state.settings);
 
   const formik = useFormik({
     initialValues: {
@@ -46,9 +68,7 @@ const UpdatedUsernameComponent = () => {
     validateOnBlur: true,
     validateOnMount: true,
     onSubmit: (values) => {
-      // Handle form submission
-      console.log("Form submitted");
-      console.log("Submitted Values:", values);
+      dispatch(toggleAlertDialog(true));
     },
   });
 
@@ -62,11 +82,63 @@ const UpdatedUsernameComponent = () => {
     handleSubmit,
   } = formik;
 
+  const handleConfirmLogout = () => {
+    dispatch(updatedUsername(createUpdateUsernamePayload(values)));
+  };
+
+  const handleCancelLogout = () => {
+    dispatch(toggleAlertDialog(false));
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
-      {/* {studentProfileFormError && (
-        <ProfileErrorMessageComponent message={studentProfileFormError} />
-      )} */}
+      {updateUsernameError && (
+        <SettingsErrorMessageComponent message={updateUsernameError} />
+      )}
+
+      <AlertDialog
+        open={displayAlertDialog}
+        onOpenChange={(open) => dispatch(toggleAlertDialog(open))}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {_.startCase(
+                t("updateUsernameAlertDialogTitle", {
+                  defaultValue: updateUsernameAlertDialogTitle,
+                })
+              )}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {_.upperFirst(
+                t("updateUsernameAlertDialogMessage", {
+                  defaultValue: updateUsernameAlertDialogMessage,
+                })
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="flex gap-4">
+            <AlertDialogAction
+              onClick={handleConfirmLogout}
+              className="bg-danger hover:bg-danger/90 focus:ring-danger/50"
+            >
+              {_.upperCase(
+                t("updateUsernameAlertDialogConfirmButtonLabel", {
+                  defaultValue: updateUsernameAlertDialogConfirmButtonLabel,
+                })
+              )}
+            </AlertDialogAction>
+            <AlertDialogCancel onClick={handleCancelLogout}>
+              {_.upperCase(
+                t("updateUsernameAlertDialogCancelButtonLabel", {
+                  defaultValue: updateUsernameAlertDialogCancelButtonLabel,
+                })
+              )}
+            </AlertDialogCancel>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <form onSubmit={handleSubmit}>
         <div>
           {/* Header with Edit Button */}
@@ -167,11 +239,11 @@ const UpdatedUsernameComponent = () => {
               disabled={!isValid}
               className="flex items-center gap-2"
             >
-              {/* {studentProfileFormLoader ? (
-                  <MELoaderIcon />
-                ) : ( */}
-              <Check className="w-4 h-4" />
-              {/* )} */}
+              {updateUsernameLoader ? (
+                <MELoaderIcon />
+              ) : (
+                <Check className="w-4 h-4" />
+              )}
               Save Changes
             </MEButton>
           </div>
