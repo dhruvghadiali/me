@@ -116,7 +116,7 @@ const AdmissionFormHistoryComponent = () => {
                       buttonVariant={ME_BUTTON_COMPONENT_VARIANTS.PRIMARY}
                       onClick={() => onClick(admission?.id || "")}
                     >
-                      {_.upperFirst(admission?.status) || "Draft"}
+                      {_.startCase(admission?.status) || "Draft"}
                     </MEButton>
                   </div>
                 </div>

@@ -150,6 +150,31 @@ const formatSchoolAdmissionsData = (admissions) => {
               : null,
           }
         : null,
+      verifiedDocuments: admission?.verified_documents
+        ? _.map(admission.verified_documents, (doc) => ({
+            id: doc?._id || "",
+            schoolAdmissionDocument: doc?.school_admission_document
+              ? {
+                  id: doc.school_admission_document?.id || "",
+                  admissionDocument: doc.school_admission_document
+                    ?.admission_document
+                    ? {
+                        id:
+                          doc.school_admission_document.admission_document
+                            ?._id || "",
+                        admissionDocument:
+                          doc.school_admission_document.admission_document
+                            ?.admission_document || "",
+                      }
+                    : null,
+                  isRequired:
+                    doc.school_admission_document?.is_required || false,
+                }
+              : null,
+            isVerified: doc?.is_verified || false,
+            notes: doc?.notes || "",
+          }))
+        : [],
       changeStatusDropdownOptions: setChangeStatusDropdownOptions(
         admission?.status
       ),

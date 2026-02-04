@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 
 import HistoryTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/historyTab";
 import OverviewTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/overviewTab";
+import DocumentVerificationTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/documentTab";
 import NoInformationFoundTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/noInformationFoundTab";
-
 const TabContentComponent = () => {
   const { admissionFormActiveIndex } = useSelector(
     (state) => state.admissionForm
@@ -16,7 +16,7 @@ const TabContentComponent = () => {
       case 1:
         return <HistoryTabComponent />;
       case 2:
-        return <NoInformationFoundTabComponent />;
+        return <DocumentVerificationTabComponent />;
       case 3:
         return <NoInformationFoundTabComponent />;
       case 4:
