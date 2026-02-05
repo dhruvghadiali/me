@@ -2,8 +2,10 @@ import { useSelector } from "react-redux";
 
 import HistoryTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/historyTab";
 import OverviewTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/overviewTab";
+import AppointmentTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/appointmentTab";
 import DocumentVerificationTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/documentTab";
 import NoInformationFoundTabComponent from "@MEScreenComponents/admissionForm/admissionFormDetail/admissionFormDetailTab/noInformationFoundTab";
+
 const TabContentComponent = () => {
   const { admissionFormActiveIndex } = useSelector(
     (state) => state.admissionForm
@@ -18,7 +20,7 @@ const TabContentComponent = () => {
       case 2:
         return <DocumentVerificationTabComponent />;
       case 3:
-        return <NoInformationFoundTabComponent />;
+        return <AppointmentTabComponent />;
       case 4:
         return <NoInformationFoundTabComponent />;
       default:

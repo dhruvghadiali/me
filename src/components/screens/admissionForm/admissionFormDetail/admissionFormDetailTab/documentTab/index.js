@@ -26,10 +26,10 @@ const DocumentVerificationTabComponent = () => {
         </h3>
         {verifiedDocuments.length > 0 && (
           <Card className="bg-muted/30 border border-primary/40">
-            <CardContent className="py-4">
-              <div className="flex items-center justify-between text-sm">
-                <span className="font-medium">Document Summary</span>
-                <div className="flex gap-4">
+            <CardContent className="py-3 sm:py-4 px-3 sm:px-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs sm:text-sm">
+                <span className="font-medium text-sm sm:text-base">Document Summary</span>
+                <div className="flex flex-wrap gap-3 sm:gap-4">
                   <span className="text-muted-foreground">
                     Total:{" "}
                     <span className="font-semibold text-foreground">
@@ -59,10 +59,10 @@ const DocumentVerificationTabComponent = () => {
 
         {verifiedDocuments.length === 0 ? (
           <Card>
-            <CardContent className="py-8">
+            <CardContent className="py-8 sm:py-12 px-4">
               <div className="flex flex-col items-center justify-center text-center">
-                <FileText className="h-12 w-12 text-muted-foreground mb-3" />
-                <p className="text-muted-foreground">
+                <FileText className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mb-3" />
+                <p className="text-sm sm:text-base text-muted-foreground">
                   No documents available for verification
                 </p>
               </div>
@@ -74,20 +74,22 @@ const DocumentVerificationTabComponent = () => {
               key={doc.id}
               className="overflow-hidden border border-primary/40"
             >
-              <CardHeader className="bg-muted/50">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1 flex-1">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <FileText className="h-5 w-5" />
-                      {_.startCase(
-                        doc.schoolAdmissionDocument?.admissionDocument
-                          ?.admissionDocument,
-                      ) || "N/A"}
+              <CardHeader className="bg-muted/50 p-3 sm:p-4 md:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                  <div className="space-y-1.5 sm:space-y-2 flex-1">
+                    <CardTitle className="text-sm sm:text-base md:text-lg flex items-center gap-2 flex-wrap">
+                      <FileText className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span className="break-words">
+                        {_.startCase(
+                          doc.schoolAdmissionDocument?.admissionDocument
+                            ?.admissionDocument,
+                        ) || "N/A"}
+                      </span>
                     </CardTitle>
                     {doc.schoolAdmissionDocument?.isRequired && (
                       <Badge
                         variant="outline"
-                        className="text-xs border border-primary/40"
+                        className="text-xs border border-primary/40 w-fit"
                       >
                         Required
                       </Badge>
@@ -97,7 +99,7 @@ const DocumentVerificationTabComponent = () => {
                     {doc.isVerified ? (
                       <Badge
                         variant="default"
-                        className="bg-green-500 hover:bg-green-600 flex items-center gap-1"
+                        className="bg-green-500 hover:bg-green-600 flex items-center gap-1 text-xs sm:text-sm"
                       >
                         <CheckCircle2 className="h-3 w-3" />
                         Verified
@@ -105,7 +107,7 @@ const DocumentVerificationTabComponent = () => {
                     ) : (
                       <Badge
                         variant="destructive"
-                        className="flex items-center gap-1"
+                        className="flex items-center gap-1 text-xs sm:text-sm"
                       >
                         <XCircle className="h-3 w-3" />
                         Not Verified
@@ -114,14 +116,14 @@ const DocumentVerificationTabComponent = () => {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="pt-4">
+              <CardContent className="pt-3 sm:pt-4 p-3 sm:p-4 md:p-6">
                 <div className="space-y-3">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground mb-1">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">
                         Status
                       </p>
-                      <p className="text-sm">
+                      <p className="text-xs sm:text-sm font-medium">
                         {doc.isVerified ? "Verified" : "Pending Verification"}
                       </p>
                     </div>
@@ -129,10 +131,10 @@ const DocumentVerificationTabComponent = () => {
 
                   {doc.notes && (
                     <div className="pt-2 border-t">
-                      <p className="text-sm font-medium text-muted-foreground mb-1">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1.5 sm:mb-2">
                         Notes
                       </p>
-                      <p className="text-sm bg-muted/50 px-3 py-2 rounded border border-primary/40">
+                      <p className="text-xs sm:text-sm bg-muted/50 px-2 sm:px-3 py-2 rounded border border-primary/40 break-words">
                         {doc.notes}
                       </p>
                     </div>
