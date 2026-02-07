@@ -9,6 +9,7 @@ import App from "./App.js";
 import { Provider } from "react-redux";
 import store from "@/store";
 import '@MELocalization/i18n';
+import "@MEComponentsCss";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
