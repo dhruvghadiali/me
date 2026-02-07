@@ -11,8 +11,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": "/src",
-      "@MEComponents": "/node_modules/@dhruv21/me-components/dist/me-components.es.js",
-      "@MEComponentsCss": "/node_modules/@dhruv21/me-components/dist/style.css",
       "@MERedux": "/src/slice",
       "@MEPages": "/src/pages",
       "@MEUtils": "/src/utils",
