@@ -42,7 +42,7 @@ import {
   footerMenu,
 } from "@MECommonComponents/sidebar/sidebarMenu";
 
-import logoGreen from "@MEAssets/img/logo-green.png";
+import logo from "@MEAssets/img/logo.png";
 
 import _ from "lodash";
 
@@ -70,7 +70,7 @@ const MESidebar = ({ children }) => {
           <SidebarHeader className="p-4 border-b">
             <div className="flex items-center gap-3">
               <img
-                src={logoGreen}
+                src={logo}
                 alt="Logo"
                 className="w-12 h-12 rounded-full"
               />

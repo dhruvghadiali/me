@@ -14,7 +14,7 @@ import { resetSignUpFormState } from "@MERedux/signUp/signUpSlice";
 
 import _ from "lodash";
 
-import logoGreen from "@MEAssets/img/logo-green.png";
+import logo from "@MEAssets/img/logo.png";
 
 const MEHeader = () => {
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ const MEHeader = () => {
 
   return (
     <div className="flex justify-between items-center px-4">
-      <img src={logoGreen} alt="Logo" className="w-20 h-20" />
+      <img src={logo} alt="Logo" className="w-10 h-10 mx-2 my-2" />
       <div className="columns-2">
         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <Button variant="ghost" onClick={() => onSignUpClick()}>
