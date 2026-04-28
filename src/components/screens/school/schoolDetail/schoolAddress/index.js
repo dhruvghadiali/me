@@ -27,9 +27,9 @@ import {
 } from "@MEShadcnComponents/card";
 
 import SchoolAddressesNotProvided from "@MEScreenComponents/school/schoolDetail/schoolAddress/schoolAddressesNotProvided";
+import SchoolAddressWeekHoursComponent from "@MEScreenComponents/school/schoolDetail/schoolAddress/weekHours";
 
-import _, { add } from "lodash";
-import moment from "moment";
+import _ from "lodash";
 
 const SchoolAddressComponent = ({ school }) => {
   const { t } = useTranslation();
@@ -50,12 +50,12 @@ const SchoolAddressComponent = ({ school }) => {
                 ? _.upperFirst(
                     t("schoolMainCampusLocation", {
                       defaultValue: schoolMainCampusLocation,
-                    })
+                    }),
                   )
                 : _.upperFirst(
                     t("schoolCampusLocation", {
                       defaultValue: schoolCampusLocation,
-                    })
+                    }),
                   )}
             </CardTitle>
           </CardHeader>
@@ -70,7 +70,7 @@ const SchoolAddressComponent = ({ school }) => {
                       {_.upperFirst(
                         t("schoolPhysicalAddress", {
                           defaultValue: schoolPhysicalAddress,
-                        })
+                        }),
                       )}
                     </h4>
                     <p className="text-xs sm:text-sm text-gray-700">
@@ -94,23 +94,23 @@ const SchoolAddressComponent = ({ school }) => {
                       {_.upperFirst(
                         t("schoolCoordinates", {
                           defaultValue: schoolCoordinates,
-                        })
+                        }),
                       )}
                     </h4>
                     <p className="text-xs sm:text-sm text-gray-700">
                       {_.upperFirst(
                         t("schoolLatitude", {
                           defaultValue: schoolLatitude,
-                        })
-                      )}{" "}
+                        }),
+                      )}
                       {address?.latitude || "N/A"}
                     </p>
                     <p className="text-xs sm:text-sm text-gray-700 mt-1">
                       {_.upperFirst(
                         t("schoolLongitude", {
                           defaultValue: schoolLongitude,
-                        })
-                      )}{" "}
+                        }),
+                      )}
                       {address?.longitude || "N/A"}
                     </p>
                   </div>
@@ -126,7 +126,7 @@ const SchoolAddressComponent = ({ school }) => {
                       {_.upperFirst(
                         t("schoolQuickContact", {
                           defaultValue: schoolQuickContact,
-                        })
+                        }),
                       )}
                     </h4>
                     <div className="space-y-1">
@@ -138,7 +138,7 @@ const SchoolAddressComponent = ({ school }) => {
                             : _.upperFirst(
                                 t("schoolPhoneNotProvided", {
                                   defaultValue: schoolPhoneNotProvided,
-                                })
+                                }),
                               )}
                         </span>
                       </div>
@@ -149,7 +149,7 @@ const SchoolAddressComponent = ({ school }) => {
                             _.upperFirst(
                               t("schoolEmailNotProvided", {
                                 defaultValue: schoolEmailNotProvided,
-                              })
+                              }),
                             )}
                         </span>
                       </div>
@@ -167,7 +167,7 @@ const SchoolAddressComponent = ({ school }) => {
                       {_.upperFirst(
                         t("schoolCampusSize", {
                           defaultValue: schoolCampusSize,
-                        })
+                        }),
                       )}
                     </h4>
                     <div className="space-y-1">
@@ -176,11 +176,11 @@ const SchoolAddressComponent = ({ school }) => {
                           {_.upperFirst(
                             t("schoolTotalArea", {
                               defaultValue: schoolTotalArea,
-                            })
+                            }),
                           )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
-                          {address?.totalArea || "N/A"}
+                          {address?.campusArea || "N/A"}
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -188,7 +188,7 @@ const SchoolAddressComponent = ({ school }) => {
                           {_.upperFirst(
                             t("schoolBuildingArea", {
                               defaultValue: schoolBuildingArea,
-                            })
+                            }),
                           )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
@@ -200,11 +200,11 @@ const SchoolAddressComponent = ({ school }) => {
                           {_.upperFirst(
                             t("schoolOutdoorArea", {
                               defaultValue: schoolOutdoorArea,
-                            })
+                            }),
                           )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
-                          {address?.outdoorFacilities || "N/A"}
+                          {address?.outdoorArea || "N/A"}
                         </span>
                       </div>
                     </div>
@@ -221,7 +221,7 @@ const SchoolAddressComponent = ({ school }) => {
                   {_.upperFirst(
                     t("schoolOpeningHours", {
                       defaultValue: schoolOpeningHours,
-                    })
+                    }),
                   )}
                 </h4>
               </div>
@@ -231,26 +231,13 @@ const SchoolAddressComponent = ({ school }) => {
                     {_.upperFirst(
                       t("schoolRegularHours", {
                         defaultValue: schoolHours,
-                      })
+                      }),
                     )}
                   </h5>
                   <div className="space-y-1 text-xs sm:text-sm">
-                    {_.map(_.range(7), (day) => (
-                      <div key={day} className="flex justify-between">
-                        <span className="text-gray-600">
-                          {moment()
-                            .startOf("isoWeek")
-                            .add(day, "days")
-                            .format("dddd")}
-                          :
-                        </span>
-                        <span className="text-dark font-medium">
-                          {address?.openingHours && address.openingHours[day]
-                            ? address.openingHours[day]
-                            : "N/A"}
-                        </span>
-                      </div>
-                    ))}
+                    <SchoolAddressWeekHoursComponent
+                      week={_.get(address, "schoolHours", null)}
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -258,26 +245,13 @@ const SchoolAddressComponent = ({ school }) => {
                     {_.upperFirst(
                       t("schoolAdministrativeOffice", {
                         defaultValue: schoolAdministrativeStaff,
-                      })
+                      }),
                     )}
                   </h5>
                   <div className="space-y-1 text-xs sm:text-sm">
-                    {_.map(_.range(7), (day) => (
-                      <div key={day} className="flex justify-between">
-                        <span className="text-gray-600">
-                          {moment()
-                            .startOf("isoWeek")
-                            .add(day, "days")
-                            .format("dddd")}
-                          :
-                        </span>
-                        <span className="text-dark font-medium">
-                          {address?.openingHours && address.openingHours[day]
-                            ? address.openingHours[day]
-                            : "N/A"}
-                        </span>
-                      </div>
-                    ))}
+                    <SchoolAddressWeekHoursComponent
+                      week={_.get(address, "administrativeHours", null)}
+                    />
                   </div>
                 </div>
               </div>

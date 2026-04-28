@@ -62,25 +62,25 @@ const transformAcademicClassesData = (school) => {
         totalMonthlyFee:
           academicClass && academicClass.school_fees
             ? _.sumBy(academicClass.school_fees, (fee) =>
-                fee?.monthly_fee ? parseFloat(fee.monthly_fee) : 0
+                fee?.monthly_fee ? parseFloat(fee.monthly_fee) : 0,
               )
             : 0,
         totalQuarterlyFee:
           academicClass && academicClass.school_fees
             ? _.sumBy(academicClass.school_fees, (fee) =>
-                fee?.quarterly_fee ? parseFloat(fee.quarterly_fee) : 0
+                fee?.quarterly_fee ? parseFloat(fee.quarterly_fee) : 0,
               )
             : 0,
         totalHalfYearlyFee:
           academicClass && academicClass.school_fees
             ? _.sumBy(academicClass.school_fees, (fee) =>
-                fee?.half_yearly_fee ? parseFloat(fee.half_yearly_fee) : 0
+                fee?.half_yearly_fee ? parseFloat(fee.half_yearly_fee) : 0,
               )
             : 0,
         totalYearlyFee:
           academicClass && academicClass.school_fees
             ? _.sumBy(academicClass.school_fees, (fee) =>
-                fee?.yearly_fee ? parseFloat(fee.yearly_fee) : 0
+                fee?.yearly_fee ? parseFloat(fee.yearly_fee) : 0,
               )
             : 0,
         feeStructure:
@@ -124,7 +124,7 @@ const schoolSummaryAPIResponse = (response) => {
                   school.school_address[0].district,
                   school.school_address[0].state,
                 ]),
-                ", "
+                ", ",
               ) +
               (school.school_address[0].zipcode
                 ? (_.some([
@@ -145,6 +145,13 @@ const schoolSummaryAPIResponse = (response) => {
   }
 };
 
+const transformHoursPayload = (hours) =>
+  _.mapValues(hours, (day) => ({
+    openTime: _.get(day, "open_time", ""),
+    closeTime: _.get(day, "close_time", ""),
+    closed: _.get(day, "closed", false),
+  }));
+
 const schoolDetailsAPIResponse = (response) => {
   if (response && response.data && _.size(response.data) > 0) {
     const school = response.data[0];
@@ -161,16 +168,16 @@ const schoolDetailsAPIResponse = (response) => {
         (educationBoard) => ({
           value: educationBoard.id,
           label: educationBoard.education_board,
-        })
+        }),
       ),
       educationBoards: _.join(
         _.map(school.education_boards, (board) =>
-          _.capitalize(board.education_board)
+          _.capitalize(board.education_board),
         ),
-        ", "
+        ", ",
       ),
       overview: {
-        aboutSection1: null,
+        aboutSection1: _.get(school, "about", null),
         aboutSection2: null,
         studentsEnrolled: null,
         facultyMembers: null,
@@ -190,13 +197,13 @@ const schoolDetailsAPIResponse = (response) => {
                 [
                   _.upperFirst(member?.first_name || ""),
                   _.upperFirst(member?.last_name || ""),
-                ].join(" ")
+                ].join(" "),
               ) || "N/A",
             phoneNumber: member?.phone_number
               ? formatPhone(member.phone_number)
               : "N/A",
             email: member?.email || "N/A",
-          })
+          }),
         );
 
         const addressLine1 = (() => {
@@ -204,7 +211,7 @@ const schoolDetailsAPIResponse = (response) => {
           const areaName = _.get(organization, "area_name.name");
           const value = _.join(
             _.compact([_.upperFirst(address), areaName]),
-            ", "
+            ", ",
           );
           return value || null;
         })();
@@ -220,7 +227,7 @@ const schoolDetailsAPIResponse = (response) => {
               _.upperFirst(district),
               _.upperFirst(state),
             ]),
-            ", "
+            ", ",
           );
           if (zipcode) value += (value ? " - " : "") + zipcode;
           return value || null;
@@ -245,7 +252,7 @@ const schoolDetailsAPIResponse = (response) => {
                 const areaName = _.get(schoolAddress, "area_name.name");
                 const value = _.join(
                   _.compact([_.upperFirst(address), areaName]),
-                  ", "
+                  ", ",
                 );
                 return value || null;
               })();
@@ -261,7 +268,7 @@ const schoolDetailsAPIResponse = (response) => {
                     _.upperFirst(district),
                     _.upperFirst(state),
                   ]),
-                  ", "
+                  ", ",
                 );
                 if (zipcode) value += (value ? " - " : "") + zipcode;
                 return value || null;
@@ -270,6 +277,13 @@ const schoolDetailsAPIResponse = (response) => {
               return {
                 addressLine1,
                 addressLine2,
+                latitude: _.get(schoolAddress, "latitude", null),
+                longitude: _.get(schoolAddress, "longitude", null),
+                campusArea: _.get(schoolAddress, "campus_area", null),
+                buildingArea: _.get(schoolAddress, "building_area", null),
+                outdoorArea: _.get(schoolAddress, "outdoor_area", null),
+                administrativeHours : transformHoursPayload(_.get(schoolAddress, "administrative_hours",{})),
+                schoolHours: transformHoursPayload(_.get(schoolAddress, "school_hours", {})),
               };
             })
           : [],
