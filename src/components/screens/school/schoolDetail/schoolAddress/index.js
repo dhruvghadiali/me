@@ -180,7 +180,7 @@ const SchoolAddressComponent = ({ school }) => {
                           )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
-                          {address?.campusArea || "N/A"}
+                          {address?.campusArea || "N/A"} {"(in Sq. Ft.)"}
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -192,7 +192,7 @@ const SchoolAddressComponent = ({ school }) => {
                           )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
-                          {address?.buildingArea || "N/A"}
+                          {address?.buildingArea || "N/A"} {"(in Sq. Ft.)"}
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -204,7 +204,7 @@ const SchoolAddressComponent = ({ school }) => {
                           )}
                         </span>
                         <span className="text-xs sm:text-sm text-dark font-medium">
-                          {address?.outdoorArea || "N/A"}
+                          {address?.outdoorArea || "N/A"} {"(in Sq. Ft.)"}
                         </span>
                       </div>
                     </div>
